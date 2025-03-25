@@ -1,1 +1,65 @@
-<p>autocadastro works!</p>
+<div class="container mt-5">
+    <h2 class="mb-4">Autocadastro</h2>
+    <form>
+      <!-- Dados Pessoais -->
+      <div class="mb-3">
+        <label for="cpf" class="form-label">CPF</label>
+        <input type="text" class="form-control" id="cpf" placeholder="Digite seu CPF" required>
+      </div>
+      <div class="mb-3">
+        <label for="nome" class="form-label">Nome</label>
+        <input type="text" class="form-control" id="nome" placeholder="Digite seu nome completo" required>
+      </div>
+      <div class="mb-3">
+        <label for="email" class="form-label">E-mail</label>
+        <input type="email" class="form-control" id="email" placeholder="Digite seu e-mail" required>
+      </div>
+      
+      <!-- Endereço -->
+      <h4 class="mt-4">Endereço</h4>
+      <div class="row mb-3">
+        <div class="col-md-4">
+          <label for="cep" class="form-label">CEP</label>
+          <input type="text" class="form-control" id="cep" placeholder="Digite seu CEP" required>
+        </div>
+        <div class="col-md-8">
+          <label for="rua" class="form-label">Rua</label>
+          <input type="text" class="form-control" id="rua" placeholder="Nome da rua" readonly>
+        </div>
+      </div>
+      <div class="row mb-3">
+        <div class="col-md-4">
+          <label for="numero" class="form-label">Número</label>
+          <input type="text" class="form-control" id="numero" placeholder="Número" required>
+        </div>
+        <div class="col-md-8">
+          <label for="complemento" class="form-label">Complemento</label>
+          <input type="text" class="form-control" id="complemento" placeholder="Complemento">
+        </div>
+      </div>
+      <div class="mb-3">
+        <label for="bairro" class="form-label">Bairro</label>
+        <input type="text" class="form-control" id="bairro" placeholder="Bairro" readonly>
+      </div>
+      <div class="row mb-3">
+        <div class="col-md-6">
+          <label for="cidade" class="form-label">Cidade</label>
+          <input type="text" class="form-control" id="cidade" placeholder="Cidade" readonly>
+        </div>
+        <div class="col-md-6">
+          <label for="estado" class="form-label">Estado</label>
+          <input type="text" class="form-control" id="estado" placeholder="Estado" readonly>
+        </div>
+      </div>
+      
+      <!-- Contato -->
+      <div class="mb-3">
+        <label for="telefone" class="form-label">Telefone</label>
+        <input type="text" class="form-control" id="telefone" placeholder="Digite seu telefone" required>
+      </div>
+      
+      <!-- Submit -->
+      <button type="submit" class="btn btn-primary">Cadastrar</button>
+    </form>
+  </div>
+  
