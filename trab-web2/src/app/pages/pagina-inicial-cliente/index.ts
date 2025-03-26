@@ -1,0 +1,1 @@
+export * from './pagina-inicial-cliente.component'
