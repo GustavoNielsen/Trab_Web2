@@ -1,1 +1,56 @@
-<p>solicita-manutencao works!</p>
+<div class="container">
+    <h1>Solicitação de Manutenção</h1>
+    <form [formGroup]="solicitacaoForm" (ngSubmit)="onSubmit()">
+      <!-- Descrição do Equipamento -->
+      <div class="form-group">
+        <label for="descricaoEquipamento">Descrição do Equipamento:</label>
+        <input 
+          type="text" 
+          id="descricaoEquipamento" 
+          formControlName="descricaoEquipamento" 
+          required
+        >
+        <div *ngIf="descricaoEquipamento.invalid && (descricaoEquipamento.dirty || descricaoEquipamento.touched)"
+             class="error-message">
+          Descrição é obrigatória.
+        </div>
+      </div>
+  
+      <!-- Categoria do Equipamento -->
+      <div class="form-group">
+        <label for="categoriaEquipamento">Categoria do Equipamento:</label>
+        <select 
+          id="categoriaEquipamento" 
+          formControlName="categoriaEquipamento" 
+          required
+        >
+          <option value="">Selecione...</option>
+          <option value="Informática">Informática</option>
+          <option value="Eletrônicos">Eletrônicos</option>
+          <option value="Mecânica">Mecânica</option>
+          <option value="Outros">Outros</option>
+        </select>
+        <div *ngIf="categoriaEquipamento.invalid && (categoriaEquipamento.dirty || categoriaEquipamento.touched)"
+             class="error-message">
+          Categoria é obrigatória.
+        </div>
+      </div>
+  
+      <!-- Descrição do Defeito -->
+      <div class="form-group">
+        <label for="descricaoDefeito">Descrição do Defeito:</label>
+        <textarea 
+          id="descricaoDefeito" 
+          formControlName="descricaoDefeito" 
+          required
+        ></textarea>
+        <div *ngIf="descricaoDefeito.invalid && (descricaoDefeito.dirty || descricaoDefeito.touched)"
+             class="error-message">
+          Descrição do defeito é obrigatória.
+        </div>
+      </div>
+  
+      <!-- Botão de Envio -->
+      <button type="submit" [disabled]="solicitacaoForm.invalid">Enviar Solicitação</button>
+    </form>
+  </div>
