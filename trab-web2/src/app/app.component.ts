@@ -4,9 +4,10 @@ import { AutocadastroComponent } from "./pages/autocadastro/autocadastro.compone
 import { MostrarOrcamentoComponent } from "./pages/mostrar-orcamento/mostrar-orcamento.component";
 import { PaginaInicialClienteComponent } from './pages/pagina-inicial-cliente/pagina-inicial-cliente.component';
 import { LoginComponent } from './pages/login/login.component';
+import { VizualizarServicoComponent } from './pages/vizualizar-servico/vizualizar-servico.component';
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, AutocadastroComponent, PaginaInicialClienteComponent, LoginComponent, MostrarOrcamentoComponent],
+  imports: [RouterOutlet, AutocadastroComponent, PaginaInicialClienteComponent, LoginComponent, MostrarOrcamentoComponent,VizualizarServicoComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
