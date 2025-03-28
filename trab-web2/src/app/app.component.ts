@@ -6,7 +6,7 @@ import { PaginaInicialClienteComponent } from './pages/pagina-inicial-cliente/pa
 import { LoginComponent } from './pages/login/login.component';
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, AutocadastroComponent, PaginaInicialClienteComponent, LoginComponente, MostrarOrcamentoComponent],
+  imports: [RouterOutlet, AutocadastroComponent, PaginaInicialClienteComponent, LoginComponent, MostrarOrcamentoComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
