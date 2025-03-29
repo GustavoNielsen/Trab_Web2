@@ -5,9 +5,10 @@ import { MostrarOrcamentoComponent } from "./pages/mostrar-orcamento/mostrar-orc
 import { PaginaInicialClienteComponent } from './pages/pagina-inicial-cliente/pagina-inicial-cliente.component';
 import { LoginComponent } from './pages/login/login.component';
 import { VizualizarServicoComponent } from './pages/vizualizar-servico/vizualizar-servico.component';
+import { SolicitaManutencaoComponent } from './pages/solicita-manutencao';
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, AutocadastroComponent, PaginaInicialClienteComponent, LoginComponent, MostrarOrcamentoComponent,VizualizarServicoComponent],
+  imports: [RouterOutlet, AutocadastroComponent, PaginaInicialClienteComponent, LoginComponent, MostrarOrcamentoComponent,VizualizarServicoComponent, SolicitaManutencaoComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
