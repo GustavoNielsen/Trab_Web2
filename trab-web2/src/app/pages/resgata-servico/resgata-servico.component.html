@@ -1,1 +1,27 @@
-<p>resgata-servico works!</p>
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resgatar Serviço</title>
+    <link rel="stylesheet" href="resgatar-servico.component.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Resgatar Serviço</h1>
+        <div class="solicitacao-info">
+            <p><strong>ID da Solicitação:</strong> <span id="id-solicitacao">12345</span></p>
+            <p><strong>Status Atual:</strong> <span class="status-rejeitada">REJEITADA</span></p>
+            <p><strong>Data/Hora da Rejeição:</strong> <span id="data-rejeicao">01/01/2023 10:00</span></p>
+        </div>
+        <div class="historico">
+            <h2>Histórico da Solicitação</h2>
+            <ul>
+                <li>Solicitação criada em 01/01/2023 09:00</li>
+                <li>Solicitação rejeitada em 01/01/2023 10:00</li>
+            </ul>
+        </div>
+        <button id="aprovar-resgate" class="btn-aprovar">Aprovar Resgate</button>
+    </div>
+</body>
+</html>
