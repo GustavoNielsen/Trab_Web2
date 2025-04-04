@@ -6,9 +6,12 @@ import { PaginaInicialClienteComponent } from './pages/pagina-inicial-cliente/pa
 import { LoginComponent } from './pages/login/login.component';
 import { SolicitaManutencaoComponent } from './pages/solicita-manutencao';
 import { VisualizarSolicitacaoComponent } from './pages/visualizar-solicitacao/visualizar-solicitacao.component';
+import { StartButtonComponent } from './components/start-button/start-button.component';
+
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, AutocadastroComponent, PaginaInicialClienteComponent, LoginComponent, MostrarOrcamentoComponent, SolicitaManutencaoComponent, VisualizarSolicitacaoComponent],
+  imports: [RouterOutlet, AutocadastroComponent, PaginaInicialClienteComponent, LoginComponent, MostrarOrcamentoComponent, 
+    SolicitaManutencaoComponent, VisualizarSolicitacaoComponent,StartButtonComponent ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
