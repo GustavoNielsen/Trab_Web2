@@ -4,11 +4,11 @@ import { AutocadastroComponent } from "./pages/autocadastro/autocadastro.compone
 import { MostrarOrcamentoComponent } from "./pages/mostrar-orcamento/mostrar-orcamento.component";
 import { PaginaInicialClienteComponent } from './pages/pagina-inicial-cliente/pagina-inicial-cliente.component';
 import { LoginComponent } from './pages/login/login.component';
-import { VizualizarServicoComponent } from './pages/vizualizar-servico/vizualizar-servico.component';
+import { VisualizarServicoComponent } from './pages/visualizar-servico/visualizar-servico.component';
 import { SolicitaManutencaoComponent } from './pages/solicita-manutencao';
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, AutocadastroComponent, PaginaInicialClienteComponent, LoginComponent, MostrarOrcamentoComponent,VizualizarServicoComponent, SolicitaManutencaoComponent],
+  imports: [RouterOutlet, AutocadastroComponent, PaginaInicialClienteComponent, LoginComponent, MostrarOrcamentoComponent,VisualizarServicoComponent, SolicitaManutencaoComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
