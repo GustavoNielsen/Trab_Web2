@@ -1,0 +1,19 @@
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Inter', sans-serif;
+}
+
+.content {
+  padding-top: 64px;
+  margin-left: 16rem;
+}
+
+#logo-sidebar {
+  width: 16rem;
+}
+
+nav {
+  height: 64px;
+  line-height: 64px;
+}
