@@ -7,3 +7,46 @@
     <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Solicitações Abertas</h3>
   </div>
 </div>
+<div class="flex flex-wrap items-center mb-6 gap-4">
+  <label for="filtro" class="text-sm font-medium text-gray-900 dark:text-white">
+    Filtrar por:
+  </label>
+  <select
+    id="filtro"
+    [(ngModel)]="filtro"
+    (change)="filtrarSolicitacoes()"
+    class="px-4 py-2 border border-gray-300 rounded-lg text-sm dark:bg-gray-700 dark:border-gray-600 dark:text-white focus:ring-blue-500 focus:border-blue-500"
+  >
+    <option value="TODAS">Todas</option>
+    <option value="HOJE">Hoje</option>
+    <option value="PERIODO">Período</option>
+  </select>
+
+  <div *ngIf="filtro === 'PERIODO'" class="flex flex-wrap gap-4">
+    <div>
+      <label for="dataInicio" class="block text-sm font-medium text-gray-900 dark:text-white">
+        Data Início:
+      </label>
+      <input
+        type="date"
+        id="dataInicio"
+        [(ngModel)]="dataInicio"
+        (change)="filtrarSolicitacoes()"
+        class="px-4 py-2 border border-gray-300 rounded-lg text-sm dark:bg-gray-700 dark:border-gray-600 dark:text-white focus:ring-blue-500 focus:border-blue-500"
+      />
+    </div>
+
+    <div>
+      <label for="dataFim" class="block text-sm font-medium text-gray-900 dark:text-white">
+        Data Fim:
+      </label>
+      <input
+        type="date"
+        id="dataFim"
+        [(ngModel)]="dataFim"
+        (change)="filtrarSolicitacoes()"
+        class="px-4 py-2 border border-gray-300 rounded-lg text-sm dark:bg-gray-700 dark:border-gray-600 dark:text-white focus:ring-blue-500 focus:border-blue-500"
+      />
+    </div>
+  </div>
+</div>
