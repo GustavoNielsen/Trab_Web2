@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Solicitação de Manutenção</title>
+</head>
+<body>
+    <div>
+        <h1>Solicitação de Manutenção</h1>
+        <form>
+            <!-- Descrição do Equipamento -->
+            <div>
+                <label for="descricaoEquipamento">Descrição do Equipamento:</label>
+                <input type="text" id="descricaoEquipamento" name="descricaoEquipamento" required>
+            </div>
+            
+            <!-- Categoria do Equipamento -->
+            <div>
+                <label for="categoriaEquipamento">Categoria do Equipamento:</label>
+                <select id="categoriaEquipamento" name="categoriaEquipamento" required>
+                    <option value="">Selecione...</option>
+                    <option value="Informática">Informática</option>
+                    <option value="Eletrônicos">Eletrônicos</option>
+                    <option value="Mecânica">Mecânica</option>
+                    <option value="Outros">Outros</option>
+                </select>
+            </div>
+            
+            <!-- Descrição do Defeito -->
+            <div>
+                <label for="descricaoDefeito">Descrição do Defeito:</label>
+                <textarea id="descricaoDefeito" name="descricaoDefeito" required></textarea>
+            </div>
+            
+            <!-- Botão de Envio -->
+            <button type="submit">Enviar Solicitação</button>
+        </form>
+    </div>
+</body>
+</html>
