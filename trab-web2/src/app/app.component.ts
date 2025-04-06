@@ -5,8 +5,10 @@ import { MostrarOrcamentoComponent } from "./pages/mostrar-orcamento/mostrar-orc
 import { PaginaInicialClienteComponent } from './pages/pagina-inicial-cliente/pagina-inicial-cliente.component';
 import { LoginComponent } from './pages/login/login.component';
 import { SolicitaManutencaoComponent } from './pages/solicita-manutencao';
-import {CrudCategoriaEquipamentoComponent} from './pages/crud-categoria-equipamento/crud-categoria-equipamento.component';
+import { CrudCategoriaEquipamentoComponent } from './pages/crud-categoria-equipamento/crud-categoria-equipamento.component';
 import { VisualizarSolicitacaoComponent } from './pages/visualizar-solicitacao/visualizar-solicitacao.component';
+import { EfetuarOrcamentoComponent } from './pages/efetuar-orcamento/efetuar-orcamento.component';
+//import { VizualizarServicoComponent } from './pages/visualizar-servico/visualizar-servico.component';
 
 @Component({
   selector: 'app-root',
@@ -16,7 +18,7 @@ import { VisualizarSolicitacaoComponent } from './pages/visualizar-solicitacao/v
             LoginComponent, 
             MostrarOrcamentoComponent,
             CrudCategoriaEquipamentoComponent,
-            VizualizarServicoComponent, 
+           // VizualizarServicoComponent, 
             SolicitaManutencaoComponent,
             EfetuarOrcamentoComponent],
             
