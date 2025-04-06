@@ -4,15 +4,9 @@ import { AutocadastroComponent } from "./pages/autocadastro/autocadastro.compone
 import { MostrarOrcamentoComponent } from "./pages/mostrar-orcamento/mostrar-orcamento.component";
 import { PaginaInicialClienteComponent } from './pages/pagina-inicial-cliente/pagina-inicial-cliente.component';
 import { LoginComponent } from './pages/login/login.component';
-<<<<<<< Updated upstream
-
-@Component({
-  selector: 'app-root',
-  imports: [RouterOutlet, AutocadastroComponent, PaginaInicialClienteComponent, LoginComponent, MostrarOrcamentoComponent],
-=======
-import { VizualizarServicoComponent } from './pages/vizualizar-servico/vizualizar-servico.component';
 import { SolicitaManutencaoComponent } from './pages/solicita-manutencao';
-import { EfetuarOrcamentoComponent } from './pages/efetuar-orcamento/efetuar-orcamento.component';
+import {CrudCategoriaEquipamentoComponent} from './pages/crud-categoria-equipamento/crud-categoria-equipamento.component';
+import { VisualizarSolicitacaoComponent } from './pages/visualizar-solicitacao/visualizar-solicitacao.component';
 
 @Component({
   selector: 'app-root',
@@ -21,11 +15,11 @@ import { EfetuarOrcamentoComponent } from './pages/efetuar-orcamento/efetuar-orc
             PaginaInicialClienteComponent, 
             LoginComponent, 
             MostrarOrcamentoComponent,
+            CrudCategoriaEquipamentoComponent,
             VizualizarServicoComponent, 
             SolicitaManutencaoComponent,
             EfetuarOrcamentoComponent],
             
->>>>>>> Stashed changes
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
