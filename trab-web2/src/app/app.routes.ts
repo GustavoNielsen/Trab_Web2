@@ -7,7 +7,6 @@ import { LoginComponent } from './pages/login/login.component';
 import {CrudCategoriaEquipamentoComponent} from './pages/crud-categoria-equipamento/crud-categoria-equipamento.component';
 import { VisualizarSolicitacaoComponent } from './pages/visualizar-solicitacao/visualizar-solicitacao.component';
 
-
 export const routes: Routes = [
     {path: 'autocadastro', component: AutocadastroComponent},
     {path: 'mostrar-orcamento', component: MostrarOrcamentoComponent},
@@ -15,6 +14,8 @@ export const routes: Routes = [
     {path: 'solicitamanutecao', component: SolicitaManutencaoComponent},
     {path: 'login', component: LoginComponent},
     {path: 'crudcategoriaequipamento', component: CrudCategoriaEquipamentoComponent},
-    {path: 'visualizarsolicitacao', component: VisualizarSolicitacaoComponent}
-];
+    {path: 'visualizarsolicitacao', component: VisualizarSolicitacaoComponent},
+    {path: 'paginainicialcliente', component: PaginaInicialClienteComponent}
 
+];
+    //{path: 'login', component: LoginComponent}
