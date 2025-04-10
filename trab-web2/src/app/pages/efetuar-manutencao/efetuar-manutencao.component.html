@@ -1,0 +1,11 @@
+<div class="title-container">
+  <h2>Efetuar Manutenção</h2>
+</div>
+
+<div class="solicitacao-info">
+  <p><strong>Descrição do Equipamento:</strong> {{ solicitacao.descricaoProduto }}</p>
+  <p><strong>Categoria do Equipamento:</strong> {{ solicitacao.categoria }}</p>
+  <p><strong>Descrição do Defeito:</strong> {{ solicitacao.defeito }}</p>
+  <p><strong>Data/Hora da Solicitação:</strong> {{ solicitacao.dataHora | date:'dd/MM/yyyy HH:mm' }}</p>
+  <p><strong>Status Atual:</strong> {{ solicitacao.estado }}</p>
+</div>
