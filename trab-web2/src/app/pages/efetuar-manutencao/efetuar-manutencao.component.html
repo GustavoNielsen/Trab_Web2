@@ -26,3 +26,13 @@
 
   <button class="btn-confim-redirect" (click)="confirmarManutencao()">Confirmar Manutenção</button>
 </div>
+<div *ngIf="estado === 'REDIRECIONAMENTO'">
+  <div class="form-group">
+    <label for="funcionarioDestino">Redirecionar para:</label>
+    <select id="funcionarioDestino" [(ngModel)]="funcionarioDestino">
+      <option *ngFor="let funcionario of funcionarios" [value]="funcionario">{{ funcionario }}</option>
+    </select>
+  </div>
+
+  <button class="btn-confim-redirect" (click)="confirmarRedirecionamento()">Confirmar Redirecionamento</button>
+</div>
