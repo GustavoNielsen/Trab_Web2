@@ -13,3 +13,16 @@
   <button class="btn-primary" (click)="efetuarManutencao()">Efetuar Manutenção</button>
   <button class="btn-secondary" (click)="redirecionarManutencao()">Redirecionar Manutenção</button>
 </div>
+<div *ngIf="estado === 'MANUTENCAO'">
+  <div class="form-group">
+    <label for="descricaoManutencao">Descrição da Manutenção:</label>
+    <textarea id="descricaoManutencao" [(ngModel)]="descricaoManutencao"></textarea>
+  </div>
+
+  <div class="form-group">
+    <label for="orientacoesCliente">Orientações para o Cliente:</label>
+    <textarea id="orientacoesCliente" [(ngModel)]="orientacoesCliente"></textarea>
+  </div>
+
+  <button class="btn-confim-redirect" (click)="confirmarManutencao()">Confirmar Manutenção</button>
+</div>
