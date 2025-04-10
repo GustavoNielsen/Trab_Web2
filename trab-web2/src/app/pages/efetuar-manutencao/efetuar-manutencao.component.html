@@ -9,3 +9,7 @@
   <p><strong>Data/Hora da Solicitação:</strong> {{ solicitacao.dataHora | date:'dd/MM/yyyy HH:mm' }}</p>
   <p><strong>Status Atual:</strong> {{ solicitacao.estado }}</p>
 </div>
+<div class="actions-container">
+  <button class="btn-primary" (click)="efetuarManutencao()">Efetuar Manutenção</button>
+  <button class="btn-secondary" (click)="redirecionarManutencao()">Redirecionar Manutenção</button>
+</div>
