@@ -7,7 +7,6 @@ import { RouterLink, RouterOutlet } from '@angular/router'; // Adicione RouterLi
   standalone: true, // Certifique-se que está marcado como standalone
   imports: [
     CommonModule, 
-    RouterOutlet,
     RouterLink // ← Adicione esta linha
   ],
   templateUrl: './pagina-inicial-cliente.component.html',
