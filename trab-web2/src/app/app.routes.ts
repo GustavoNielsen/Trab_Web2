@@ -12,6 +12,7 @@ import { ResgataServicoComponent } from './pages/resgata-servico';
 import { RelatorioReceitasComponent } from './pages/relatorio-receitas';
 
 export const routes: Routes = [
+    {path: '', component: LoginComponent},
     {path: 'autocadastro', component: AutocadastroComponent},
     {path: 'mostrar-orcamento', component: MostrarOrcamentoComponent},
     {path: 'paginainicialcliente', component: PaginaInicialClienteComponent},
