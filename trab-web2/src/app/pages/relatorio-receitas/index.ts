@@ -1,0 +1,1 @@
+export * from './relatorio-receitas.component'
