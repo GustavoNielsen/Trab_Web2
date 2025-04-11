@@ -1,65 +1,171 @@
 <div class="container mt-5">
-    <h2 class="mb-4">Autocadastro</h2>
-    <form>
-      <!-- Dados Pessoais -->
-      <div class="mb-3">
-        <label for="cpf" class="form-label">CPF</label>
-        <input type="text" class="form-control" id="cpf" placeholder="Digite seu CPF" required>
+  <h2 class="mb-4">Autocadastro</h2>
+  <form (ngSubmit)="inserir()" #formCadastro="ngForm">
+
+    <!-- Dados Pessoais -->
+    <div class="mb-3">
+      <label for="cpf" class="form-label">CPF</label>
+      <input
+        type="text"
+        class="form-control"
+        id="cpf"
+        placeholder="Digite seu CPF"
+        [(ngModel)]="cliente.cpf"
+        name="cpf"
+        required
+        mask="000.000.000-00"
+        #cpfModel="ngModel">
+      <!-- Mensagem de erro para CPF -->
+      <div *ngIf="cpfModel.invalid && (cpfModel.dirty || cpfModel.touched)" class="text-danger">
+        CPF no formato inválido. Utilize: 000.000.000-00.
       </div>
-      <div class="mb-3">
-        <label for="nome" class="form-label">Nome</label>
-        <input type="text" class="form-control" id="nome" placeholder="Digite seu nome completo" required>
+    </div>
+
+    <div class="mb-3">
+      <label for="nome" class="form-label">Nome</label>
+      <input
+        type="text"
+        class="form-control"
+        id="nome"
+        placeholder="Digite seu nome completo"
+        [(ngModel)]="cliente.nome"
+        name="nome"
+        required
+        #nomeModel="ngModel">
+      <div *ngIf="nomeModel.invalid && (nomeModel.dirty || nomeModel.touched)" class="text-danger">
+        Informe seu nome completo.
       </div>
-      <div class="mb-3">
-        <label for="email" class="form-label">E-mail</label>
-        <input type="email" class="form-control" id="email" placeholder="Digite seu e-mail" required>
+    </div>
+
+    <div class="mb-3">
+      <label for="email" class="form-label">E-mail</label>
+      <input
+        type="email"
+        class="form-control"
+        id="email"
+        placeholder="Digite seu e-mail"
+        [(ngModel)]="cliente.email"
+        name="email"
+        required
+        #emailModel="ngModel">
+      <div *ngIf="emailModel.invalid && (emailModel.dirty || emailModel.touched)" class="text-danger">
+        Insira um e-mail válido.
       </div>
-      
-      <!-- Endereço -->
-      <h4 class="mt-4">Endereço</h4>
-      <div class="row mb-3">
-        <div class="col-md-4">
-          <label for="cep" class="form-label">CEP</label>
-          <input type="text" class="form-control" id="cep" placeholder="Digite seu CEP" required>
+    </div>
+    
+    <!-- Endereço -->
+    <h4 class="mt-4">Endereço</h4>
+    <div class="row mb-3">
+      <div class="col-md-4">
+        <label for="cep" class="form-label">CEP</label>
+        <input
+          type="text"
+          class="form-control"
+          id="cep"
+          placeholder="Digite seu CEP"
+          [(ngModel)]="cliente.cep"
+          name="cep"
+          required
+          mask="00000-000"
+          #cepModel="ngModel">
+        <div *ngIf="cepModel.invalid && (cepModel.dirty || cepModel.touched)" class="text-danger">
+          CEP no formato inválido. Utilize: 00000-000.
         </div>
-        <div class="col-md-8">
-          <label for="rua" class="form-label">Rua</label>
-          <input type="text" class="form-control" id="rua" placeholder="Nome da rua" readonly>
+      </div>
+      <div class="col-md-8">
+        <label for="rua" class="form-label">Rua</label>
+        <input
+          type="text"
+          class="form-control"
+          id="rua"
+          placeholder="Nome da rua"
+          [(ngModel)]="cliente.rua"
+          name="rua"
+          readonly>
+      </div>
+    </div>
+    <div class="row mb-3">
+      <div class="col-md-4">
+        <label for="numero" class="form-label">Número</label>
+        <input
+          type="text"
+          class="form-control"
+          id="numero"
+          placeholder="Número"
+          [(ngModel)]="cliente.numero"
+          name="numero"
+          required
+          #numeroModel="ngModel">
+        <div *ngIf="numeroModel.invalid && (numeroModel.dirty || numeroModel.touched)" class="text-danger">
+          Informe o número.
         </div>
       </div>
-      <div class="row mb-3">
-        <div class="col-md-4">
-          <label for="numero" class="form-label">Número</label>
-          <input type="text" class="form-control" id="numero" placeholder="Número" required>
-        </div>
-        <div class="col-md-8">
-          <label for="complemento" class="form-label">Complemento</label>
-          <input type="text" class="form-control" id="complemento" placeholder="Complemento">
-        </div>
+      <div class="col-md-8">
+        <label for="complemento" class="form-label">Complemento</label>
+        <input
+          type="text"
+          class="form-control"
+          id="complemento"
+          placeholder="Complemento"
+          [(ngModel)]="cliente.complemento"
+          name="complemento">
       </div>
-      <div class="mb-3">
-        <label for="bairro" class="form-label">Bairro</label>
-        <input type="text" class="form-control" id="bairro" placeholder="Bairro" readonly>
+    </div>
+    <div class="mb-3">
+      <label for="bairro" class="form-label">Bairro</label>
+      <input
+        type="text"
+        class="form-control"
+        id="bairro"
+        placeholder="Bairro"
+        [(ngModel)]="cliente.bairro"
+        name="bairro"
+        readonly>
+    </div>
+    <div class="row mb-3">
+      <div class="col-md-6">
+        <label for="cidade" class="form-label">Cidade</label>
+        <input
+          type="text"
+          class="form-control"
+          id="cidade"
+          placeholder="Cidade"
+          [(ngModel)]="cliente.cidade"
+          name="cidade"
+          readonly>
       </div>
-      <div class="row mb-3">
-        <div class="col-md-6">
-          <label for="cidade" class="form-label">Cidade</label>
-          <input type="text" class="form-control" id="cidade" placeholder="Cidade" readonly>
-        </div>
-        <div class="col-md-6">
-          <label for="estado" class="form-label">Estado</label>
-          <input type="text" class="form-control" id="estado" placeholder="Estado" readonly>
-        </div>
+      <div class="col-md-6">
+        <label for="estado" class="form-label">Estado</label>
+        <input
+          type="text"
+          class="form-control"
+          id="estado"
+          placeholder="Estado"
+          [(ngModel)]="cliente.estado"
+          name="estado"
+          readonly>
       </div>
-      
-      <!-- Contato -->
-      <div class="mb-3">
-        <label for="telefone" class="form-label">Telefone</label>
-        <input type="text" class="form-control" id="telefone" placeholder="Digite seu telefone" required>
+    </div>
+    
+    <!-- Contato -->
+    <div class="mb-3">
+      <label for="telefone" class="form-label">Telefone</label>
+      <input
+        type="text"
+        class="form-control"
+        id="telefone"
+        placeholder="Digite seu telefone"
+        [(ngModel)]="cliente.telefone"
+        name="telefone"
+        required
+        mask="(00) 00000-0000"
+        #telefoneModel="ngModel">
+      <div *ngIf="telefoneModel.invalid && (telefoneModel.dirty || telefoneModel.touched)" class="text-danger">
+        Telefone no formato inválido. Utilize: (00) 00000-0000.
       </div>
-      
-      <!-- Submit -->
-      <button type="submit" class="btn btn-primary">Cadastrar</button>
-    </form>
-  </div>
-  
+    </div>
+    
+    <!-- Submit -->
+    <button type="submit" class="btn btn-primary" [disabled]="formCadastro.invalid">Cadastrar</button>
+  </form>
+</div>
