@@ -18,7 +18,7 @@ export const routes: Routes = [
     {path: 'paga-servico', component: PagaServicoComponent},
     {path: 'resgata-servico', component: ResgataServicoComponent},
     {path: 'solicitamanutecao', component: SolicitaManutencaoComponent},
-    {path: 'relatorio-receita', component:RelatorioReceitasComponent}
+    {path: 'relatorio-receita', component:RelatorioReceitasComponent},
     {path: 'login', component: LoginComponent},
     {path: 'crudcategoriaequipamento', component: CrudCategoriaEquipamentoComponent},
     {path: 'visualizarsolicitacao', component: VisualizarSolicitacaoComponent},
