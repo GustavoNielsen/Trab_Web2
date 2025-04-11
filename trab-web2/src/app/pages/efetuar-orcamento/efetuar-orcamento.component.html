@@ -1,0 +1,99 @@
+<nav class="navbar navbar-defaul">
+    <div class="container-fluid">
+        <a href="./efetuarorcamento" class="navbar-brand">Efetuar orçamento</a>
+    </div>
+</nav>
+
+<div class="container mt-3">
+    <!-- Dados do cliente -->
+    <div class="row">
+        <div class="mb-3 col-12">
+            <p>Orçado por: Nome Completo do Funcionário - dd/mm/yyyy - hh:mm</p>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12 col-md-4">
+            <p><strong>Nome: </strong>Nome Completo do Cliente</p>
+        </div>
+
+        <div class="col-12 col-md-4">
+            <p><strong>CPF: </strong>123.456.789-00</p>
+        </div>
+
+        <div class="col-12 col-md-4">
+            <p><strong>Telefone: </strong>41 99999-9999</p>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12 col-md-4">
+            <p><strong>E-mail: </strong>emaildoclienteemail.com</p>
+        </div>
+
+        <div class="col-12 col-md-4">
+            <p><strong>Endereço: </strong>Endereço do Cliente, 001, Cajuru</p>
+        </div>
+
+        <div class="col-12 col-md-4">
+            <p><strong>Cidade/UF: </strong>Curitiba/PR</p>
+        </div>
+    </div>           
+    
+    <!-- Dados do serviço -->
+    <div class="row mt-3">
+        <p><strong>Descrição: </strong>Lorem ipsum dolor sit amet, consectetur adipisicing elit. 
+            Voluptatibus incidunt, adipisci quae inventore explicabo dolorum magni quidem reiciendis 
+            corrupti consectetur nam mollitia itaque quia? Quam soluta quas esse aperiam cumque?</p>
+    </div>
+
+    <!-- Lista de serviços -->
+    <div class="row mt-3">
+        <div class="col-md-8">
+            <label for="servico" class="form-label fw-bold">Serviços</label>
+            <input type="text" class="form-control" id="servicoInput" placeholder="Digite o serviço a ser realizado" [(ngModel)]="novoServico" #servicoInput>
+        </div>
+    
+        <div class="col-md-2">
+            <label for="valor" class="form-label fw-bold">Valor R$</label>
+            <input type="text" class="form-control" id="valorInput" placeholder="Valor" [(ngModel)]="novoValor" #valorInput>
+        </div>
+    
+        <div class="col-md-2 d-flex align-items-end justify-content-end">
+            <button class="btn btn-primary w-50" id="addServico" data-toggle="tooltip" data-placement="right" title="Adicionar serviço à lista" (click)="adicionarServico()">+</button>
+        </div>
+    </div>
+    
+    <ul class="list-group mt-3">
+        <li 
+          class="list-group-item d-flex justify-content-between align-items-center"
+          *ngFor="let s of servicos; let i = index">
+          
+          <span>{{ s.nome }}</span>
+      
+          <div class="d-flex align-items-center gap-2">
+            <span class="badge bg-success">R$ {{ s.valor.toFixed(2) }}</span>
+            <button 
+              class="btn btn-danger btn-sm" 
+              (click)="removerServico(i)"
+              title="Remover serviço">
+              &times;
+            </button>
+          </div>
+        </li>
+      </ul>
+      
+      
+      <!-- Total final -->
+      <div class="row mt-4 align-items-center">
+        <div class="col-auto">
+          <p class="fs-5"><strong>Total R$: </strong></p>
+        </div>
+        <div class="col">
+          <p id="total" class="fs-5">R$ {{ total.toFixed(2) }}</p>
+        </div>
+        <div class="col-md-2 d-flex justify-content-end">
+            <button class="btn btn-primary w-100" (click)="finalizarOrcamento()">Finalizar</button>
+        </div>
+      </div>
+</div>
