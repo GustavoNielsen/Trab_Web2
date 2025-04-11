@@ -2,6 +2,7 @@
 <table class="tabela-primaria">
   <thead>
     <tr>
+	  <th>Id</th>
       <th>Data/Hora</th>
       <th>Equipamento</th>
       <th>Estado</th>
@@ -9,39 +10,28 @@
     </tr>
   </thead>
   <tbody>
-    <tr>
-      <td>11</td>
-      <td>12</td>
-      <td>13</td>
+    <tr *ngFor="let item of itens">
+	  <td >{{item.id}}</td>
+      <td>{{item.dataHora}}</td>
+      <td>{{item.equipamento}}</td>
+      <td>{{item.estado}}</td>
       <td>
-        <button class="botao-primario">Aprovar/Rejeitar</button>
-        <button class="botao-primario">Resgatar</button>
-        <button class="botao-primario">Pagar</button>
-        <button class="botao-primario">Visualizar</button>
-      </td>
-    </tr>
-	<tr>
-		<td>21</td>
-		<td>22</td>
-		<td>23</td>
-		<td>
-		  <button class="botao-primario">Aprovar/Rejeitar</button>
-		  <button class="botao-primario">Resgatar</button>
-		  <button class="botao-primario">Pagar</button>
-		  <button class="botao-primario">Visualizar</button>
-		</td>
-	  </tr>
-	  <tr>
-		<td>31</td>
-		<td>32</td>
-		<td>33</td>
-		<td>
-		  <button class="botao-primario">Aprovar/Rejeitar</button>
-		  <button class="botao-primario">Resgatar</button>
-		  <button class="botao-primario">Pagar</button>
-		  
-		</td>
-	  </tr>  
+		<div class="btn-group" role="group">
+			<button *ngIf="!item.isEditing" class="btn btn-warning btn-sm">
+			  <i class="bi bi-pencil"></i> Editar
+			</button>
+			<button *ngIf="item.isEditing" class="btn btn-success btn-sm">
+			  <i class="bi bi-check"></i> Salvar
+			</button>
+			<button *ngIf="item.isEditing" class="btn btn-secondary btn-sm">
+			  <i class="bi bi-x"></i> Cancelar
+			</button>
+			<button class="btn btn-danger btn-sm ms-1">
+			  <i class="bi bi-trash"></i> Remover
+			</button>
+		  </div>
+	  </td>
+    </tr>  
   </tbody>
 </table>
 
