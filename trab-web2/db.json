@@ -1,0 +1,25 @@
+{
+  "funcionarios": [
+    {
+      "nome": "Mario",
+      "email": "mario@teste.com",
+      "dataNascimento": "1990-05-15",
+      "senha": "teste",
+      "id": "1"
+    },
+    {
+      "nome": "Maria",
+      "email": "maria@teste.com",
+      "dataNascimento": "2004-04-20",
+      "senha": "teste",
+      "id": "2"
+    },
+    {
+      "id": "a410",
+      "nome": "Teste",
+      "email": "teste@teste.com",
+      "dataNascimento": "1998-09-06",
+      "senha": "teste"
+    }
+  ]
+}

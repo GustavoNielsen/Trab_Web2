@@ -10,6 +10,7 @@ import { EfetuarOrcamentoComponent } from './pages/efetuar-orcamento/efetuar-orc
 import { PagaServicoComponent } from './pages/paga-servico';
 import { ResgataServicoComponent } from './pages/resgata-servico';
 import { RelatorioReceitasComponent } from './pages/relatorio-receitas';
+import { FuncionariosComponent } from './pages/funcionarios/funcionarios.component';
 
 export const routes: Routes = [
     {path: '', component: LoginComponent},
@@ -23,7 +24,8 @@ export const routes: Routes = [
     {path: 'login', component: LoginComponent},
     {path: 'crudcategoriaequipamento', component: CrudCategoriaEquipamentoComponent},
     {path: 'visualizarsolicitacao', component: VisualizarSolicitacaoComponent},
-    {path: 'efetuarorcamento', component: EfetuarOrcamentoComponent}
+    {path: 'efetuarorcamento', component: EfetuarOrcamentoComponent},
+    {path: 'funcionarios', component: FuncionariosComponent}
 
 ];
     //{path: 'login', component: LoginComponent}
