@@ -1,44 +1,38 @@
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, RouterLink, RouterModule } from '@angular/router';
+import { Solicitacao } from '../../shared/models/solicitacao';
+import { SolicitacaoService } from '../../services/soliciticao.service';
+import { ClienteService } from '../../services/cliente.service'; 
 import { CommonModule } from '@angular/common';
-import { Component, OnInit} from '@angular/core';
-import { RouterLink, RouterOutlet } from '@angular/router'; // Adicione RouterLink
-import { FormsModule } from '@angular/forms';
-import { NgFor, NgIf } from '@angular/common';
-
-export interface Item {
-  id: number; // Opcional
-  dataHora: string;
-  equipamento: string;
-  estado?: string
-  isEditing: boolean;
-}
+import { NavbarComponent } from '../navbar/navbar.component';
 
 @Component({
   selector: 'app-pagina-inicial-cliente',
-  standalone: true, 
-  imports: [
-    CommonModule, 
-    RouterLink,
-    FormsModule, 
-    NgFor, 
-    NgIf    
-  ],
   templateUrl: './pagina-inicial-cliente.component.html',
-  styleUrl: './pagina-inicial-cliente.component.css'
+  styleUrls: ['./pagina-inicial-cliente.component.css'], 
+  imports:[CommonModule, NavbarComponent, RouterLink, RouterModule]
 })
-
 export class PaginaInicialClienteComponent implements OnInit {
-  itens: Item[] = [];
-  
+  cpf: string = '';
+  solicitacoes: Solicitacao[] = [];
+
+  constructor(
+    private route: ActivatedRoute,
+    private solicitacaoService: SolicitacaoService,
+    private clienteService: ClienteService 
+  ) {}
+
   ngOnInit(): void {
-    this.carregaExemplos(); 
-  }
-  private carregaExemplos(): void {
-    this.itens = [
-      { id: 1, dataHora: '02/02/2025', equipamento: 'Computador', estado: 'Bom', isEditing: false},
-      { id: 2, dataHora: '05/02/2025', equipamento: 'Celular', estado: 'Riscos na tela', isEditing: false }
-    ];
-    localStorage.setItem('itens', JSON.stringify(this.itens));
-  }
-    
+    this.cpf = this.clienteService.cpfLogado
+    console.log(this.cpf)
+    this.solicitacoes = this.solicitacaoService.listarSolicitacoesPorCpf(this.cpf);
+    console.log(this.cpf)
+    this.solicitacoes.sort((a, b) => new Date(a.dataHora).getTime() - new Date(b.dataHora).getTime());
   }
 
+  visualizarSolicitacao(solicitacao: Solicitacao): void {
+    console.log('Visualizar solicitação', solicitacao);
+  }
+
+  
+}
