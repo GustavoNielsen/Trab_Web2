@@ -4,7 +4,7 @@ import { MostrarOrcamentoComponent } from './pages/mostrar-orcamento';
 import { PaginaInicialClienteComponent } from './pages/pagina-inicial-cliente';
 import { SolicitaManutencaoComponent } from './pages/solicita-manutencao';
 import { LoginComponent } from './pages/login/login.component';
-import { CrudCategoriaEquipamentoComponent } from './pages/crud-categoria-equipamento/crud-categoria-equipamento.component';
+import { CadastroequipamentoComponent } from './pages/cadastroequipamento/cadastroequipamento.component';
 import { VisualizarSolicitacaoComponent } from './pages/visualizar-solicitacao/visualizar-solicitacao.component';
 import { EfetuarOrcamentoComponent } from './pages/efetuar-orcamento/efetuar-orcamento.component'
 import { PagaServicoComponent } from './pages/paga-servico';
@@ -22,7 +22,7 @@ export const routes: Routes = [
     {path: 'solicitamanutecao', component: SolicitaManutencaoComponent},
     {path: 'relatorio-receita', component:RelatorioReceitasComponent},
     {path: 'login', component: LoginComponent},
-    {path: 'crudcategoriaequipamento', component: CrudCategoriaEquipamentoComponent},
+    {path: 'cadastrarequipamento', component: CadastroequipamentoComponent},
     {path: 'visualizarsolicitacao', component: VisualizarSolicitacaoComponent},
     {path: 'efetuarorcamento', component: EfetuarOrcamentoComponent},
     {path: 'funcionarios', component: FuncionariosComponent}
