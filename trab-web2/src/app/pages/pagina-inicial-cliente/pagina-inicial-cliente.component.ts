@@ -32,7 +32,15 @@ export class PaginaInicialClienteComponent implements OnInit {
 
   visualizarSolicitacao(solicitacao: Solicitacao): void {
     console.log('Visualizar solicitação', solicitacao);
+  }  
+
+  resgatarServico(solicitacao: Solicitacao) {
+    this.solicitacaoService.resgatarSolicitacao(solicitacao.dataHora, solicitacao.valorOrcamento,solicitacao.observacoesOrcamento, solicitacao.idFuncionario)
+    solicitacao.estado = "Aprovada"
   }
 
+  acaoSolicitacao(solicitacao: Solicitacao): void {
+    console.log('Ação na solicitação', solicitacao);
+  }
   
 }
