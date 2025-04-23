@@ -1,0 +1,83 @@
+<app-navbarfuncionario></app-navbarfuncionario>
+<div class="container mt-5">
+  <h2>CRUD de Equipamentos</h2>
+
+  <!-- Inserir -->
+  <form (ngSubmit)="inserir()" #formInsercao="ngForm" class="mb-4">
+    <h4>Adicionar Equipamento</h4>
+    <div class="mb-3">
+      <label for="novaCategoria" class="form-label">Categoria</label>
+      <input
+        type="text"
+        id="novaCategoria"
+        name="novaCategoria"
+        class="form-control"
+        [(ngModel)]="equipamento.categoria"
+        required
+        #catIns="ngModel"
+      >
+    </div>
+    <button type="submit" class="btn btn-success" [disabled]="formInsercao.invalid">
+      Cadastrar
+    </button>
+  </form>
+
+  <!-- Selecionar Equipamento -->
+  <div class="mb-4">
+    <h4>Selecione um Equipamento</h4>
+    <div class="mb-3">
+      <select
+        class="form-control"
+        [(ngModel)]="equipamentoSelecionado"
+        name="equipamentoSelecionado"
+      >
+        <option [ngValue]="null">Selecione...</option>
+        <option *ngFor="let eq of equipamentos" [ngValue]="eq">{{ eq.categoria }}</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- Detalhes e Ações -->
+  <div *ngIf="equipamentoSelecionado">
+    <h4>Detalhes</h4>
+    <p><strong>Categoria:</strong> {{ equipamentoSelecionado.categoria }}</p>
+
+    <!-- Ações iniciais -->
+    <div *ngIf="!exibirFormAtualizacao && !exibirConfirmacaoRemocao" class="mb-3">
+      <button class="btn btn-warning me-2" (click)="abrirAtualizacao()">Atualizar</button>
+      <button class="btn btn-danger" (click)="abrirRemocao()">Remover</button>
+    </div>
+
+    <!-- Form Atualização -->
+    <form *ngIf="exibirFormAtualizacao" (ngSubmit)="atualizar()" #formAtualizacao="ngForm" class="mb-3">
+      <div class="mb-3">
+        <label for="categoriaAtualizada" class="form-label">Nova Categoria</label>
+        <input
+          type="text"
+          id="categoriaAtualizada"
+          name="categoriaAtualizada"
+          class="form-control"
+          [(ngModel)]="categoriaParaEdicao"
+          required
+          #catUpd="ngModel"
+        >
+        <div *ngIf="catUpd.invalid && (catUpd.dirty || catUpd.touched)" class="text-danger">
+          Categoria inválida.
+        </div>
+      </div>
+      <button type="submit" class="btn btn-primary me-2" [disabled]="formAtualizacao.invalid">
+        Confirmar Atualização
+      </button>
+      <button type="button" class="btn btn-secondary" (click)="novo()">
+        Cancelar
+      </button>
+    </form>
+
+    <!-- Confirm Remoção -->
+    <div *ngIf="exibirConfirmacaoRemocao" class="alert alert-danger">
+      <p>Remover "<strong>{{ equipamentoSelecionado.categoria }}</strong>"?</p>
+      <button class="btn btn-danger me-2" (click)="remover()">Sim, remover</button>
+      <button class="btn btn-secondary" (click)="novo()">Cancelar</button>
+    </div>
+  </div>
+</div>
