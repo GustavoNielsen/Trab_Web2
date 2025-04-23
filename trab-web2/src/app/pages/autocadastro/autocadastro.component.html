@@ -1,3 +1,4 @@
+
 <div class="container mt-5">
   <h2 class="mb-4">Autocadastro</h2>
   <form (ngSubmit)="inserir()" #formCadastro="ngForm">
@@ -15,7 +16,6 @@
         required
         mask="000.000.000-00"
         #cpfModel="ngModel">
-      <!-- Mensagem de erro para CPF -->
       <div *ngIf="cpfModel.invalid && (cpfModel.dirty || cpfModel.touched)" class="text-danger">
         CPF no formato inválido. Utilize: 000.000.000-00.
       </div>
@@ -53,6 +53,23 @@
       </div>
     </div>
     
+    <!-- Novo campo Senha -->
+    <div class="mb-3">
+      <label for="senha" class="form-label">Senha</label>
+      <input
+        type="password"
+        class="form-control"
+        id="senha"
+        placeholder="Digite sua senha"
+        [(ngModel)]="cliente.senha"
+        name="senha"
+        required
+        #senhaModel="ngModel">
+      <div *ngIf="senhaModel.invalid && (senhaModel.dirty || senhaModel.touched)" class="text-danger">
+        A senha é obrigatória.
+      </div>
+    </div>
+
     <!-- Endereço -->
     <h4 class="mt-4">Endereço</h4>
     <div class="row mb-3">
@@ -165,7 +182,6 @@
       </div>
     </div>
     
-    <!-- Submit -->
     <button type="submit" class="btn btn-primary" [disabled]="formCadastro.invalid">Cadastrar</button>
   </form>
 </div>

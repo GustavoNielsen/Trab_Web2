@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
 import { Cliente } from '../../shared/models/cliente';
 import { NgxMaskDirective, NgxMaskPipe, provideNgxMask } from 'ngx-mask';
 import { ClienteService } from '../../services/cliente.service';
@@ -14,14 +15,18 @@ import { ClienteService } from '../../services/cliente.service';
   providers: [provideNgxMask()]  // Configuração da máscara
 })
 export class AutocadastroComponent {
-  cliente: Cliente = new Cliente('', '', '', '', '', '', '', '', '', '', '');
+  // Observe a ordem dos parâmetros conforme definido no modelo
+  cliente: Cliente = new Cliente('', '', '', 'cliente', '', '', '', '', '', '', '', '','');
 
-  constructor(private clienteService: ClienteService) {}
+  constructor(
+    private clienteService: ClienteService,
+    private router: Router  // Injeção do serviço Router
+  ) {}
 
   inserir(): void {
     this.clienteService.inserir(this.cliente);
     alert('Cliente cadastrado com sucesso!');
-    // Limpa o formulário após o cadastro
-    this.cliente = new Cliente('', '', '', '', '', '', '', '', '', '', '');
+    // Redireciona para a tela de login após o cadastro
+    this.router.navigate(['/login']);
   }
 }

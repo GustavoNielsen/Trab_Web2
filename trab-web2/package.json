@@ -20,6 +20,8 @@
     "@ng-bootstrap/ng-bootstrap": "^18.0.0",
     "@popperjs/core": "^2.11.8",
     "bootstrap": "^5.3.3",
+    "jspdf": "^3.0.1",
+    "jspdf-autotable": "^5.0.2",
     "ngx-mask": "^19.0.6",
     "rxjs": "~7.8.0",
     "sweetalert2": "^11.17.2",
