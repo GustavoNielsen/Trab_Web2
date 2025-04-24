@@ -1,11 +1,35 @@
-import { Component } from '@angular/core';
+// pages/solicita-manutencao/solicita-manutencao.component.ts
+import { Component, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
+import { SolicitacaoService } from '../../services/soliciticao.service';
+import { ClienteService } from '../../services/cliente.service';
+import { Solicitacao } from '../../shared/models/solicitacao';
+import { NavbarComponent } from '../navbar/navbar.component';
+import { Historicosolicitacao } from '../../shared/models/historicosolicitacao';
+import { EquipamentoService } from '../../services/equipamento.service';
+import { Equipamento } from '../../shared/models/equipamento';
 
 @Component({
   selector: 'app-solicita-manutencao',
-  imports: [],
   templateUrl: './solicita-manutencao.component.html',
-  styleUrl: './solicita-manutencao.component.css'
+  standalone: true,
+  styleUrls: ['./solicita-manutencao.component.css'],
+  imports: [CommonModule, FormsModule, NavbarComponent]
 })
-export class SolicitaManutencaoComponent {
-
-}
+export class SolicitaManutencaoComponent implements OnInit {
+  cpf: string = '';
+  descricaoEquipamento: string = '';
+  categoriaEquipamento: string = '';
+  descricaoDefeito: string = '';
+  id = ''
+  equipamentos: Equipamento[] = []
+  
+  constructor(
+    private route: ActivatedRoute,
+    private router: Router,
+    private solicitacaoService: SolicitacaoService,
+    private clienteService: ClienteService,
+    private equipamentoService: EquipamentoService
+  ) {}
