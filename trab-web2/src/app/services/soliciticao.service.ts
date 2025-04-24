@@ -113,4 +113,35 @@ export class SolicitacaoService {
 
     return list;
   }
+
+  adicionarSolicitacao(solicitacao: Solicitacao): void {
+    const lista = this.recuperarSolicitacoes();
+    lista.push(solicitacao);
+    this.salvarSolicitacoes(lista);
+  }
+
+  registrarOrcamento(
+    dataHoraParam: string,
+    valor: number,
+    observacoes: string,
+    funcionarioId: string
+  ): void {
+    const agora = new Date().toISOString();
+    const lista = this.recuperarSolicitacoes();
+    const idx = lista.findIndex(s => new Date(s.dataHora).toISOString() === dataHoraParam);
+    if (idx === -1) return;
+
+    const s = lista[idx];
+    s.valorOrcamento = valor;
+    s.observacoesOrcamento = observacoes;
+    s.dataHoraOrcamento = agora;
+    s.idFuncionario = funcionarioId;
+    s.estado = 'Orçada';
+
+    s.historicoSolicitacao.push(
+      new Historicosolicitacao(agora, 'Orçada', s.idFuncionario, 'Solicitação orçada')
+    );
+
+    this.salvarSolicitacoes(lista);
+  }
 }

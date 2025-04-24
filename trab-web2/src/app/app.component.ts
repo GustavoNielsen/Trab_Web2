@@ -10,7 +10,7 @@ import { ClienteService } from './services/cliente.service';
 //import { PaginaInicialFuncionarioComponent } from './pages/pagina-inicial-funcionario/pagina-inicial-funcionario.component';
 import { NavbarComponent } from './pages/navbar/navbar.component';
 import { Funcionario } from './shared/models/funcionario';
-//import { EfetuarOrcamentoComponent } from './pages/efetuar-orcamento/efetuar-orcamento.component';
+import { EfetuarOrcamentoComponent } from './pages/efetuar-orcamento/efetuar-orcamento.component';
 import { EfetuarManutencaoComponent } from './pages/efetuar-manutencao/efetuar-manutencao.component';
 //import { PagarservicoComponent } from './pages/pagarservico/pagarservico.component';
 //import { CadastrofuncionarioComponent } from './pages/cadastrofuncionario/cadastrofuncionario.component';
@@ -28,7 +28,7 @@ import { RelatorioreceitasComponent } from './pages/relatorioreceitas/relatorior
             VisualizarSolicitacaoComponent, 
 //            PaginaInicialFuncionarioComponent, 
             NavbarComponent, 
-//            EfetuarOrcamentoComponent, 
+            EfetuarOrcamentoComponent, 
             EfetuarManutencaoComponent, 
 //            PagarservicoComponent, 
 //            CadastrofuncionarioComponent, 

@@ -6,7 +6,7 @@ import { SolicitaManutencaoComponent } from './pages/solicita-manutencao';
 import { LoginComponent } from './pages/login/login.component';
 import { VisualizarSolicitacaoComponent } from './pages/visualizar-solicitacao/visualizar-solicitacao.component';
 //import {PaginaInicialFuncionarioComponent } from './pages/pagina-inicial-funcionario/pagina-inicial-funcionario.component';
-//import { EfetuarOrcamentoComponent } from './pages/efetuar-orcamento/efetuar-orcamento.component';
+import { EfetuarOrcamentoComponent } from './pages/efetuar-orcamento/efetuar-orcamento.component';
 import { EfetuarManutencaoComponent } from './pages/efetuar-manutencao/efetuar-manutencao.component';
 //import { PagarservicoComponent } from './pages/pagarservico/pagarservico.component';
 //import { CadastrofuncionarioComponent } from './pages/cadastrofuncionario/cadastrofuncionario.component';
@@ -25,7 +25,7 @@ export const routes: Routes = [
     {path: 'login', component: LoginComponent},
     {path: 'visualizarsolicitacao', component: VisualizarSolicitacaoComponent},
  //   {path: 'paginainicialfuncionario', component: PaginaInicialFuncionarioComponent},
- //   {path: 'orcamento/:dataHora/:id', component: EfetuarOrcamentoComponent },
+    {path: 'orcamento/:dataHora/:id', component: EfetuarOrcamentoComponent },
     {path: 'manutencao/:dataHora', component: EfetuarManutencaoComponent},
  //   {path: 'pagarservico/:dataHora', component: PagarservicoComponent },
  //   {path: 'cadastrofuncionario', component: CadastrofuncionarioComponent},

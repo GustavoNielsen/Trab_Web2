@@ -1,0 +1,75 @@
+
+<app-navbarfuncionario></app-navbarfuncionario>
+
+<div class="container mt-5" >
+  <h2 class="mb-4">Efetuar Orçamento</h2>
+
+  <!-- Dados da solicitação -->
+  <div class="card mb-4 shadow-sm">
+    <div class="card-body">
+      <dl class="row">
+        <dt class="col-sm-3">Cliente</dt>
+        <dd class="col-sm-9">{{ cliente.nome }}</dd>
+
+        <dt class="col-sm-3">Aberta em</dt>
+        <dd class="col-sm-9">{{ solicitacao.dataHora | date:'dd/MM/yyyy HH:mm' }}</dd>
+
+        <dt class="col-sm-3">Equipamento</dt>
+        <dd class="col-sm-9">{{ solicitacao.descricaoEquipamento }}</dd>
+
+        <dt class="col-sm-3">Defeito</dt>
+        <dd class="col-sm-9">{{ solicitacao.descricaoDefeito }}</dd>
+      </dl>
+    </div>
+  </div>
+
+  <!-- Formulário de orçamento -->
+  <div class="card shadow-sm">
+    <div class="card-body">
+      <form [formGroup]="form">
+        <div class="mb-3 row">
+          <label for="valor" class="col-sm-3 col-form-label">Valor do Orçamento</label>
+          <div class="col-sm-9 input-group">
+            <span class="input-group-text">R$</span>
+            <input
+              id="valor"
+              type="number"
+              step="0.01"
+              class="form-control"
+              formControlName="valor"
+              placeholder="0,00"
+            />
+          </div>
+          <div
+            *ngIf="form.get('valor')?.invalid && form.get('valor')?.touched"
+            class="text-danger small mt-1 offset-sm-3"
+          >
+            Informe um valor ≥ R$ 0,01
+          </div>
+        </div>
+
+        <div class="mb-3 row">
+          <label for="obs" class="col-sm-3 col-form-label">Observações</label>
+          <div class="col-sm-9">
+            <textarea
+              id="obs"
+              rows="3"
+              class="form-control"
+              formControlName="observacoes"
+              placeholder="(opcional)"
+            ></textarea>
+          </div>
+        </div>
+
+        <div class="d-flex justify-content-end">
+          <button type="button" class="btn btn-secondary me-2" (click)="cancelar()">
+            Cancelar
+          </button>
+          <button type="button" class="btn btn-primary" (click)="salvar()" [disabled]="form.invalid ">
+            Salvar Orçamento
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
