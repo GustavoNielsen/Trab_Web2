@@ -1,0 +1,30 @@
+<!-- src/app/pages/pagina-inicial-funcionario/pagina-inicial-funcionario.component.html -->
+<app-navbarfuncionario></app-navbarfuncionario>
+<div class="container mt-5">
+  <h2 class="mb-4">Solicitações Abertas</h2>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Data/Hora da Abertura</th>
+        <th>Nome do Cliente</th>
+        <th>Produto</th>
+        <th>Ação</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let s of solicitacoes">
+        <td>{{ s.dataHora | date:'dd/MM/yyyy HH:mm' }}</td>
+        <td>{{ getNomeCliente(s.cpfCliente) }}</td>
+        <td>{{ s.descricaoEquipamento }}</td>
+        <td>
+          <button
+            class="btn btn-primary btn-sm"
+            [routerLink]="['/orcamento', s.dataHora, s.idFuncionario]"
+          >
+            Efetuar Orçamento
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

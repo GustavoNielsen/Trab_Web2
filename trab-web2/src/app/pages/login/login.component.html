@@ -1,29 +1,35 @@
-
-<div class="container d-flex justity-content-center" >
-
-    <div class="col-4">
-    
-      <div class="card shadow round mt-5">
-    
-        <h3 class=" text-center">Login</h3>
-      </div>
-      <div class="card-body">
-    
-        <form >
-    
-          <div class="mb-3">
-            <label class="form-label" aria-placeholder="entrar seu ususario">ususario</label>
-    
-            <input type="text" placeholder="Digite seu email" class="form-control">
-          </div>
-          <br>
-          <div class="mb-3">
-            <label class="form-label" aria-placeholder="digitar a senha">Senha</label>
-            
-            <input type="password" placeholder="Digite sua senha"    class="form-control">
-          </div>
-    
-          <button class="button">Logar</button>
-        </form>
-      </div>
+<div class="container d-flex justify-content-center">
+  <div class="col-4">
+    <div class="card shadow round mt-5">
+      <h3 class="text-center">Login</h3>
     </div>
+    <div class="card-body">
+      <form (ngSubmit)="logar()" #loginForm="ngForm">
+        <div class="mb-3">
+          <label class="form-label" aria-placeholder="entrar seu usuário">Usuário</label>
+          <input
+            type="text"
+            placeholder="Digite seu email"
+            class="form-control"
+            [(ngModel)]="email"
+            name="email"
+            required>
+        </div>
+        <br>
+        <div class="mb-3">
+          <label class="form-label" aria-placeholder="digitar a senha">Senha</label>
+          <input
+            type="password"
+            placeholder="Digite sua senha"
+            class="form-control"
+            [(ngModel)]="senha"
+            name="senha"
+            required>
+        </div>
+        <button type="submit" class="btn btn-primary" [disabled]="loginForm.invalid">Logar</button>
+        <!-- Botão para redirecionar para o autocadastro -->
+        <button type="button" class="btn btn-link" (click)="irParaCadastro()">Cadastrar</button>
+      </form>
+    </div>
+  </div>
+</div>
