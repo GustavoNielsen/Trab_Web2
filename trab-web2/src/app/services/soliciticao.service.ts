@@ -15,13 +15,105 @@ export class SolicitacaoService {
     }
   }
 
+  recuperarSolicitacoes(): Solicitacao[] {
+    const data = localStorage.getItem(this.STORAGE_KEY);
+    return data ? JSON.parse(data) as Solicitacao[] : [];
+  }
+
   private salvarSolicitacoes(solicitacoes: Solicitacao[]): void {
     localStorage.setItem(this.STORAGE_KEY, JSON.stringify(solicitacoes));
+  }
+
+  listarSolicitacoesPorCpf(cpf: string): Solicitacao[] {
+    return this.recuperarSolicitacoes()
+      .filter(s => s.cpfCliente === cpf);
+  }
+
+  listarSolicitacoesPorId(id: string): Solicitacao[] {
+    return this.recuperarSolicitacoes()
+      .filter(s => s.idFuncionario === id);
+  }
+
+  listarSolicitacoesPorEstado(estado: string): Solicitacao[] {
+    return this.recuperarSolicitacoes()
+      .filter(s => s.estado === estado);
+  }
+
+  adicionarSolicitacao(solicitacao: Solicitacao): void {
+    const lista = this.recuperarSolicitacoes();
+    lista.push(solicitacao);
+    this.salvarSolicitacoes(lista);
   }
 
   buscarSolicitacaoPorDataHora(dataHoraParam: string): Solicitacao | undefined {
     return this.recuperarSolicitacoes()
       .find(s => new Date(s.dataHora).toISOString() === dataHoraParam);
+  }
+
+  registrarOrcamento(
+    dataHoraParam: string,
+    valor: number,
+    observacoes: string,
+    funcionarioId: string
+  ): void {
+    const agora = new Date().toISOString();
+    const lista = this.recuperarSolicitacoes();
+    const idx = lista.findIndex(s => new Date(s.dataHora).toISOString() === dataHoraParam);
+    if (idx === -1) return;
+
+    const s = lista[idx];
+    s.valorOrcamento = valor;
+    s.observacoesOrcamento = observacoes;
+    s.dataHoraOrcamento = agora;
+    s.idFuncionario = funcionarioId;
+    s.estado = 'Orçada';
+
+    s.historicoSolicitacao.push(
+      new Historicosolicitacao(agora, 'Orçada', s.idFuncionario, 'Solicitação orçada')
+    );
+
+    this.salvarSolicitacoes(lista);
+  }
+
+  registrarPagamento(
+    dataHoraParam: string,
+    valor: number,
+    observacoes: string,
+    funcionarioId: string
+  ): void {
+    const lista = this.recuperarSolicitacoes();
+    const idx = lista.findIndex(s => new Date(s.dataHora).toISOString() === dataHoraParam);
+    if (idx === -1) return;
+
+    const s = lista[idx];
+    const agora = new Date().toISOString();
+    s.estado = 'Paga';
+    s.dataHoraPagamento = agora;
+    s.historicoSolicitacao.push(
+      new Historicosolicitacao(agora, 'Paga', funcionarioId, observacoes)
+    );
+
+    this.salvarSolicitacoes(lista);
+  }
+
+  resgatarSolicitacao(
+    dataHoraParam: string,
+    valor: number,
+    observacoes: string,
+    funcionarioId: string
+  ): void {
+    const lista = this.recuperarSolicitacoes();
+    const idx = lista.findIndex(s => new Date(s.dataHora).toISOString() === dataHoraParam);
+    if (idx === -1) return;
+
+    const s = lista[idx];
+    s.estado = 'Aprovada';
+    s.horarioAprovacao = new Date().toISOString();
+    s.historicoSolicitacao.push(
+      new Historicosolicitacao(s.horarioAprovacao!, 'Aprovada', funcionarioId, observacoes)
+    );
+
+    this.salvarSolicitacoes(lista);
   }
 
   redirecionarManutencao(
@@ -46,7 +138,6 @@ export class SolicitacaoService {
     this.salvarSolicitacoes(lista);
   }
 
-
   finalizarSolicitacao(
     dataHoraParam: string,
     valor: number,
@@ -68,11 +159,12 @@ export class SolicitacaoService {
     this.salvarSolicitacoes(lista);
   }
 
-  recuperarSolicitacoes(): Solicitacao[] {
-    const data = localStorage.getItem(this.STORAGE_KEY);
-    return data ? JSON.parse(data) as Solicitacao[] : [];
-  }
-
+  /**
+   * RF013 – Visualização de solicitações:
+   * ∘ filtra por hoje / período / todas
+   * ∘ ordena por data/hora crescente
+   * ∘ só inclui REDIRECIONADA se for para este funcionário
+   */
   listarParaVisualizacao(
     funcionarioId: string,
     filtroTipo: 'hoje' | 'periodo' | 'todas',
@@ -112,36 +204,5 @@ export class SolicitacaoService {
     );
 
     return list;
-  }
-
-  adicionarSolicitacao(solicitacao: Solicitacao): void {
-    const lista = this.recuperarSolicitacoes();
-    lista.push(solicitacao);
-    this.salvarSolicitacoes(lista);
-  }
-
-  registrarOrcamento(
-    dataHoraParam: string,
-    valor: number,
-    observacoes: string,
-    funcionarioId: string
-  ): void {
-    const agora = new Date().toISOString();
-    const lista = this.recuperarSolicitacoes();
-    const idx = lista.findIndex(s => new Date(s.dataHora).toISOString() === dataHoraParam);
-    if (idx === -1) return;
-
-    const s = lista[idx];
-    s.valorOrcamento = valor;
-    s.observacoesOrcamento = observacoes;
-    s.dataHoraOrcamento = agora;
-    s.idFuncionario = funcionarioId;
-    s.estado = 'Orçada';
-
-    s.historicoSolicitacao.push(
-      new Historicosolicitacao(agora, 'Orçada', s.idFuncionario, 'Solicitação orçada')
-    );
-
-    this.salvarSolicitacoes(lista);
   }
 }
