@@ -1,79 +1,54 @@
-<div class="container mt-5">
-    <h2 class="mb-4">Orçamento</h2>
-    
-    <!-- Dados do cliente -->
-    <div class="row mb-3">
-        <div class="col-12">
-            <div class="card">
-                <div class="card-header fs-4">
-                    Dados do cliente
-                </div>
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-12 col-md-4">
-                            <p><strong>Nome: </strong>Nome Completo do Cliente</p>
-                        </div>
-                        <div class="col-12 col-md-4">
-                            <p><strong>Telefone: </strong>41 99999-9999</p>
-                        </div>
-                        <div class="col-12 col-md-4">
-                            <p><strong>Produto: </strong>Notebook</p>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-12">
-                            <p><strong>Descrição: </strong>Lorem ipsum dolor sit amet, consectetur adipisicing elit. 
-                                Voluptatibus incidunt, adipisci quae inventore explicabo dolorum magni quidem reiciendis 
-                                corrupti consectetur nam mollitia itaque quia? Quam soluta quas esse aperiam cumque?</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+<div class="container mt-5" *ngIf="solicitacao">
+  <div class="card">
+    <div class="card-header">
+      <h3>Orçamento</h3>
     </div>
-    
-    <!-- Lista de serviços -->
-    <div class="row mb-3">
-        <div class="col-12">
-            <div class="card">
-                <div class="card-header fs-4">
-                    Lista de serviços
-                </div>
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-12">
-                            <ul class="list-group list-group-flush">
-                                <li class="list-group-item d-flex justify-content-between fw-bold">
-                                    <span>Serviços</span>
-                                    <span>Valor</span>
-                                </li>
-                                <li class="list-group-item d-flex justify-content-between">
-                                    <span>Serviço 1</span>
-                                    <span>R$ 50,00</span>
-                                </li>
-                                <li class="list-group-item d-flex justify-content-between">
-                                    <span>Serviço 2</span>
-                                    <span>R$ 50,00</span>
-                                </li>
-                                <li class="list-group-item d-flex justify-content-between">
-                                    <span>Serviço 3</span>
-                                    <span>R$ 50,00</span>
-                                </li>
-                                <li class="list-group-item border-top fw-bold fs-5 d-flex justify-content-between">
-                                    <span>Total</span>
-                                    <span>R$ 150,00</span>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-
-                    <!-- Botões -->
-                    <div class="d-flex justify-content-between mt-3">
-                        <button (click)="aprovarServico()">Aprovar o Serviço</button>
-                        <button (click)="rejeitarServico()">Rejeitar o Serviço</button>
-                    </div>
-                </div>
-            </div>
-        </div>
+    <div class="card-body">
+      <!-- Dados da Solicitação -->
+      <div class="mb-3">
+        <label class="form-label fw-bold">Data/Hora da Solicitação:</label>
+        <span>{{ solicitacao.dataHora | date:'dd/MM/yyyy HH:mm' }}</span>
+      </div>
+      <div class="mb-3">
+        <label class="form-label fw-bold">Equipamento:</label>
+        <span>{{ solicitacao.descricaoEquipamento }}</span>
+      </div>
+      <div class="mb-3">
+        <label class="form-label fw-bold">Categoria do Equipamento:</label>
+        <span>{{ solicitacao.categoriaEquipamento }}</span>
+      </div>
+      <div class="mb-3">
+        <label class="form-label fw-bold">Defeito Informado:</label>
+        <span>{{ solicitacao.descricaoDefeito }}</span>
+      </div>
+      <div class="mb-3">
+        <label class="form-label fw-bold">Estado:</label>
+        <span>{{ solicitacao.estado }}</span>
+      </div>
+      
+      <!-- Orçamento -->
+      <div class="mb-3">
+        <label class="form-label fw-bold">Valor Orçado:</label>
+        <h2 class="text-primary">R$ {{ solicitacao.valorOrcamento | number:'1.2-2' }}</h2>
+      </div>
+      <div class="mb-3" *ngIf="solicitacao.dataHoraOrcamento">
+        <label class="form-label fw-bold">Data/Hora do Orçamento:</label>
+        <span>{{ solicitacao.dataHoraOrcamento | date:'dd/MM/yyyy HH:mm' }}</span>
+      </div>
+      <div class="mb-3" *ngIf="solicitacao.observacoesOrcamento">
+        <label class="form-label fw-bold">Observações:</label>
+        <p>{{ solicitacao.observacoesOrcamento }}</p>
+      </div>
+      
+      <!-- Ações -->
+      <div class="d-flex justify-content-end">
+        <button type="button" class="btn btn-success me-2" (click)="aprovarServico()">
+          Aprovar o Serviço
+        </button>
+        <button type="button" class="btn btn-danger" (click)="rejeitarServico()">
+          Rejeitar o Serviço
+        </button>
+      </div>
     </div>
+  </div>
 </div>

@@ -1,0 +1,39 @@
+<app-navbarfuncionario></app-navbarfuncionario>
+<div class="container mt-4">
+    <!-- Filtro por data -->
+    <div class="row mb-3">
+      <div class="col-md-6">
+        <div class="form-group">
+          <label for="dataInicial">Data Inicial:</label>
+          <input id="dataInicial" type="date" class="form-control" [(ngModel)]="dataInicial" name="dataInicial">
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="form-group">
+          <label for="dataFinal">Data Final:</label>
+          <input id="dataFinal" type="date" class="form-control" [(ngModel)]="dataFinal" name="dataFinal">
+        </div>
+      </div>
+    </div>
+  
+    <!-- Tabela de receitas por dia -->
+    <div class="mb-4">
+      <button class="btn btn-primary" (click)="atualizarRelatorio()">Atualizar Relatório</button>
+    </div>
+    <table *ngIf="receitasPorDia.length" class="table table-striped table-bordered mb-5">
+      <thead class="thead-dark">
+        <tr><th>Data</th><th>Total (R$)</th></tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let r of receitasPorDia">
+          <td>{{ r.data }}</td>
+          <td>{{ r.total | number:'1.2-2' }}</td>
+        </tr>
+      </tbody>
+    </table>
+  
+    <!-- Botão para geração de PDF apenas por categoria -->
+    <div>
+      <button class="btn btn-warning" (click)="gerarPDFCategoria()">Gerar PDF (Por Categoria)</button>
+    </div>
+  </div>

@@ -1,50 +1,109 @@
-import { Component } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+// src/app/pages/efetuar-orcamento/efetuar-orcamento.component.ts
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { EfetuarOrcamentoService, Servico } from '../../services';
+import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ActivatedRoute, Router, RouterLink, RouterModule } from '@angular/router';
+import { NavbarFuncionarioComponent } from '../navbarfuncionario/navbarfuncionario.component';
+import { SolicitacaoService } from '../../services/soliciticao.service';
+import { ClienteService } from '../../services/cliente.service';
+import { FuncionarioService } from '../../services/funcionario.service';
+import { Solicitacao } from '../../shared/models/solicitacao';
+import { Cliente } from '../../shared/models/cliente';
 
 @Component({
   selector: 'app-efetuar-orcamento',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    RouterModule,
+    RouterLink,
+    NavbarFuncionarioComponent
+  ],
   templateUrl: './efetuar-orcamento.component.html',
   styleUrls: ['./efetuar-orcamento.component.css']
 })
-export class EfetuarOrcamentoComponent {
-  novoServico: string = '';
-  novoValor: string = '';
-  servicos: Servico[] = [];
-  total: number = 0;
+export class EfetuarOrcamentoComponent implements OnInit {
+  solicitacao!: Solicitacao;
+  cliente!: Cliente;
+  form!: FormGroup;
 
-  constructor(private orcamentoService: EfetuarOrcamentoService) {}
+  constructor(
+    private route: ActivatedRoute,
+    private router: Router,
+    private fb: FormBuilder,
+    private solicitacaoSvc: SolicitacaoService,
+    private clienteSvc: ClienteService,
+    private funcSvc: FuncionarioService
+  ) {}
 
-  adicionarServico() {
-    const nome = this.novoServico.trim();
-    const valor = parseFloat(this.novoValor.replace(',', '.'));
-
-    if (!nome || isNaN(valor) || valor <= 0) {
-      alert('Por favor, preencha os campos corretamente.');
+  ngOnInit(): void {
+    // 1) Captura o parâmetro 'dataHora' da rota; se não houver, redireciona.
+    const dataHoraParam = this.route.snapshot.paramMap.get('dataHora');
+    if (!dataHoraParam) {
+      this.router.navigate(['/paginainicialfuncionario']);
       return;
     }
 
-    this.orcamentoService.adicionarServico(nome, valor);
-    this.atualizarLista();
+    // 2) Busca a solicitação pela data/hora (no formato ISO) e atribui a this.solicitacao.
+    const solicitacaoEncontrada = this.solicitacaoSvc.buscarSolicitacaoPorDataHora(dataHoraParam);
+    if (!solicitacaoEncontrada) {
+      // Se não encontrar a solicitação, redireciona.
+      this.router.navigate(['/paginainicialfuncionario']);
+      return;
+    }
+    this.solicitacao = solicitacaoEncontrada;
 
-    this.novoServico = '';
-    this.novoValor = '';
+    // 3) Busca o cliente associado ao CPF da solicitação e atribui a this.cliente.
+    const clienteEncontrado = this.clienteSvc.buscarPorcpf(this.solicitacao.cpfCliente);
+    if (!clienteEncontrado) {
+      this.router.navigate(['/paginainicialfuncionario']);
+      return;
+    }
+    this.cliente = clienteEncontrado;
+
+    // 4) Inicializa o formulário (mesmo se, por enquanto, a preocupação seja carregar os dados)
+    this.form = this.fb.group({
+      valor: [null, [Validators.required, Validators.min(0.01)]],
+      observacoes: ['']
+    });
   }
 
-  removerServico(index: number) {
-    this.orcamentoService.removerServico(index);
-    this.atualizarLista();
-  }  
+  salvar(): void {
+    if (this.form.invalid) {
+      this.form.markAllAsTouched();
+      return;
+    }
 
-  atualizarLista() {
-    this.servicos = this.orcamentoService.obterServicos();
-    this.total = this.orcamentoService.calcularTotal();
+    const { valor, observacoes } = this.form.value;
+    const funcionarioId = this.funcSvc.idLogado;
+    console.log(funcionarioId)
+    const agora = new Date();
+    const dataHoraString = agora.toISOString(); 
+    // Atualiza os atributos relacionados ao orçamento na solicitação
+    this.solicitacao.valorOrcamento = valor;
+    this.solicitacao.observacoesOrcamento = observacoes;
+    this.solicitacao.dataHoraOrcamento = dataHoraString;
+    this.solicitacao.idFuncionario = funcionarioId;
+    this.solicitacao.estado = 'Orçada';
+
+    // Obtém a data/hora da solicitação em formato ISO para identificar o registro a ser atualizado.
+    const dataHoraIdentificador = new Date(this.solicitacao.dataHora).toISOString();
+
+    // Registra o orçamento (persistindo as alterações via serviço)
+    this.solicitacaoSvc.registrarOrcamento(
+      dataHoraIdentificador,
+      valor,
+      observacoes,
+      funcionarioId
+    );
+
+    // Redireciona de volta para a página inicial do funcionário
+    this.router.navigate(['/paginainicialfuncionario']);
   }
 
-  finalizarOrcamento() {
-    alert(`Orçamento finalizado com sucesso! Total: R$ ${this.total.toFixed(2).replace('.', ',')}`);
-  }  
+  // O método 'salvar' e outros podem ser implementados posteriormente.
+  cancelar(): void {
+    this.router.navigate(['/paginainicialfuncionario']);
+  }
 }

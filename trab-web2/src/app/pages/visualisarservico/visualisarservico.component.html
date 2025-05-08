@@ -1,0 +1,82 @@
+<app-navbar></app-navbar>
+<div class="container mt-5" *ngIf="solicitacao">
+  <h2 class="mb-4">Visualizar Solicitação</h2>
+  <div class="card mb-4">
+    <div class="card-body">
+      <p><strong>Data/Hora:</strong> {{ solicitacao.dataHora | date:'dd/MM/yyyy HH:mm' }}</p>
+      <p><strong>Equipamento:</strong> {{ solicitacao.descricaoEquipamento }}</p>
+      <p><strong>Categoria:</strong> {{ solicitacao.categoriaEquipamento }}</p>
+      <p><strong>Defeito:</strong> {{ solicitacao.descricaoDefeito }}</p>
+      <p *ngIf="solicitacao.valorOrcamento > 0"><strong>Orçamento:</strong> R$ {{ solicitacao.valorOrcamento }}</p>
+    </div>
+  </div>
+
+  <h4 class="mb-3">Histórico de Atualizações</h4>
+  <ul class="list-group mb-4">
+    <li class="list-group-item" *ngFor="let h of solicitacao.historicoSolicitacao">
+      {{ h.dataHora | date:'dd/MM/yyyy HH:mm' }} –
+      <span
+        class="badge"
+        [ngStyle]="{
+          'background-color': h.estado === 'Aberta'        ? 'gray'   :
+                              h.estado === 'Orçada'       ? 'brown'  :
+                              h.estado === 'Rejeitada'    ? 'red'    :
+                              h.estado === 'Aprovada'     ? 'yellow' :
+                              h.estado === 'Redirecionada'? 'purple' :
+                              h.estado === 'Arrumada'     ? 'blue'   :
+                              h.estado === 'Paga'         ? 'orange' :
+                              h.estado === 'Finalizada'   ? 'green'  :
+                              '#000',
+          'color': (h.estado === 'Orçada'
+                    || h.estado === 'Rejeitada'
+                    || h.estado === 'Redirecionada'
+                    || h.estado === 'Arrumada'
+                    || h.estado === 'Finalizada')
+                   ? '#fff'
+                   : '#000'
+        }"
+      >
+        {{ h.estado }}
+      </span>
+      <span *ngIf="h.funcionarioId">(por {{ h.funcionarioId }})</span>
+      <div *ngIf="h.observacao"><em>{{ h.observacao }}</em></div>
+    </li>
+  </ul>
+
+  <div class="d-flex gap-2">
+    <!-- Orçada: leva ao componente de mostrar orçamento -->
+    <button
+      *ngIf="solicitacao.estado === 'Orçada'"
+      class="btn btn-primary"
+      [routerLink]="['/mostrar-orcamento', solicitacao.dataHora]"
+    >
+      Ver Orçamento
+    </button>
+
+    <!-- Rejeitada: resgata aprovação -->
+    <button
+      *ngIf="solicitacao.estado === 'Rejeitada'"
+      class="btn btn-warning"
+      (click)="resgatar()"
+    >
+      Resgatar Serviço
+    </button>
+
+    <!-- Arrumada: leva ao pagamento -->
+    <button
+      *ngIf="solicitacao.estado === 'Arrumada'"
+      class="btn btn-success"
+      [routerLink]="['/pagarservico', solicitacao.dataHora]"
+    >
+      Pagar Serviço
+    </button>
+
+    <!-- Sem ação: só voltar -->
+    <button
+      class="btn btn-secondary"
+      [routerLink]="['/paginainicialcliente']"
+    >
+      Voltar
+    </button>
+  </div>
+</div>

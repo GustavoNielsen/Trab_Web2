@@ -1,40 +1,42 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-    <meta charset="UTF-8">
-    <title>Solicitação de Manutenção</title>
-</head>
-<body>
-    <div>
-        <h1>Solicitação de Manutenção</h1>
-        <form>
-            <!-- Descrição do Equipamento -->
-            <div>
-                <label for="descricaoEquipamento">Descrição do Equipamento:</label>
-                <input type="text" id="descricaoEquipamento" name="descricaoEquipamento" required>
-            </div>
-            
-            <!-- Categoria do Equipamento -->
-            <div>
-                <label for="categoriaEquipamento">Categoria do Equipamento:</label>
-                <select id="categoriaEquipamento" name="categoriaEquipamento" required>
-                    <option value="">Selecione...</option>
-                    <option value="Informática">Informática</option>
-                    <option value="Eletrônicos">Eletrônicos</option>
-                    <option value="Mecânica">Mecânica</option>
-                    <option value="Outros">Outros</option>
-                </select>
-            </div>
-            
-            <!-- Descrição do Defeito -->
-            <div>
-                <label for="descricaoDefeito">Descrição do Defeito:</label>
-                <textarea id="descricaoDefeito" name="descricaoDefeito" required></textarea>
-            </div>
-            
-            <!-- Botão de Envio -->
-            <button type="submit">Enviar Solicitação</button>
-        </form>
-    </div>
-</body>
-</html>
+<app-navbar></app-navbar>
+<div class="container mt-5">
+    <h1>Solicitação de Manutenção</h1>
+    <form (ngSubmit)="enviarSolicitacao()">
+      <div class="mb-3">
+        <label for="descricaoEquipamento" class="form-label">Descrição do Equipamento:</label>
+        <input 
+          type="text" 
+          id="descricaoEquipamento" 
+          name="descricaoEquipamento" 
+          [(ngModel)]="descricaoEquipamento" 
+          class="form-control" 
+          required>
+      </div>
+      <div class="mb-3">
+        <label for="categoriaEquipamento" class="form-label">Categoria do Equipamento:</label>
+        <select 
+          id="categoriaEquipamento" 
+          name="categoriaEquipamento" 
+          [(ngModel)]="categoriaEquipamento" 
+          class="form-control" 
+          required>
+          <option value="">Selecione...</option>
+          <option *ngFor="let eq of equipamentos" >
+            {{eq.categoria}}
+          </option>
+        </select>
+      </div>
+      <div class="mb-3">
+        <label for="descricaoDefeito" class="form-label">Descrição do Defeito:</label>
+        <textarea 
+          id="descricaoDefeito" 
+          name="descricaoDefeito" 
+          [(ngModel)]="descricaoDefeito" 
+          class="form-control" 
+          required>
+        </textarea>
+      </div>
+      <button type="submit" class="btn btn-primary">Enviar Solicitação</button>
+    </form>
+  </div>
+  
