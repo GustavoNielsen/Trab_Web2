@@ -1,5 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Cliente } from '../shared/models/cliente';
+import { Observable, of } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
+import { ViaCep } from '../shared/models/via-cep';
 
 const LS_CHAVE = "clientes";
 
@@ -9,7 +12,10 @@ const LS_CHAVE = "clientes";
 export class ClienteService {
   private clientes: Cliente[] = []; 
   private _cpfLogado: string = '';
-  constructor() { }
+  private url_API = 'https://viacep.com.br/ws/';
+  viacep!: ViaCep;
+
+  constructor(private http: HttpClient) { }
 
   set cpfLogado(cpf: string) {
     this._cpfLogado = cpf;
@@ -56,5 +62,9 @@ export class ClienteService {
     let clientes = this.listarTodos();
     clientes = clientes.filter(pessoa => pessoa.cpf !== cpf);
     localStorage.setItem(LS_CHAVE, JSON.stringify(clientes));
+  }
+
+  viaCep(cep: string): Observable<ViaCep> {
+    return this.http.get<ViaCep>(`${this.url_API}${cep}/json`);
   }
 }

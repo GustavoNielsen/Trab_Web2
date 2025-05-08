@@ -83,6 +83,7 @@
           name="cep"
           required
           mask="00000-000"
+          (blur)="pegaEndereco(cliente.cep)"
           #cepModel="ngModel">
         <div *ngIf="cepModel.invalid && (cepModel.dirty || cepModel.touched)" class="text-danger">
           CEP no formato inválido. Utilize: 00000-000.
