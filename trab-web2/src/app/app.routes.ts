@@ -4,29 +4,35 @@ import { MostrarOrcamentoComponent } from './pages/mostrar-orcamento';
 import { PaginaInicialClienteComponent } from './pages/pagina-inicial-cliente';
 import { SolicitaManutencaoComponent } from './pages/solicita-manutencao';
 import { LoginComponent } from './pages/login/login.component';
-import { CadastroequipamentoComponent } from './pages/cadastroequipamento/cadastroequipamento.component';
 import { VisualizarSolicitacaoComponent } from './pages/visualizar-solicitacao/visualizar-solicitacao.component';
-import { EfetuarOrcamentoComponent } from './pages/efetuar-orcamento/efetuar-orcamento.component'
-import { PagaServicoComponent } from './pages/paga-servico';
-import { ResgataServicoComponent } from './pages/resgata-servico';
-import { RelatorioReceitasComponent } from './pages/relatorio-receitas';
-import { FuncionariosComponent } from './pages/funcionarios/funcionarios.component';
+import {PaginaInicialFuncionarioComponent } from './pages/pagina-inicial-funcionario/pagina-inicial-funcionario.component';
+import { EfetuarOrcamentoComponent } from './pages/efetuar-orcamento/efetuar-orcamento.component';
+import { EfetuarManutencaoComponent } from './pages/efetuar-manutencao/efetuar-manutencao.component';
+import { PagarservicoComponent } from './pages/pagarservico/pagarservico.component';
+import { CadastrofuncionarioComponent } from './pages/cadastrofuncionario/cadastrofuncionario.component';
+import { VisualisarservicoComponent } from './pages/visualisarservico/visualisarservico.component';
+import { CadastroequipamentoComponent } from './pages/cadastroequipamento/cadastroequipamento.component';
+import { RelatorioreceitasComponent } from './pages/relatorioreceitas/relatorioreceitas.component';
+
+
 
 export const routes: Routes = [
-    {path: '', component: LoginComponent},
+    {path:'', redirectTo: 'login', pathMatch:'full'},
     {path: 'autocadastro', component: AutocadastroComponent},
-    {path: 'mostrar-orcamento', component: MostrarOrcamentoComponent},
+    {path: 'mostrar-orcamento/:dataHora', component: MostrarOrcamentoComponent},
     {path: 'paginainicialcliente', component: PaginaInicialClienteComponent},
-    {path: 'paga-servico', component: PagaServicoComponent},
-    {path: 'resgata-servico', component: ResgataServicoComponent},
     {path: 'solicitamanutecao', component: SolicitaManutencaoComponent},
-    {path: 'relatorio-receita', component:RelatorioReceitasComponent},
     {path: 'login', component: LoginComponent},
-    {path: 'cadastrarequipamento', component: CadastroequipamentoComponent},
     {path: 'visualizarsolicitacao', component: VisualizarSolicitacaoComponent},
-    {path: 'efetuarorcamento', component: EfetuarOrcamentoComponent},
-    {path: 'funcionarios', component: FuncionariosComponent}
+    {path: 'paginainicialfuncionario', component: PaginaInicialFuncionarioComponent},
+    {path: 'orcamento/:dataHora/:id', component: EfetuarOrcamentoComponent },
+    {path: 'manutencao/:dataHora', component: EfetuarManutencaoComponent},
+    { path: 'pagarservico/:dataHora', component: PagarservicoComponent },
+    {path: 'cadastrofuncionario', component: CadastrofuncionarioComponent},
+    { path: 'visualizar-servico/:dataHora', component: VisualisarservicoComponent },
+    {path: 'cadastrarequipamento', component: CadastroequipamentoComponent},
+    {path: 'relatorioreceita', component: RelatorioreceitasComponent}
+
 
 ];
-    //{path: 'login', component: LoginComponent}
 

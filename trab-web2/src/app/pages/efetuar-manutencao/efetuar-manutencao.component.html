@@ -1,0 +1,116 @@
+<app-navbarfuncionario></app-navbarfuncionario>
+
+<div class="container mt-5">
+  <h2 class="mb-4">Efetuar Manutenção</h2>
+
+  <!-- Dados da solicitação -->
+  <div class="card mb-4 shadow-sm">
+    <div class="card-body">
+      <dl class="row">
+        <dt class="col-sm-3">Cliente</dt>
+        <dd class="col-sm-9">{{ cliente.nome }}</dd>
+
+        <dt class="col-sm-3">Aberta em</dt>
+        <dd class="col-sm-9">{{ solicitacao.dataHora | date:'dd/MM/yyyy HH:mm' }}</dd>
+
+        <dt class="col-sm-3">Equipamento</dt>
+        <dd class="col-sm-9">{{ solicitacao.descricaoEquipamento }}</dd>
+
+        <dt class="col-sm-3">Defeito</dt>
+        <dd class="col-sm-9">{{ solicitacao.descricaoDefeito }}</dd>
+      </dl>
+    </div>
+  </div>
+
+  <!-- Seletor e botões de ação -->
+  <div class="card mb-4 shadow-sm">
+    <div class="card-body">
+      <div class="row mb-3">
+        <label for="destinoFuncionario" class="col-sm-3 col-form-label">
+          Redirecionar para:
+        </label>
+        <div class="col-sm-9">
+          <select
+            id="destinoFuncionario"
+            class="form-select"
+            [(ngModel)]="destinoFuncionarioId"
+            name="destinoFuncionario">
+            <option value="" disabled selected>-- Selecione --</option>
+            <option *ngFor="let f of funcionarios" [value]="f.dataNascimento">
+              {{ f.nome }} ({{ f.dataNascimento }})
+            </option>
+          </select>
+        </div>
+      </div>
+
+      <div class="d-flex justify-content-end">
+        <button
+          type="button"
+          class="btn btn-warning me-2"
+          (click)="redirecionarManutencao()">
+          Redirecionar Manutenção
+        </button>
+        <button
+          type="button"
+          class="btn btn-success me-2"
+          (click)="toggleManutencao()">
+          Efetuar Manutenção
+        </button>
+        <button
+          type="button"
+          class="btn btn-secondary"
+          (click)="cancelar()">
+          Cancelar
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Formulário para efetuar manutenção -->
+  <div class="card shadow-sm" *ngIf="exibirFormularioManutencao">
+    <div class="card-body">
+      <form>
+        <div class="mb-3 row">
+          <label for="descricaoManutencao" class="col-sm-3 col-form-label">
+            Descrição da Manutenção
+          </label>
+          <div class="col-sm-9">
+            <textarea
+              id="descricaoManutencao"
+              rows="3"
+              class="form-control"
+              [(ngModel)]="descricaoManutencao"
+              name="descricaoManutencao"
+              placeholder="Descreva a manutenção realizada">
+            </textarea>
+          </div>
+        </div>
+
+        <div class="mb-3 row">
+          <label for="orientacoesCliente" class="col-sm-3 col-form-label">
+            Orientações para o Cliente
+          </label>
+          <div class="col-sm-9">
+            <textarea
+              id="orientacoesCliente"
+              rows="3"
+              class="form-control"
+              [(ngModel)]="orientacoesCliente"
+              name="orientacoesCliente"
+              placeholder="Forneça orientações para o cliente">
+            </textarea>
+          </div>
+        </div>
+
+        <div class="d-flex justify-content-end">
+          <button
+            type="button"
+            class="btn btn-primary"
+            (click)="confirmarManutencao()">
+            Confirmar Manutenção
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

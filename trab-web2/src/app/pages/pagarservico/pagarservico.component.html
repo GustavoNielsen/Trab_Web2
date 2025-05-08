@@ -1,0 +1,43 @@
+<app-navbar></app-navbar>
+
+<div class="container mt-5">
+  <h2 class="mb-4">Pagamento do Serviço</h2>
+
+  <!-- Dados da solicitação -->
+  <div class="card mb-4 shadow-sm">
+    <div class="card-body">
+      <dl class="row">
+        <dt class="col-sm-3">Cliente</dt>
+        <dd class="col-sm-9">{{ cliente.nome }}</dd>
+
+        <dt class="col-sm-3">Aberta em</dt>
+        <dd class="col-sm-9">{{ solicitacao.dataHora | date:'dd/MM/yyyy HH:mm' }}</dd>
+
+        <dt class="col-sm-3">Equipamento</dt>
+        <dd class="col-sm-9">{{ solicitacao.descricaoEquipamento }}</dd>
+
+        <dt class="col-sm-3">Categoria</dt>
+        <dd class="col-sm-9">{{ solicitacao.categoriaEquipamento }}</dd>
+
+        <dt class="col-sm-3">Defeito</dt>
+        <dd class="col-sm-9">{{ solicitacao.descricaoDefeito }}</dd>
+
+        <dt class="col-sm-3">Valor a Pagar</dt>
+        <dd class="col-sm-9">
+          <h3 class="text-primary">R$ {{ solicitacao.valorOrcamento | number:'1.2-2' }}</h3>
+        </dd>
+      </dl>
+    </div>
+  </div>
+
+  <!-- Botão de confirmação de pagamento -->
+  <div class="d-flex justify-content-end">
+    <button
+      type="button"
+      class="btn btn-success"
+      (click)="confirmarPagamento()"
+    >
+      Confirmar Pagamento
+    </button>
+  </div>
+</div>

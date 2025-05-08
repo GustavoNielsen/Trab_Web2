@@ -1,3 +1,5 @@
+// pages/pagina-inicial-cliente/pagina-inicial-cliente.component.ts
+
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, RouterLink, RouterModule } from '@angular/router';
 import { Solicitacao } from '../../shared/models/solicitacao';
@@ -32,15 +34,13 @@ export class PaginaInicialClienteComponent implements OnInit {
 
   visualizarSolicitacao(solicitacao: Solicitacao): void {
     console.log('Visualizar solicitação', solicitacao);
-  }  
-
-  resgatarServico(solicitacao: Solicitacao) {
-    this.solicitacaoService.resgatarSolicitacao(solicitacao.dataHora, solicitacao.valorOrcamento,solicitacao.observacoesOrcamento, solicitacao.idFuncionario)
-    solicitacao.estado = "Aprovada"
   }
 
   acaoSolicitacao(solicitacao: Solicitacao): void {
     console.log('Ação na solicitação', solicitacao);
   }
-  
+  resgatarServico(solicitacao: Solicitacao) {
+    this.solicitacaoService.resgatarSolicitacao(solicitacao.dataHora, solicitacao.valorOrcamento,solicitacao.observacoesOrcamento, solicitacao.idFuncionario)
+    solicitacao.estado = "Aprovada"
+  }
 }

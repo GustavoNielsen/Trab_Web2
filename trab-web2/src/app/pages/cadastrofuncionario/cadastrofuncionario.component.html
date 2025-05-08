@@ -1,0 +1,192 @@
+<app-navbarfuncionario></app-navbarfuncionario>
+<div class="container mt-5">
+  <h2 class="mb-4">CRUD de Funcionários</h2>
+
+  <!-- Inserir -->
+  <form (ngSubmit)="inserir()" #formInsercao="ngForm" class="mb-4">
+    <h4>Adicionar Funcionário</h4>
+
+    <div class="mb-3">
+      <label for="email" class="form-label">E-mail</label>
+      <input
+        type="email"
+        id="email"
+        name="email"
+        class="form-control"
+        [(ngModel)]="funcionario.email"
+        required
+        #emailIns="ngModel"
+      >
+      <div *ngIf="emailIns.invalid && (emailIns.dirty || emailIns.touched)" class="text-danger">
+        E-mail inválido.
+      </div>
+    </div>
+
+    <div class="mb-3">
+      <label for="nome" class="form-label">Nome</label>
+      <input
+        type="text"
+        id="nome"
+        name="nome"
+        class="form-control"
+        [(ngModel)]="funcionario.nome"
+        required
+        #nomeIns="ngModel"
+      >
+      <div *ngIf="nomeIns.invalid && (nomeIns.dirty || nomeIns.touched)" class="text-danger">
+        Informe o nome completo.
+      </div>
+    </div>
+
+    <div class="mb-3">
+      <label for="dataNascimento" class="form-label">Data de Nascimento</label>
+      <input
+        type="text"
+        id="dataNascimento"
+        name="dataNascimento"
+        class="form-control"
+        placeholder="DD/MM/AAAA"
+        mask="00/00/0000"
+        [(ngModel)]="funcionario.dataNascimento"
+        required
+        #dnIns="ngModel"
+      >
+      <div *ngIf="dnIns.invalid && (dnIns.dirty || dnIns.touched)" class="text-danger">
+        Data de nascimento inválida.
+      </div>
+    </div>
+
+    <div class="mb-3">
+      <label for="senha" class="form-label">Senha</label>
+      <input
+        type="password"
+        id="senha"
+        name="senha"
+        class="form-control"
+        [(ngModel)]="funcionario.senha"
+        required
+        #senhaIns="ngModel"
+      >
+      <div *ngIf="senhaIns.invalid && (senhaIns.dirty || senhaIns.touched)" class="text-danger">
+        A senha é obrigatória.
+      </div>
+    </div>
+
+    <button type="submit" class="btn btn-success" [disabled]="formInsercao.invalid">
+      Cadastrar
+    </button>
+  </form>
+
+  <!-- Selecionar Funcionário -->
+  <div class="mb-4">
+    <h4>Selecione um Funcionário</h4>
+    <select
+      class="form-control"
+      [(ngModel)]="funcionarioSelecionado"
+      name="funcionarioSelecionado"
+    >
+      <option [ngValue]="null">Selecione...</option>
+      <option *ngFor="let f of funcionarios" [ngValue]="f">
+        {{ f.nome }} ({{ f.email }})
+      </option>
+    </select>
+  </div>
+
+  <!-- Detalhes e Ações -->
+  <div *ngIf="funcionarioSelecionado">
+    <h4>Detalhes</h4>
+    <p><strong>E-mail:</strong> {{ funcionarioSelecionado.email }}</p>
+    <p><strong>Nome:</strong> {{ funcionarioSelecionado.nome }}</p>
+    <p><strong>Data Nasc.:</strong> {{ funcionarioSelecionado.dataNascimento }}</p>
+
+    <div *ngIf="!exibirFormAtualizacao && !exibirConfirmacaoRemocao" class="mb-3">
+      <button class="btn btn-warning me-2" (click)="abrirAtualizacao()">Atualizar</button>
+      <button class="btn btn-danger" (click)="abrirRemocao()">Remover</button>
+    </div>
+
+    <!-- Form Atualização COMPLETO -->
+    <form *ngIf="exibirFormAtualizacao" (ngSubmit)="atualizar()" #formAtualizacao="ngForm" class="mb-3">
+      <!-- E-mail -->
+      <div class="mb-3">
+        <label for="emailAtualizado" class="form-label">E-mail</label>
+        <input
+          type="email"
+          id="emailAtualizado"
+          name="emailAtualizado"
+          class="form-control"
+          [(ngModel)]="emailParaEdicao"
+          required
+          #emailUpd="ngModel"
+        >
+        <div *ngIf="emailUpd.invalid && (emailUpd.dirty || emailUpd.touched)" class="text-danger">
+          E-mail inválido.
+        </div>
+      </div>
+
+      <!-- Nome -->
+      <div class="mb-3">
+        <label for="nomeAtualizado" class="form-label">Nome</label>
+        <input
+          type="text"
+          id="nomeAtualizado"
+          name="nomeAtualizado"
+          class="form-control"
+          [(ngModel)]="nomeParaEdicao"
+          required
+          #nomeUpd="ngModel"
+        >
+        <div *ngIf="nomeUpd.invalid && (nomeUpd.dirty || nomeUpd.touched)" class="text-danger">
+          Informe o nome completo.
+        </div>
+      </div>
+
+      <!-- Data de Nascimento -->
+      <div class="mb-3">
+        <label for="dataNascimentoAtualizado" class="form-label">Data de Nascimento</label>
+        <input
+          type="text"
+          id="dataNascimentoAtualizado"
+          name="dataNascimentoAtualizado"
+          class="form-control"
+          placeholder="DD/MM/AAAA"
+          mask="00/00/0000"
+          [(ngModel)]="dataNascimentoParaEdicao"
+          required
+          #dnUpd="ngModel"
+        >
+        <div *ngIf="dnUpd.invalid && (dnUpd.dirty || dnUpd.touched)" class="text-danger">
+          Data de nascimento inválida.
+        </div>
+      </div>
+
+      <!-- Senha -->
+      <div class="mb-3">
+        <label for="senhaAtualizado" class="form-label">Senha</label>
+        <input
+          type="text"
+          id="senhaAtualizado"
+          name="senhaAtualizado"
+          class="form-control"
+          [(ngModel)]="senhaParaEdicao"
+          required
+          #senhaUpd="ngModel"
+        >
+        <div *ngIf="senhaUpd.invalid && (senhaUpd.dirty || senhaUpd.touched)" class="text-danger">
+          A senha é obrigatória.
+        </div>
+      </div>
+
+      <button type="submit" class="btn btn-primary me-2" [disabled]="formAtualizacao.invalid">
+        Confirmar Atualização
+      </button>
+      <button type="button" class="btn btn-secondary" (click)="novo()">Cancelar</button>
+    </form>
+
+    <!-- Confirmação Remoção -->
+    <div *ngIf="exibirConfirmacaoRemocao" class="alert alert-danger">
+      <p>Remover "<strong>{{ funcionarioSelecionado.nome }}</strong>"?</p>
+      <button class="btn btn-danger me-2" (click)="remover()">Sim, remover</button>
+      <button class="btn btn-secondary" (click)="novo()">Cancelar</button>
+    </div>
+  </div>
+</div>
