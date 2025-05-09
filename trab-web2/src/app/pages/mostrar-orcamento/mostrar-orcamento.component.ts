@@ -5,17 +5,20 @@ import { Solicitacao } from '../../shared/models/solicitacao';
 import { SolicitacaoService } from '../../services/soliciticao.service';
 import { NavbarComponent } from '../navbar/navbar.component';
 import { Historicosolicitacao } from '../../shared/models/historicosolicitacao';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-mostrar-orcamento',
   standalone: true,
-  imports: [CommonModule, RouterOutlet, MostrarOrcamentoComponent, RouterLink, NavbarComponent],
+  imports: [CommonModule, RouterOutlet, MostrarOrcamentoComponent, RouterLink, NavbarComponent, FormsModule],
   templateUrl: './mostrar-orcamento.component.html',
   styleUrl: './mostrar-orcamento.component.css'
 })
 export class MostrarOrcamentoComponent implements OnInit {
 
   solicitacao!: Solicitacao;
+  motivoRejeicao: string = '';
+  mostrarModalRejeicao: boolean = false;
 
   constructor(
     private solicitacaoService: SolicitacaoService,
@@ -56,10 +59,20 @@ export class MostrarOrcamentoComponent implements OnInit {
   }
 
   // Atualiza o atributo 'aprovado' para "Rejeitado", atualiza o armazenamento e navega para a página inicial do cliente.
-  rejeitarServico(): void {
-    this.solicitacao.estado = 'Rejeitada';
-    this.atualizarSolicitacao();
-    alert('Serviço Rejeitado ')
-    this.router.navigate(['paginainicialcliente']);
+  confirmarRejeicao(): void {
+    if (this.solicitacao) {
+      this.solicitacao.estado = 'Rejeitada';
+      this.solicitacao.motivoRecusa = this.motivoRejeicao;
+      this.atualizarSolicitacao();
+      alert("Serviço rejeitado");
+    }
+  }
+
+  abrirModalRejeicao() {
+    this.mostrarModalRejeicao = true;
+  }
+
+  fecharModalRejeicao() {
+    this.mostrarModalRejeicao = false;
   }
 }

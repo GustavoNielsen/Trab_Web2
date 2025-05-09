@@ -44,6 +44,7 @@
             <th>Nome do Cliente</th>
             <th>Descrição do Produto</th>
             <th>Estado</th>
+            <th>Motivo da recusa</th>
             <th>Ação</th>
           </tr>
         </thead>
@@ -71,6 +72,9 @@
                 }">
                 {{ s.estado }}
               </span>
+            </td>
+		        <td>
+              <span *ngIf="s.estado === 'Rejeitada'">{{ s.motivoRecusa }}</span>
             </td>
             <td>
               <!-- Botão para solicitações ABERTAS -->
