@@ -20,7 +20,8 @@ export class Solicitacao {
     public dataHoraManutencao: string,
     public dataHoraRedirecionada: string,
     public dataHoraFinalizada: string,
-    public dataHoraPagamento: string
+    public dataHoraPagamento: string,
+    public motivoRecusa: string
     )
     {}
 }

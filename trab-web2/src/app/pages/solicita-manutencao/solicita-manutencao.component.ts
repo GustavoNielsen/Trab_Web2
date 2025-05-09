@@ -71,6 +71,7 @@ export class SolicitaManutencaoComponent implements OnInit {
       '',
       '',
       '',
+      '',
       ''
     );
     this.solicitacaoService.adicionarSolicitacao(novaSolicitacao);
