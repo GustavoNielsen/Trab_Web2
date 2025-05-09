@@ -30,6 +30,7 @@
       </div>
     </div>
   
+<<<<<<< Updated upstream
     <!-- Tabela de Solicitações -->
     <div class="card">
       <div class="card-header">
@@ -145,6 +146,73 @@
             </tr>
           </tbody>
         </table>
+=======
+  <!-- Tabela de Solicitações -->
+  <div class="card">
+    <div class="card-header">
+      Solicitações
+    </div>
+    <div class="card-body p-0">
+      <table class="table table-bordered table-hover mb-0">
+        <thead class="thead-light">
+          <tr>
+            <th>Data/Hora</th>
+            <th>Nome do Cliente</th>
+            <th>Descrição do Produto</th>
+            <th>Estado</th>
+            <th>Motivo da recusa</th>
+            <th>Ação</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let s of solicitacoesFiltradas">
+            <td>{{ s.dataHora | date:'dd/MM/yyyy HH:mm' }}</td>
+            <td>{{  getNomeCliente(s.cpfCliente) }}</td>
+            <td>{{ s.descricaoEquipamento }}</td>
+            <td>
+              <span 
+                class="badge"
+                [ngStyle]="{
+                  'background-color': s.estado === 'Aberta' ? 'gray' :
+                                      s.estado === 'Orçada' ? 'brown' :
+                                      s.estado === 'Rejeitada' ? 'red' :
+                                      s.estado === 'Aprovada' ? 'yellow' :
+                                      s.estado === 'Redirecionda' ? 'purple' :
+                                      s.estado === 'Arrumada' ? 'blue' :
+                                      s.estado === 'Paga' ? 'orange' :
+                                      s.estado === 'Finalizada' ? 'green' : '#000',
+                  'color': (s.estado === 'Orçada' || s.estado === 'Rejeitada' || s.estado === 'Redirecionada' ||
+                            s.estado === 'Arrumada' || s.estado === 'Finalizada')
+                            ? '#fff'
+                            : '#000'
+                }">
+                {{ s.estado }}
+              </span>
+            </td>
+            <td>
+              <span *ngIf="s.estado === 'Rejeitada'">{{ s.motivoRecusa }}</span>
+            </td>
+            <td>
+              <!-- Botão para solicitações ABERTAS -->
+              <a *ngIf="s.estado === 'Aberta'" class="btn btn-sm btn-primary" [routerLink]="['/orcamento', s.dataHora, s.idFuncionario]">
+                Efetuar Orçamento
+              </a>
+              <!-- Botão para solicitações APROVADAS ou REDIRECIONADAS -->
+              <a *ngIf="s.estado === 'Aprovada' || s.estado === 'Redirecionada'" class="btn btn-sm btn-warning" [routerLink]="['/manutencao', s.dataHora]">
+                Efetuar Manutenção
+              </a>
+              <!-- Botão para solicitações PAGA -->
+              <a *ngIf="s.estado === 'Paga'" class="btn btn-sm btn-success" (click)="finalizarSolicitacao(s)">
+                Finalizar Solicitação
+              </a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <!-- Mensagem caso nenhum resultado seja encontrado -->
+      <div class="p-3" *ngIf="solicitacoesFiltradas.length === 0">
+        Nenhuma solicitação encontrada para o filtro aplicado.
+>>>>>>> Stashed changes
       </div>
     </div>
   </div>

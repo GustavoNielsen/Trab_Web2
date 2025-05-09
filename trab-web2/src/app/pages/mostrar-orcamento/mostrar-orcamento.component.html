@@ -31,6 +31,7 @@
             </div>
         </div>
     </div>
+<<<<<<< Updated upstream
     
     <!-- Lista de serviços -->
     <div class="row mb-3">
@@ -77,3 +78,80 @@
         </div>
     </div>
 </div>
+=======
+    <div class="card-body">
+      <!-- Dados da Solicitação -->
+      <div class="mb-3">
+        <label class="form-label fw-bold">Data/Hora da Solicitação:</label>
+        <span>{{ solicitacao.dataHora | date:'dd/MM/yyyy HH:mm' }}</span>
+      </div>
+      <div class="mb-3">
+        <label class="form-label fw-bold">Equipamento:</label>
+        <span>{{ solicitacao.descricaoEquipamento }}</span>
+      </div>
+      <div class="mb-3">
+        <label class="form-label fw-bold">Categoria do Equipamento:</label>
+        <span>{{ solicitacao.categoriaEquipamento }}</span>
+      </div>
+      <div class="mb-3">
+        <label class="form-label fw-bold">Defeito Informado:</label>
+        <span>{{ solicitacao.descricaoDefeito }}</span>
+      </div>
+      <div class="mb-3">
+        <label class="form-label fw-bold">Estado:</label>
+        <span>{{ solicitacao.estado }}</span>
+      </div>
+
+      <!-- Orçamento -->
+      <div class="mb-3">
+        <label class="form-label fw-bold">Valor Orçado:</label>
+        <h2 class="text-primary">R$ {{ solicitacao.valorOrcamento | number:'1.2-2' }}</h2>
+      </div>
+      <div class="mb-3" *ngIf="solicitacao.dataHoraOrcamento">
+        <label class="form-label fw-bold">Data/Hora do Orçamento:</label>
+        <span>{{ solicitacao.dataHoraOrcamento | date:'dd/MM/yyyy HH:mm' }}</span>
+      </div>
+      <div class="mb-3" *ngIf="solicitacao.observacoesOrcamento">
+        <label class="form-label fw-bold">Observações:</label>
+        <p>{{ solicitacao.observacoesOrcamento }}</p>
+      </div>
+
+      <!-- Botões -->
+      <div class="container mt-5">
+        <div class="d-flex justify-content-end">
+          <button [disabled]="mostrarModalRejeicao" type="button" class="btn btn-success me-2" (click)="aprovarServico()">
+            Aprovar o Serviço
+          </button>
+          <button type="button" class="btn btn-danger" (click)="abrirModalRejeicao()">
+            Rejeitar o Serviço
+          </button>
+        </div>
+      </div>
+
+      <!-- Modal rejeição -->
+      <div *ngIf="mostrarModalRejeicao" class="modal-backdrop-custom">
+        <div class="modal-dialog-centered-custom">
+          <div class="modal-content">
+            <div class="modal-header">
+              <label class="form-label fw-bold">Motivo da Rejeição</label>
+            </div>
+
+            <div class="modal-body">
+              <div class="mb-3">
+                <label class="form-label">Por favor, digite o motivo da rejeição:</label>
+                <textarea class="form-control" [(ngModel)]="motivoRejeicao"></textarea>
+              </div>
+            </div>
+
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary me-2" (click)="fecharModalRejeicao()">Cancelar</button>
+              <button type="button" class="btn btn-danger" (click)="confirmarRejeicao(); fecharModalRejeicao()">Confirmar Rejeição</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+</div>
+>>>>>>> Stashed changes
