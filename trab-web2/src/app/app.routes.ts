@@ -5,14 +5,14 @@ import { PaginaInicialClienteComponent } from './pages/pagina-inicial-cliente';
 import { SolicitaManutencaoComponent } from './pages/solicita-manutencao';
 import { LoginComponent } from './pages/login/login.component';
 import { VisualizarSolicitacaoComponent } from './pages/visualizar-solicitacao/visualizar-solicitacao.component';
-import {PaginaInicialFuncionarioComponent } from './pages/pagina-inicial-funcionario/pagina-inicial-funcionario.component';
+import { PaginaInicialFuncionarioComponent } from './pages/pagina-inicial-funcionario/pagina-inicial-funcionario.component';
 import { EfetuarOrcamentoComponent } from './pages/efetuar-orcamento/efetuar-orcamento.component';
 import { EfetuarManutencaoComponent } from './pages/efetuar-manutencao/efetuar-manutencao.component';
 import { PagarservicoComponent } from './pages/pagarservico/pagarservico.component';
 import { CadastrofuncionarioComponent } from './pages/cadastrofuncionario/cadastrofuncionario.component';
-import { VisualisarservicoComponent } from './pages/visualisarservico/visualisarservico.component';
 import { CadastroequipamentoComponent } from './pages/cadastroequipamento/cadastroequipamento.component';
 import { RelatorioreceitasComponent } from './pages/relatorioreceitas/relatorioreceitas.component';
+import { VisualizarservicoComponent } from './pages/visualizarservico/visualizarservico.component';
 
 
 
@@ -27,10 +27,10 @@ export const routes: Routes = [
     {path: 'paginainicialfuncionario', component: PaginaInicialFuncionarioComponent},
     {path: 'orcamento/:dataHora/:id', component: EfetuarOrcamentoComponent },
     {path: 'manutencao/:dataHora', component: EfetuarManutencaoComponent},
-    { path: 'pagarservico/:dataHora', component: PagarservicoComponent },
+    {path: 'pagarservico/:dataHora', component: PagarservicoComponent },
     {path: 'cadastrofuncionario', component: CadastrofuncionarioComponent},
-    { path: 'visualizar-servico/:dataHora', component: VisualisarservicoComponent },
     {path: 'cadastrarequipamento', component: CadastroequipamentoComponent},
+    {path: 'visualizar-servico/:dataHora', component: VisualizarservicoComponent },
     {path: 'relatorioreceita', component: RelatorioreceitasComponent}
 
 
