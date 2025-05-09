@@ -19,15 +19,15 @@ export class CadastrofuncionarioComponent implements OnInit {
   exibirFormAtualizacao = false;
   exibirConfirmacaoRemocao = false;
   originalEmail = '';
-  originalNome ='';
-  OriginalData ='';
-  OriginalSenha='';
+  originalNome = '';
+  OriginalData = '';
+  OriginalSenha = '';
   emailParaEdicao = '';
   nomeParaEdicao = '';
   dataNascimentoParaEdicao = '';
   senhaParaEdicao = '';
 
-  constructor(private funcionarioService: FuncionarioService) {}
+  constructor(private funcionarioService: FuncionarioService) { }
 
   ngOnInit(): void {
     this.refreshList();

@@ -10,7 +10,7 @@ describe('CadastrofuncionarioComponent', () => {
     await TestBed.configureTestingModule({
       imports: [CadastrofuncionarioComponent]
     })
-    .compileComponents();
+      .compileComponents();
 
     fixture = TestBed.createComponent(CadastrofuncionarioComponent);
     component = fixture.componentInstance;
