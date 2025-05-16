@@ -19,7 +19,25 @@ import { CadastroequipamentoComponent } from './pages/cadastroequipamento/cadast
 import { RelatorioreceitasComponent } from './pages/relatorioreceitas/relatorioreceitas.component';
 @Component({
   selector: 'app-root',
-  imports: [RouterModule, RouterOutlet, AutocadastroComponent, PaginaInicialClienteComponent, LoginComponent, MostrarOrcamentoComponent, SolicitaManutencaoComponent, VisualizarSolicitacaoComponent, PaginaInicialFuncionarioComponent, NavbarComponent, EfetuarOrcamentoComponent, EfetuarManutencaoComponent, PagarservicoComponent, CadastrofuncionarioComponent, VisualisarservicoComponent, CadastroequipamentoComponent, RelatorioreceitasComponent],
+  imports: [
+    RouterModule, 
+    RouterOutlet, 
+    AutocadastroComponent, 
+    PaginaInicialClienteComponent, 
+    LoginComponent, 
+    MostrarOrcamentoComponent, 
+    SolicitaManutencaoComponent, 
+    VisualizarSolicitacaoComponent, 
+    PaginaInicialFuncionarioComponent, 
+    NavbarComponent, 
+    EfetuarOrcamentoComponent, 
+    EfetuarManutencaoComponent, 
+    PagarservicoComponent, 
+    CadastrofuncionarioComponent, 
+    VisualisarservicoComponent, 
+    CadastroequipamentoComponent, 
+    RelatorioreceitasComponent
+  ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })

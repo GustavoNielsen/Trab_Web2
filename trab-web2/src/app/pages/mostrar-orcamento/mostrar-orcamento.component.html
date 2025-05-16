@@ -47,37 +47,11 @@
             (click)="aprovarServico()">
             Aprovar o Serviço
           </button>
-          <button type="button" class="btn btn-danger" (click)="abrirModalRejeicao()">
+          <button type="button" class="btn btn-danger" (click)="abrirModalRejeicao(solicitacao)">
             Rejeitar o Serviço
           </button>
         </div>
       </div>
-
-      <!-- Modal rejeição -->
-      <div *ngIf="mostrarModalRejeicao" class="modal-backdrop-custom">
-        <div class="modal-dialog-centered-custom">
-          <div class="modal-content">
-            <div class="modal-header">
-              <label class="form-label fw-bold">Motivo da Rejeição</label>
-            </div>
-
-            <div class="modal-body">
-              <div class="mb-3">
-                <label class="form-label">Por favor, digite o motivo da rejeição:</label>
-                <textarea class="form-control" [(ngModel)]="motivoRejeicao"></textarea>
-              </div>
-            </div>
-
-            <div class="modal-footer">
-              <button type="button" class="btn btn-secondary me-2" (click)="fecharModalRejeicao()">Cancelar</button>
-              <button type="button" class="btn btn-danger"
-                (click)="confirmarRejeicao(); fecharModalRejeicao()"
-                [routerLink]="'/paginainicialcliente'">Confirmar Rejeição</button>
-            </div>
-          </div>
-        </div>
-      </div>
-
     </div>
   </div>
 </div>
