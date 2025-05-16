@@ -18,23 +18,6 @@
         CPF no formato inválido. Utilize: 000.000.000-00.
       </div>
     </div>
-
-    <div class="mb-3">
-      <label for="nome" class="form-label">Nome</label>
-      <input
-        type="text"
-        class="form-control"
-        id="nome"
-        placeholder="Digite seu nome completo"
-        [(ngModel)]="cliente.nome"
-        name="nome"
-        required
-        #nomeModel="ngModel">
-      <div *ngIf="nomeModel.invalid && (nomeModel.dirty || nomeModel.touched)" class="text-danger">
-        Informe seu nome completo.
-      </div>
-    </div>
-
     <div class="mb-3">
       <label for="nome" class="form-label">Nome</label>
       <input
@@ -193,7 +176,9 @@
         Telefone no formato inválido. Utilize: (00) 00000-0000.
       </div>
     </div>
-
-    <button type="submit" class="btn btn-primary" [disabled]="formCadastro.invalid">Cadastrar</button>
-  </form>
-</div>
+    <div class="d-flex gap-2 mt-3">
+      <button type="submit" class="btn btn-primary" [disabled]="formCadastro.invalid">Cadastrar</button>
+      <button type="button" class="btn btn-primary" (click)="voltar()">Voltar</button>
+    </div>    
+  </form>  
+  </div>

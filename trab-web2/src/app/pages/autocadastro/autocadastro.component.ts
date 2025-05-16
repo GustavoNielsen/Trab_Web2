@@ -29,7 +29,8 @@ export class AutocadastroComponent {
     this.clienteService.inserir(this.cliente);
     alert('Cliente cadastrado com sucesso!');
     // Redireciona para a tela de login após o cadastro
-    this.router.navigate(['/login']);
+    //this.router.navigate(['/login']);
+    this.voltar();
   }
 
   pegaEndereco(cep: string): void {
@@ -45,4 +46,8 @@ export class AutocadastroComponent {
       }
     });
   }
+
+  voltar() {
+  this.router.navigate(['/login']);
+}
 }
