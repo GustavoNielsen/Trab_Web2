@@ -1,0 +1,20 @@
+/* Estilização personalizada para links da navbar */
+.custom-nav-link {
+  border: 2px solid transparent;
+  border-radius: 4px;
+  padding: 5px 10px;
+  transition: all 0.2s ease-in-out;
+}
+
+/* Realce no hover */
+.custom-nav-link:hover {
+  border-color: #007bff;
+  background-color: #e9f3ff;
+}
+
+/* Realce quando estiver ativo */
+.custom-nav-link.active {
+  border-color: #007bff;
+  background-color: #d0e7ff;
+  font-weight: bold;
+}

@@ -7,7 +7,7 @@ import { ClienteService } from '../../services/cliente.service';
   selector: 'app-navbar',
   imports: [CommonModule, RouterLink, RouterModule],
   templateUrl: './navbar.component.html',
-  styleUrl: './navbar.component.css'
+  styleUrls: ['./navbar.component.css']
 })
 export class NavbarComponent implements OnInit {
   cpf: string = '';
