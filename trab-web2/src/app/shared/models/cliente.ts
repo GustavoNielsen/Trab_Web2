@@ -2,6 +2,7 @@ import { User } from "./user";
 
 export class Cliente extends User{
     constructor(
+      public id: number,
       email: string,
       senha: string,
       nome: string,

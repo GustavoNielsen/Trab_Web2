@@ -18,7 +18,7 @@ import { ViaCep } from '../../shared/models/via-cep';
 })
 export class AutocadastroComponent {
   // Observe a ordem dos parâmetros conforme definido no modelo
-  cliente: Cliente = new Cliente('', '', '', 'cliente', '', '', '', '', '', '', '', '','');
+  cliente: Cliente = new Cliente(0,'', '', '', 'cliente', '', '', '', '', '', '', '', '','');
 
   constructor(
     private clienteService: ClienteService,
@@ -26,6 +26,7 @@ export class AutocadastroComponent {
   ) {}
 
   inserir(): void {
+    this.cliente.id = new Date().getTime();
     this.clienteService.inserir(this.cliente);
     alert('Cliente cadastrado com sucesso!');
     // Redireciona para a tela de login após o cadastro
