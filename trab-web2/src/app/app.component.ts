@@ -17,7 +17,6 @@ import { CadastrofuncionarioComponent } from './pages/cadastrofuncionario/cadast
 import { VisualizarservicoComponent } from './pages/visualizarservico/visualizarservico.component';
 import { CadastroequipamentoComponent } from './pages/cadastroequipamento/cadastroequipamento.component';
 import { RelatorioreceitasComponent } from './pages/relatorioreceitas/relatorioreceitas.component';
-import { VisualisarservicoComponent } from './pages/visualisarservico/visualisarservico.component';
 
 @Component({
   selector: 'app-root',
@@ -36,7 +35,7 @@ import { VisualisarservicoComponent } from './pages/visualisarservico/visualisar
     EfetuarManutencaoComponent, 
     PagarservicoComponent, 
     CadastrofuncionarioComponent, 
-    VisualisarservicoComponent, 
+    VisualizarservicoComponent, 
     CadastroequipamentoComponent, 
     RelatorioreceitasComponent
   ],
