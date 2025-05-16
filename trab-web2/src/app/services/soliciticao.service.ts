@@ -165,44 +165,49 @@ export class SolicitacaoService {
    * ∘ ordena por data/hora crescente
    * ∘ só inclui REDIRECIONADA se for para este funcionário
    */
-  listarParaVisualizacao(
-    funcionarioId: string,
-    filtroTipo: 'hoje' | 'periodo' | 'todas',
-    dataInicio?: string,
-    dataFim?: string
-  ): Solicitacao[] {
-    let list = this.recuperarSolicitacoes();
-    const hoje = new Date();
+listarParaVisualizacao(
+  funcionarioId: string,
+  filtroTipo: 'hoje' | 'periodo' | 'todas',
+  dataInicio?: string,
+  dataFim?: string
+): Solicitacao[] {
+  let list = this.recuperarSolicitacoes();
+  const hoje = new Date();
 
-    // filtrar por data
-    if (filtroTipo === 'hoje') {
-      list = list.filter(s => {
-        const d = new Date(s.dataHora);
-        return d.getFullYear() === hoje.getFullYear()
-            && d.getMonth()    === hoje.getMonth()
-            && d.getDate()     === hoje.getDate();
-      });
-    } else if (filtroTipo === 'periodo' && dataInicio && dataFim) {
-      const inicio = new Date(dataInicio);
-      const fim    = new Date(dataFim);
-      list = list.filter(s => {
-        const d = new Date(s.dataHora);
-        return d >= inicio && d <= fim;
-      });
-    }
-    // filtroTipo === 'todas' → não altera
+  if (filtroTipo === 'hoje') {
+    list = list.filter(s => {
+      const d = new Date(s.dataHora);
+      return d.getFullYear() === hoje.getFullYear()
+          && d.getMonth()    === hoje.getMonth()
+          && d.getDate()     === hoje.getDate();
+    });
+  } else if (filtroTipo === 'periodo' && dataInicio && dataFim) {
+    // Cria objetos Date no fuso local, definindo dia inteiro
+    const inicio = new Date(`${dataInicio}T00:00:00`);
+    const fim    = new Date(`${dataFim}T23:59:59.999`);
 
-    // aplicar regra RF013
-    list = list.filter(s =>
-      s.estado !== 'Redirecionada'
-      || s.idFuncionario === funcionarioId
-    );
+    console.log('Filtro período de', inicio, 'até', fim);
 
-    // ordenar por data/hora crescente
-    list.sort((a, b) =>
-      new Date(a.dataHora).getTime() - new Date(b.dataHora).getTime()
-    );
-
-    return list;
+    list = list.filter(s => {
+      const d = new Date(s.dataHora);
+      return d >= inicio && d <= fim;
+    });
   }
+  // filtroTipo === 'todas' → sem filtragem por data
+
+  // inclui só redirecionadas destinadas a este funcionário
+  list = list.filter(s =>
+    s.estado !== 'Redirecionada'
+    || s.idFuncionario === funcionarioId
+  );
+
+  // ordena cronologicamente
+  list.sort((a, b) =>
+    new Date(a.dataHora).getTime() - new Date(b.dataHora).getTime()
+  );
+
+  return list;
+}
+
+
 }
