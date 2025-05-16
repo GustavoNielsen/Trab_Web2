@@ -18,6 +18,7 @@ import { NgxMaskPipe } from 'ngx-mask';
   styleUrl: './mostrar-orcamento.component.css'
 })
 export class MostrarOrcamentoComponent implements OnInit {
+export class MostrarOrcamentoComponent implements OnInit {
 
   solicitacao!: Solicitacao;
   motivoRejeicao: string = '';

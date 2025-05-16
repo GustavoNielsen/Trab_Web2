@@ -1,3 +1,4 @@
+
 <div class="container mt-5">
   <h2 class="mb-4">Autocadastro</h2>
   <form (ngSubmit)="inserir()" #formCadastro="ngForm">
@@ -17,7 +18,40 @@
         #cpfModel="ngModel">
       <div *ngIf="cpfModel.invalid && (cpfModel.dirty || cpfModel.touched)" class="text-danger">
         CPF no formato inválido. Utilize: 000.000.000-00.
+  <h2 class="mb-4">Autocadastro</h2>
+  <form (ngSubmit)="inserir()" #formCadastro="ngForm">
+
+    <!-- Dados Pessoais -->
+    <div class="mb-3">
+      <label for="cpf" class="form-label">CPF</label>
+      <input
+        type="text"
+        class="form-control"
+        id="cpf"
+        placeholder="Digite seu CPF"
+        [(ngModel)]="cliente.cpf"
+        name="cpf"
+        required
+        mask="000.000.000-00"
+        #cpfModel="ngModel">
+      <div *ngIf="cpfModel.invalid && (cpfModel.dirty || cpfModel.touched)" class="text-danger">
+        CPF no formato inválido. Utilize: 000.000.000-00.
       </div>
+    </div>
+
+    <div class="mb-3">
+      <label for="nome" class="form-label">Nome</label>
+      <input
+        type="text"
+        class="form-control"
+        id="nome"
+        placeholder="Digite seu nome completo"
+        [(ngModel)]="cliente.nome"
+        name="nome"
+        required
+        #nomeModel="ngModel">
+      <div *ngIf="nomeModel.invalid && (nomeModel.dirty || nomeModel.touched)" class="text-danger">
+        Informe seu nome completo.
     </div>
 
     <div class="mb-3">

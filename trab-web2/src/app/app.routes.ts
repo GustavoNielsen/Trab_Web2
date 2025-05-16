@@ -18,7 +18,9 @@ import { VisualizarservicoComponent } from './pages/visualizarservico/visualizar
 
 export const routes: Routes = [
     {path:'', redirectTo: 'login', pathMatch:'full'},
+    {path:'', redirectTo: 'login', pathMatch:'full'},
     {path: 'autocadastro', component: AutocadastroComponent},
+    {path: 'mostrar-orcamento/:dataHora', component: MostrarOrcamentoComponent},
     {path: 'mostrar-orcamento/:dataHora', component: MostrarOrcamentoComponent},
     {path: 'paginainicialcliente', component: PaginaInicialClienteComponent},
     {path: 'solicitamanutecao', component: SolicitaManutencaoComponent},
@@ -35,4 +37,3 @@ export const routes: Routes = [
 
 
 ];
-

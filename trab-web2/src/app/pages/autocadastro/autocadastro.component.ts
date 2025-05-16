@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -12,7 +13,11 @@ import { ViaCep } from '../../shared/models/via-cep';
   selector: 'app-autocadastro',
   standalone: true,
   imports: [CommonModule, FormsModule, NgxMaskDirective, NgxMaskPipe],
+  standalone: true,
+  imports: [CommonModule, FormsModule, NgxMaskDirective, NgxMaskPipe],
   templateUrl: './autocadastro.component.html',
+  styleUrls: ['./autocadastro.component.css'],
+  providers: [provideNgxMask()]  // Configuração da máscara
   styleUrls: ['./autocadastro.component.css'],
   providers: [provideNgxMask()]  // Configuração da máscara
 })
