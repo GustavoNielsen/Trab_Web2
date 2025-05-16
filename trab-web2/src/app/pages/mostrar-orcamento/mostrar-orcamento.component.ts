@@ -6,11 +6,14 @@ import { SolicitacaoService } from '../../services/soliciticao.service';
 import { NavbarComponent } from '../navbar/navbar.component';
 import { Historicosolicitacao } from '../../shared/models/historicosolicitacao';
 import { FormsModule } from '@angular/forms';
+import { NgbModal, NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { ModalMostrarOrcamentoComponent } from '../modal-mostrar-orcamento/modal-mostrar-orcamento.component';
+import { NgxMaskPipe } from 'ngx-mask';
 
 @Component({
   selector: 'app-mostrar-orcamento',
   standalone: true,
-  imports: [CommonModule, RouterOutlet, MostrarOrcamentoComponent, RouterLink, NavbarComponent, FormsModule],
+  imports: [CommonModule, RouterOutlet, MostrarOrcamentoComponent, RouterLink, NavbarComponent, FormsModule, NgxMaskPipe, NgbModule],
   templateUrl: './mostrar-orcamento.component.html',
   styleUrl: './mostrar-orcamento.component.css'
 })
@@ -23,7 +26,8 @@ export class MostrarOrcamentoComponent implements OnInit {
   constructor(
     private solicitacaoService: SolicitacaoService,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private modalService: NgbModal 
   ) {}
 
   ngOnInit(): void {
@@ -58,21 +62,9 @@ export class MostrarOrcamentoComponent implements OnInit {
     this.router.navigate(['paginainicialcliente']);
   }
 
-  // Atualiza o atributo 'aprovado' para "Rejeitado", atualiza o armazenamento e navega para a página inicial do cliente.
-  confirmarRejeicao(): void {
-    if (this.solicitacao) {
-      this.solicitacao.estado = 'Rejeitada';
-      this.solicitacao.motivoRecusa = this.motivoRejeicao;
-      this.atualizarSolicitacao();
-      alert("Serviço rejeitado");
-    }
-  }
-
-  abrirModalRejeicao() {
-    this.mostrarModalRejeicao = true;
-  }
-
-  fecharModalRejeicao() {
-    this.mostrarModalRejeicao = false;
+  // Abre modal de rejeição
+  abrirModalRejeicao(solicitacao: Solicitacao) {
+    const modalRef = this.modalService.open(ModalMostrarOrcamentoComponent);
+    modalRef.componentInstance.solicitacao = solicitacao;
   }
 }
