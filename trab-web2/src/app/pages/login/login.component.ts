@@ -1,7 +1,3 @@
-<<<<<<< HEAD
-=======
-
->>>>>>> 70fe37fede46dbd004bc8c8b9e13b7e140dd5df0
 // login.component.ts
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';

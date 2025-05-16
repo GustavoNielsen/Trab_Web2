@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { RouterModule, RouterOutlet } from '@angular/router';
 import { AutocadastroComponent } from "./pages/autocadastro/autocadastro.component";
 import { MostrarOrcamentoComponent } from "./pages/mostrar-orcamento/mostrar-orcamento.component";
 import { PaginaInicialClienteComponent } from './pages/pagina-inicial-cliente/pagina-inicial-cliente.component';
@@ -17,6 +17,8 @@ import { CadastrofuncionarioComponent } from './pages/cadastrofuncionario/cadast
 import { VisualizarservicoComponent } from './pages/visualizarservico/visualizarservico.component';
 import { CadastroequipamentoComponent } from './pages/cadastroequipamento/cadastroequipamento.component';
 import { RelatorioreceitasComponent } from './pages/relatorioreceitas/relatorioreceitas.component';
+import { VisualisarservicoComponent } from './pages/visualisarservico/visualisarservico.component';
+
 @Component({
   selector: 'app-root',
   imports: [
@@ -49,11 +51,6 @@ export class AppComponent {
   get cpf(): string {
     return this.clienteService.cpfLogado;
   }
-
-  mostrarNavbar(): boolean {
-    return this.exibirNavbar;
-  }
-}
 
   mostrarNavbar(): boolean {
     return this.exibirNavbar;

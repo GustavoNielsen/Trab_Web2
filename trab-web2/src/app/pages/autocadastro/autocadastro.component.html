@@ -1,27 +1,7 @@
-
 <div class="container mt-5">
   <h2 class="mb-4">Autocadastro</h2>
   <form (ngSubmit)="inserir()" #formCadastro="ngForm">
 
-    <!-- Dados Pessoais -->
-    <div class="mb-3">
-      <label for="cpf" class="form-label">CPF</label>
-      <input
-        type="text"
-        class="form-control"
-        id="cpf"
-        placeholder="Digite seu CPF"
-        [(ngModel)]="cliente.cpf"
-        name="cpf"
-        required
-        mask="000.000.000-00"
-        #cpfModel="ngModel">
-      <div *ngIf="cpfModel.invalid && (cpfModel.dirty || cpfModel.touched)" class="text-danger">
-        CPF no formato inválido. Utilize: 000.000.000-00.
-  <h2 class="mb-4">Autocadastro</h2>
-  <form (ngSubmit)="inserir()" #formCadastro="ngForm">
-
-    <!-- Dados Pessoais -->
     <div class="mb-3">
       <label for="cpf" class="form-label">CPF</label>
       <input
@@ -52,6 +32,7 @@
         #nomeModel="ngModel">
       <div *ngIf="nomeModel.invalid && (nomeModel.dirty || nomeModel.touched)" class="text-danger">
         Informe seu nome completo.
+      </div>
     </div>
 
     <div class="mb-3">
@@ -85,8 +66,7 @@
         Insira um e-mail válido.
       </div>
     </div>
-    
-    <!-- Novo campo Senha -->
+
     <div class="mb-3">
       <label for="senha" class="form-label">Senha</label>
       <input
@@ -103,7 +83,6 @@
       </div>
     </div>
 
-    <!-- Endereço -->
     <h4 class="mt-4">Endereço</h4>
     <div class="row mb-3">
       <div class="col-md-4">
@@ -197,8 +176,7 @@
           readonly>
       </div>
     </div>
-    
-    <!-- Contato -->
+
     <div class="mb-3">
       <label for="telefone" class="form-label">Telefone</label>
       <input
@@ -215,7 +193,7 @@
         Telefone no formato inválido. Utilize: (00) 00000-0000.
       </div>
     </div>
-    
+
     <button type="submit" class="btn btn-primary" [disabled]="formCadastro.invalid">Cadastrar</button>
   </form>
 </div>
