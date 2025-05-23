@@ -1,4 +1,4 @@
-// src/app/pages/visualisarservico/visualisarservico.component.ts
+// src/app/pages/visualizarservico/visualizarservico.component.ts
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, ActivatedRoute } from '@angular/router';
@@ -9,17 +9,17 @@ import { NavbarComponent } from '../navbar/navbar.component';
 import { FuncionarioService } from '../../services/funcionario.service';
 
 @Component({
-  selector: 'app-visualisarservico',
+  selector: 'app-visualizarservico',
   standalone: true,
   imports: [
     CommonModule,      // para *ngIf, date pipe, etc.
     RouterModule,      // para [routerLink] e directives de rota
     NavbarComponent    // seu componente de navbar
   ],
-  templateUrl: './visualisarservico.component.html',
-  styleUrls: ['./visualisarservico.component.css']  // note o plural
+  templateUrl: './visualizarservico.component.html',
+  styleUrls: ['./visualizarservico.component.css']  // note o plural
 })
-export class VisualisarservicoComponent implements OnInit {
+export class VisualizarservicoComponent implements OnInit {
   solicitacao?: Solicitacao;
 
   constructor(
