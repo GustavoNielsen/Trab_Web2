@@ -3,44 +3,58 @@ package server.usuario.entity;
 import java.io.Serializable;
 import java.util.Objects;
 
-import server.usuario.cargos.cargos_usuario;
+import jakarta.persistence.*;
 
-public class usuario implements Serializable {
+
+@Entity
+@Table(name="cliente")
+public class cliente extends usuario implements Serializable
+{
 	private static final long serialVersionUID = 1L;
 
-	private Long id;
-
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long idCliente;
+	
 	private String endereco;
 	private String senha;
 	private String email;
 	private String nome;
 	private String cpf;
 	private String telefone;
-	private Integer perfil;
 
-	public usuario() {
+	public cliente() {
 		super();
 	}
 
-	public usuario(Long id, String endereco, String senha, String email, String nome, String cpf,
-			String telefone, cargos_usuario perfil) {
+	public cliente(String endereco, String senha, String email, String nome, String cpf, String telefone) {
 		super();
-		this.id = id;
 		this.endereco = endereco;
 		this.senha = senha;
 		this.email = email;
 		this.nome = nome;
 		this.cpf = cpf;
 		this.telefone = telefone;
-		setPerfil(perfil);
+	}
+	
+	public cliente(Long id, String endereco, String senha, String email, String nome, String cpf, String telefone) {
+		super();
+		this.idCliente = id;
+		this.endereco = endereco;
+		this.senha = senha;
+		this.email = email;
+		this.nome = nome;
+		this.cpf = cpf;
+		this.telefone = telefone;
 	}
 
-	public Long getId() {
-		return id;
+
+	public Long getIdCliente() {
+		return idCliente;
 	}
 
-	public void setId(Long id) {
-		this.id = id;
+	public void setIdCliente(Long idCliente) {
+		this.idCliente = idCliente;
 	}
 
 	public String getEndereco() {
@@ -91,19 +105,9 @@ public class usuario implements Serializable {
 		this.telefone = telefone;
 	}
 
-	public cargos_usuario getPerfil() {
-		return cargos_usuario.valueOf(perfil);
-	}
-
-	public void setPerfil(cargos_usuario perfil) {
-		if(perfil != null) {
-			this.perfil = perfil.getCode();
-		}
-	}
-
 	@Override
 	public int hashCode() {
-		return Objects.hash(id);
+		return Objects.hash(idCliente);
 	}
 
 	@Override
@@ -114,8 +118,9 @@ public class usuario implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Usuario other = (Usuario) obj;
-		return Objects.equals(id, other.id);
+		cliente other = (cliente) obj;
+		return Objects.equals(idCliente, other.idCliente);
 	}
 
+	
 }
