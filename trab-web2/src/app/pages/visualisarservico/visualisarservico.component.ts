@@ -6,6 +6,7 @@ import { ParamMap } from '@angular/router';
 import { Solicitacao } from '../../shared/models/solicitacao';
 import { SolicitacaoService } from '../../services/soliciticao.service';
 import { NavbarComponent } from '../navbar/navbar.component';
+import { FuncionarioService } from '../../services/funcionario.service';
 
 @Component({
   selector: 'app-visualisarservico',
@@ -23,7 +24,8 @@ export class VisualisarservicoComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,          // só injetado, não listado em imports
-    private service: SolicitacaoService
+    private service: SolicitacaoService,
+    private servicefunc: FuncionarioService
   ) {}
 
   ngOnInit(): void {
@@ -33,6 +35,12 @@ export class VisualisarservicoComponent implements OnInit {
       this.solicitacao = this.service.buscarSolicitacaoPorDataHora(dataHora);
     });
   }
+
+    getNomeFuncionario(id?: string): string {
+      if (!id) { return ''; }
+      const func = this.servicefunc.buscarPorId(id);
+      return func ? func.nome : id;
+    }
 
   resgatar(): void {
     if (!this.solicitacao) return;
@@ -44,4 +52,6 @@ export class VisualisarservicoComponent implements OnInit {
     );
     this.solicitacao = this.service.buscarSolicitacaoPorDataHora(this.solicitacao.dataHora);
   }
+
+  
 }

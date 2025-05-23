@@ -50,4 +50,8 @@ export class FuncionarioService {
           localStorage.setItem(LS_CHAVE, JSON.stringify(lista));
         }
       }
+
+        buscarPorId(id: string): Funcionario | undefined {
+          return this.listarTodos().find(f => f.dataNascimento === id);
+        }
 }

@@ -38,7 +38,7 @@
       >
         {{ h.estado }}
       </span>
-      <span *ngIf="h.funcionarioId">(por {{ h.funcionarioId }})</span>
+      <span *ngIf="h.funcionarioId">(por {{ getNomeFuncionario(h.funcionarioId) }})</span>
       <div *ngIf="h.observacao"><em>{{ h.observacao }}</em></div>
     </li>
   </ul>
