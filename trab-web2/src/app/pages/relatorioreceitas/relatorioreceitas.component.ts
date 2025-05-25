@@ -1,3 +1,4 @@
+// relatorioreceitas.component.ts
 import { Component, OnInit } from '@angular/core';
 import { jsPDF } from 'jspdf';
 import autoTable from 'jspdf-autotable';
@@ -5,6 +6,7 @@ import { SolicitacaoService } from '../../services/soliciticao.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { NavbarFuncionarioComponent } from '../navbarfuncionario/navbarfuncionario.component';
+import { Solicitacao } from '../../shared/models/solicitacao';
 
 interface ReceitaPorDia {
   data: string;
@@ -29,26 +31,25 @@ export class RelatorioreceitasComponent implements OnInit {
     this.atualizarRelatorio();
   }
 
-  /** Retorna somente as solicitações com pagamento, aplicando filtro de data se solicitado */
-  private obterSolicitacoesFiltradas(comFiltroData: boolean): any[] {
+  /** Agora com parsing local completo */
+  private obterSolicitacoesFiltradas(comFiltroData: boolean): Solicitacao[] {
     const todas = this.solicitacaoService.recuperarSolicitacoes();
     return todas.filter(s => {
       if (!s.dataHoraPagamento) return false;
-      const dt = new Date(s.dataHoraPagamento);
+      const d = new Date(s.dataHoraPagamento);
+
       if (comFiltroData && this.dataInicial) {
-        const start = new Date(this.dataInicial);
-        if (dt < start) return false;
+        const inicio = new Date(`${this.dataInicial}T00:00:00`);
+        if (d < inicio) return false;
       }
       if (comFiltroData && this.dataFinal) {
-        const end = new Date(this.dataFinal);
-        end.setHours(23,59,59,999);
-        if (dt > end) return false;
+        const fim = new Date(`${this.dataFinal}T23:59:59.999`);
+        if (d > fim) return false;
       }
       return true;
     });
   }
 
-  /** Atualiza a tabela HTML de receitas por dia */
   atualizarRelatorio(): void {
     const filtradas = this.obterSolicitacoesFiltradas(true);
     const mapa = new Map<string, number>();
@@ -68,7 +69,6 @@ export class RelatorioreceitasComponent implements OnInit {
       });
   }
 
-  /** Gera PDF com agrupamento por dia (RF019) */
   gerarPDFDiario(): void {
     const dados = this.obterSolicitacoesFiltradas(true);
     const mapa = new Map<string, number>();
@@ -93,9 +93,8 @@ export class RelatorioreceitasComponent implements OnInit {
     doc.save('relatorio-receitas-dia.pdf');
   }
 
-  /** Gera PDF com agrupamento por categoria desde sempre (RF020) */
   gerarPDFCategoria(): void {
-    // Sempre considera todas as solicitações pagas, ignorando filtro de data
+    // aqui não usamos filtro de data para RF020
     const todas = this.obterSolicitacoesFiltradas(false);
     const mapaCat = new Map<string, number>();
 
