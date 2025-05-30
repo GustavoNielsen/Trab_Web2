@@ -9,7 +9,7 @@ import { NavbarComponent } from '../navbar/navbar.component';
 import { FuncionarioService } from '../../services/funcionario.service';
 
 @Component({
-  selector: 'app-vizualisarservico',
+  selector: 'app-visualizarservico',
   standalone: true,
   imports: [
     CommonModule,      // para *ngIf, date pipe, etc.
