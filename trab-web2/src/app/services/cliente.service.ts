@@ -38,6 +38,7 @@ export class ClienteService {
   }
 
   inserir(cliente: Cliente): void {
+    cliente.id = new Date().getTime();
     const clientes = this.listarTodos();
     clientes.push(cliente);
     localStorage.setItem(LS_CHAVE, JSON.stringify(clientes));

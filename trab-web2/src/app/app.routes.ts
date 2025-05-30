@@ -12,15 +12,13 @@ import { PagarservicoComponent } from './pages/pagarservico/pagarservico.compone
 import { CadastrofuncionarioComponent } from './pages/cadastrofuncionario/cadastrofuncionario.component';
 import { CadastroequipamentoComponent } from './pages/cadastroequipamento/cadastroequipamento.component';
 import { RelatorioreceitasComponent } from './pages/relatorioreceitas/relatorioreceitas.component';
+import { AuthGuard } from './auth/auth.guard';
 import { VisualizarservicoComponent } from './pages/visualizarservico/visualizarservico.component';
-
-
+import { ListarClientesComponent } from './pages/listar-clientes/listar-clientes.component';
 
 export const routes: Routes = [
     {path:'', redirectTo: 'login', pathMatch:'full'},
-    {path:'', redirectTo: 'login', pathMatch:'full'},
     {path: 'autocadastro', component: AutocadastroComponent},
-    {path: 'mostrar-orcamento/:dataHora', component: MostrarOrcamentoComponent},
     {path: 'mostrar-orcamento/:dataHora', component: MostrarOrcamentoComponent},
     {path: 'paginainicialcliente', component: PaginaInicialClienteComponent},
     {path: 'solicitamanutecao', component: SolicitaManutencaoComponent},
@@ -31,9 +29,8 @@ export const routes: Routes = [
     {path: 'manutencao/:dataHora', component: EfetuarManutencaoComponent},
     {path: 'pagarservico/:dataHora', component: PagarservicoComponent },
     {path: 'cadastrofuncionario', component: CadastrofuncionarioComponent},
-    {path: 'cadastrarequipamento', component: CadastroequipamentoComponent},
     {path: 'visualizar-servico/:dataHora', component: VisualizarservicoComponent },
-    {path: 'relatorioreceita', component: RelatorioreceitasComponent}
-
-
+    {path: 'cadastrarequipamento', component: CadastroequipamentoComponent},
+    {path: 'relatorioreceita', component: RelatorioreceitasComponent},
+    {path: 'listarclientes', component: ListarClientesComponent}
 ];

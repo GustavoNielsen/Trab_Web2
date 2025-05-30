@@ -3,44 +3,49 @@ package server.usuario.entity;
 import java.io.Serializable;
 import java.util.Objects;
 
-import server.usuario.cargos.cargos_usuario;
+import jakarta.persistence.*;
 
-public class usuario implements Serializable {
+
+@Entity
+@Table(name="funcionario")
+public class funcionario implements Serializable
+{
 	private static final long serialVersionUID = 1L;
 
-	private Long id;
-
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long idFuncionario;
+	
 	private String endereco;
 	private String senha;
 	private String email;
 	private String nome;
 	private String cpf;
 	private String telefone;
-	private Integer perfil;
+	private String dataNascimento;
 
-	public usuario() {
+	public funcionario() {
 		super();
 	}
 
-	public usuario(Long id, String endereco, String senha, String email, String nome, String cpf,
-			String telefone, cargos_usuario perfil) {
+	public funcionario(Long id, String endereco, String senha, String email, String nome, String cpf, String telefone, String dataNascimento) {
 		super();
-		this.id = id;
+		this.idFuncionario = id;
 		this.endereco = endereco;
 		this.senha = senha;
 		this.email = email;
 		this.nome = nome;
 		this.cpf = cpf;
 		this.telefone = telefone;
-		setPerfil(perfil);
+		this.dataNascimento = dataNascimento;
 	}
 
-	public Long getId() {
-		return id;
+	public Long getIdFuncionario() {
+		return idFuncionario;
 	}
 
-	public void setId(Long id) {
-		this.id = id;
+	public void setIdFuncionario(Long idFuncionario) {
+		this.idFuncionario = idFuncionario;
 	}
 
 	public String getEndereco() {
@@ -91,19 +96,17 @@ public class usuario implements Serializable {
 		this.telefone = telefone;
 	}
 
-	public cargos_usuario getPerfil() {
-		return cargos_usuario.valueOf(perfil);
+	public String getDataNascimento() {
+		return dataNascimento;
 	}
 
-	public void setPerfil(cargos_usuario perfil) {
-		if(perfil != null) {
-			this.perfil = perfil.getCode();
-		}
+	public void setDataNascimento(String dataNascimento) {
+		this.dataNascimento = dataNascimento;
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(id);
+		return Objects.hash(idFuncionario);
 	}
 
 	@Override
@@ -114,8 +117,9 @@ public class usuario implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Usuario other = (Usuario) obj;
-		return Objects.equals(id, other.id);
+		funcionario other = (funcionario) obj;
+		return Objects.equals(idFuncionario, other.idFuncionario);
 	}
-
+	
+	
 }

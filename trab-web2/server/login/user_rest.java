@@ -1,4 +1,4 @@
-package server;
+package server.login;
 
 public class user.rest {
     import java.util.ArrayList;

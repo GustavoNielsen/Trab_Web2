@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
-import { Cliente } from '../../shared/models/cliente';
+import { Cliente } from '../../shared/models';
 import { NgxMaskDirective, NgxMaskPipe, provideNgxMask } from 'ngx-mask';
 import { ClienteService } from '../../services/cliente.service';
 import { HttpClientModule } from '@angular/common/http';
@@ -26,7 +26,6 @@ export class AutocadastroComponent {
   ) {}
 
   inserir(): void {
-    this.cliente.id = new Date().getTime();
     this.clienteService.inserir(this.cliente);
     alert('Cliente cadastrado com sucesso!');
     // Redireciona para a tela de login após o cadastro
