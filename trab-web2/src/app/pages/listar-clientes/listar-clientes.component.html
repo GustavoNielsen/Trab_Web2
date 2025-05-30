@@ -11,10 +11,16 @@
 			</button>
 		</th>
 	</tr>
-<tr>
+<tr *ngFor="let cliente of listaClientes">
 	<td></td>
-	<td></td>
+	<td>
+		<span>{{cliente.nome}}</span>
+		<p *ngIf="listaClientes.length === 0">Nenhum cliente cadastrado.</p>
+	</td>
 	<td class="text-center" style="width: 300px; border: 1px;">
+	<a href="#" title="Ver" class="btn btn-xs btn-default">
+		<i class="fa fa-eye"></i> Ver
+	</a>
 	<a href="#" title="Editar" class="btn btn-xs btn-info">
 		<i class="fa fa-edit"></i> Editar
 	</a>
@@ -25,5 +31,5 @@
 </tr>
 </tbody>
 </table>
-<p> Nenhuma pessoa cadastrada. </p>	
+
 

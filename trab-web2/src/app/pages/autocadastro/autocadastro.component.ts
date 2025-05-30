@@ -26,7 +26,6 @@ export class AutocadastroComponent {
   ) {}
 
   inserir(): void {
-    this.cliente.id = new Date().getTime();
     this.clienteService.inserir(this.cliente);
     alert('Cliente cadastrado com sucesso!');
     // Redireciona para a tela de login após o cadastro
