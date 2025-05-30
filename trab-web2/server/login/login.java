@@ -1,4 +1,4 @@
-package src.app.server;
+package server.login;
 
 public class Login {
 	private String email;
@@ -29,6 +29,4 @@ public class Login {
 	public void setSenha(String senha) {
 		this.senha = senha;
 	}
-	
-	
 }

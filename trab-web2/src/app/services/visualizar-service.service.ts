@@ -1,7 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Solicitacao } from '../models/solicitacao.model';
+//import { Solicitacao } from '../models/solicitacao.model';
+import { Solicitacao } from '../shared/models/solicitacao';
 
 @Injectable({
   providedIn: 'root'
