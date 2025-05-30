@@ -15,10 +15,13 @@
         class="form-control"
         [(ngModel)]="funcionario.email"
         required
+        email
+        [disabled]="isLoading"
         #emailIns="ngModel"
       >
       <div *ngIf="emailIns.invalid && (emailIns.dirty || emailIns.touched)" class="text-danger">
-        E-mail inválido.
+        <span *ngIf="emailIns.errors?.['required']">E-mail é obrigatório.</span>
+        <span *ngIf="emailIns.errors?.['email']">E-mail deve ter um formato válido.</span>
       </div>
     </div>
 
@@ -31,10 +34,13 @@
         class="form-control"
         [(ngModel)]="funcionario.nome"
         required
+        minlength="2"
+        [disabled]="isLoading"
         #nomeIns="ngModel"
       >
       <div *ngIf="nomeIns.invalid && (nomeIns.dirty || nomeIns.touched)" class="text-danger">
-        Informe o nome completo.
+        <span *ngIf="nomeIns.errors?.['required']">Nome é obrigatório.</span>
+        <span *ngIf="nomeIns.errors?.['minlength']">Nome deve ter pelo menos 2 caracteres.</span>
       </div>
     </div>
 
@@ -46,13 +52,15 @@
         name="dataNascimento"
         class="form-control"
         placeholder="DD/MM/AAAA"
-        mask="00/00/0000"
+        pattern="\d{2}/\d{2}/\d{4}"
         [(ngModel)]="funcionario.dataNascimento"
         required
+        [disabled]="isLoading"
         #dnIns="ngModel"
       >
       <div *ngIf="dnIns.invalid && (dnIns.dirty || dnIns.touched)" class="text-danger">
-        Data de nascimento inválida.
+        <span *ngIf="dnIns.errors?.['required']">Data de nascimento é obrigatória.</span>
+        <span *ngIf="dnIns.errors?.['pattern']">Use o formato DD/MM/AAAA.</span>
       </div>
     </div>
 
@@ -65,15 +73,19 @@
         class="form-control"
         [(ngModel)]="funcionario.senha"
         required
+        minlength="6"
+        [disabled]="isLoading"
         #senhaIns="ngModel"
       >
       <div *ngIf="senhaIns.invalid && (senhaIns.dirty || senhaIns.touched)" class="text-danger">
-        A senha é obrigatória.
+        <span *ngIf="senhaIns.errors?.['required']">Senha é obrigatória.</span>
+        <span *ngIf="senhaIns.errors?.['minlength']">Senha deve ter pelo menos 6 caracteres.</span>
       </div>
     </div>
 
-    <button type="submit" class="btn btn-success" [disabled]="formInsercao.invalid">
-      Cadastrar
+    <button type="submit" class="btn btn-success" [disabled]="formInsercao.invalid || isLoading">
+      <span *ngIf="isLoading" class="spinner-border spinner-border-sm me-2"></span>
+      {{ isLoading ? 'Cadastrando...' : 'Cadastrar' }}
     </button>
   </form>
 
@@ -84,6 +96,8 @@
       class="form-control"
       [(ngModel)]="funcionarioSelecionado"
       name="funcionarioSelecionado"
+      [disabled]="isLoading"
+      (ngModelChange)="selecionar($event)"
     >
       <option [ngValue]="null">Selecione...</option>
       <option *ngFor="let f of funcionarios" [ngValue]="f">
@@ -116,10 +130,13 @@
           class="form-control"
           [(ngModel)]="emailParaEdicao"
           required
+          email
+          [disabled]="isLoading"
           #emailUpd="ngModel"
         >
         <div *ngIf="emailUpd.invalid && (emailUpd.dirty || emailUpd.touched)" class="text-danger">
-          E-mail inválido.
+          <span *ngIf="emailUpd.errors?.['required']">E-mail é obrigatório.</span>
+          <span *ngIf="emailUpd.errors?.['email']">E-mail deve ter um formato válido.</span>
         </div>
       </div>
 
@@ -133,10 +150,13 @@
           class="form-control"
           [(ngModel)]="nomeParaEdicao"
           required
+          minlength="2"
+          [disabled]="isLoading"
           #nomeUpd="ngModel"
         >
         <div *ngIf="nomeUpd.invalid && (nomeUpd.dirty || nomeUpd.touched)" class="text-danger">
-          Informe o nome completo.
+          <span *ngIf="nomeUpd.errors?.['required']">Nome é obrigatório.</span>
+          <span *ngIf="nomeUpd.errors?.['minlength']">Nome deve ter pelo menos 2 caracteres.</span>
         </div>
       </div>
 
@@ -149,13 +169,15 @@
           name="dataNascimentoAtualizado"
           class="form-control"
           placeholder="DD/MM/AAAA"
-          mask="00/00/0000"
+          pattern="\d{2}/\d{2}/\d{4}"
           [(ngModel)]="dataNascimentoParaEdicao"
           required
+          [disabled]="isLoading"
           #dnUpd="ngModel"
         >
         <div *ngIf="dnUpd.invalid && (dnUpd.dirty || dnUpd.touched)" class="text-danger">
-          Data de nascimento inválida.
+          <span *ngIf="dnUpd.errors?.['required']">Data de nascimento é obrigatória.</span>
+          <span *ngIf="dnUpd.errors?.['pattern']">Use o formato DD/MM/AAAA.</span>
         </div>
       </div>
 
@@ -163,30 +185,38 @@
       <div class="mb-3">
         <label for="senhaAtualizado" class="form-label">Senha</label>
         <input
-          type="text"
+          type="password"
           id="senhaAtualizado"
           name="senhaAtualizado"
           class="form-control"
           [(ngModel)]="senhaParaEdicao"
           required
+          minlength="6"
+          [disabled]="isLoading"
           #senhaUpd="ngModel"
         >
         <div *ngIf="senhaUpd.invalid && (senhaUpd.dirty || senhaUpd.touched)" class="text-danger">
-          A senha é obrigatória.
+          <span *ngIf="senhaUpd.errors?.['required']">Senha é obrigatória.</span>
+          <span *ngIf="senhaUpd.errors?.['minlength']">Senha deve ter pelo menos 6 caracteres.</span>
         </div>
       </div>
 
-      <button type="submit" class="btn btn-primary me-2" [disabled]="formAtualizacao.invalid">
-        Confirmar Atualização
+      <button type="submit" class="btn btn-primary me-2" [disabled]="formAtualizacao.invalid || isLoading">
+        <span *ngIf="isLoading" class="spinner-border spinner-border-sm me-2"></span>
+        {{ isLoading ? 'Atualizando...' : 'Confirmar Atualização' }}
       </button>
-      <button type="button" class="btn btn-secondary" (click)="novo()">Cancelar</button>
+      <button type="button" class="btn btn-secondary" [disabled]="isLoading" (click)="cancelarEdicao()">Cancelar</button>
     </form>
 
     <!-- Confirmação Remoção -->
     <div *ngIf="exibirConfirmacaoRemocao" class="alert alert-danger">
-      <p>Remover "<strong>{{ funcionarioSelecionado.nome }}</strong>"?</p>
-      <button class="btn btn-danger me-2" (click)="remover()">Sim, remover</button>
-      <button class="btn btn-secondary" (click)="novo()">Cancelar</button>
+      <p>Tem certeza que deseja remover "<strong>{{ funcionarioSelecionado.nome }}</strong>"?</p>
+      <p class="text-muted small">Esta ação não pode ser desfeita.</p>
+      <button class="btn btn-danger me-2" [disabled]="isLoading" (click)="remover()">
+        <span *ngIf="isLoading" class="spinner-border spinner-border-sm me-2"></span>
+        {{ isLoading ? 'Removendo...' : 'Sim, remover' }}
+      </button>
+      <button class="btn btn-secondary" [disabled]="isLoading" (click)="cancelarEdicao()">Cancelar</button>
     </div>
   </div>
 </div>
