@@ -14,25 +14,26 @@ import { VisualizarservicoComponent } from './pages/visualizarservico/visualizar
 import { CadastroequipamentoComponent } from './pages/cadastroequipamento/cadastroequipamento.component';
 import { RelatorioreceitasComponent } from './pages/relatorioreceitas/relatorioreceitas.component';
 import { AuthGuard } from './auth/auth.guard';
+import { ListarClientesComponent } from './pages/listar-clientes/listar-clientes.component';
 
 export const routes: Routes = [
   { path: '',                redirectTo: 'login',             pathMatch: 'full' },
   { path: 'login',           component: LoginComponent },
   { path: 'autocadastro',    component: AutocadastroComponent },
-
+  
   // -- todas as demais rotas protegidas --
-  { path: 'paginainicialcliente',           component: PaginaInicialClienteComponent,     canActivate: [AuthGuard] },
-  { path: 'paginainicialfuncionario',       component: PaginaInicialFuncionarioComponent, canActivate: [AuthGuard] },
-  { path: 'solicitamanutecao',              component: SolicitaManutencaoComponent,       canActivate: [AuthGuard] },
-  { path: 'visualizarsolicitacao',          component: VisualizarSolicitacaoComponent,    canActivate: [AuthGuard] },
-  { path: 'mostrar-orcamento/:dataHora',    component: MostrarOrcamentoComponent,         canActivate: [AuthGuard] },
-  { path: 'orcamento/:dataHora/:id',        component: EfetuarOrcamentoComponent,         canActivate: [AuthGuard] },
-  { path: 'manutencao/:dataHora',           component: EfetuarManutencaoComponent,        canActivate: [AuthGuard] },
-  { path: 'pagarservico/:dataHora',         component: PagarservicoComponent,             canActivate: [AuthGuard] },
-  { path: 'cadastrofuncionario',            component: CadastrofuncionarioComponent,      canActivate: [AuthGuard] },
-  { path: 'visualizar-servico/:dataHora',   component: VisualizarservicoComponent,        canActivate: [AuthGuard] },
-  { path: 'cadastrarequipamento',           component: CadastroequipamentoComponent,      canActivate: [AuthGuard] },
-  { path: 'relatorioreceita',               component: RelatorioreceitasComponent,        canActivate: [AuthGuard] },
+  { path: 'paginainicialcliente',           component: PaginaInicialClienteComponent,      canActivate: [AuthGuard]},
+  { path: 'paginainicialfuncionario',       component: PaginaInicialFuncionarioComponent,  canActivate: [AuthGuard]},
+  { path: 'solicitamanutecao',              component: SolicitaManutencaoComponent,        canActivate: [AuthGuard]},
+  { path: 'visualizarsolicitacao',          component: VisualizarSolicitacaoComponent,     canActivate: [AuthGuard]},
+  { path: 'mostrar-orcamento/:dataHora',    component: MostrarOrcamentoComponent,          canActivate: [AuthGuard]},
+  { path: 'manutencao/:dataHora',           component: EfetuarManutencaoComponent,         canActivate: [AuthGuard]},
+  { path: 'pagarservico/:dataHora',         component: PagarservicoComponent,              canActivate: [AuthGuard]},
+  { path: 'cadastrofuncionario',            component: CadastrofuncionarioComponent,       canActivate: [AuthGuard]},
+  { path: 'visualizar-servico/:dataHora',   component: VisualizarservicoComponent,         canActivate: [AuthGuard]},
+  { path: 'cadastrarequipamento',           component: CadastroequipamentoComponent,       canActivate: [AuthGuard]},
+  { path: 'relatorioreceita',               component: RelatorioreceitasComponent,         canActivate: [AuthGuard]},
+  { path: 'listarclientes',                 component: ListarClientesComponent,           canActivate: [AuthGuard] },
 
   // qualquer outra
   { path: '**', redirectTo: 'login' }

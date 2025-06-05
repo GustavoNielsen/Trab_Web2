@@ -20,10 +20,7 @@
 
   <h4 class="mb-3">Histórico de Atualizações</h4>
   <ul class="list-group mb-4">
-    <li
-      class="list-group-item"
-      *ngFor="let h of solicitacao.historicoSolicitacao"
-    >
+    <li class="list-group-item" *ngFor="let h of solicitacao.historicoSolicitacao">
       {{ h.dataHora | date : "dd/MM/yyyy HH:mm" }} –
       <span
         class="badge"
@@ -54,14 +51,13 @@
             h.estado === 'Finalizada'
               ? '#fff'
               : '#000'
-        }"
-      >
+        }">
         {{ h.estado }}
       </span>
       <span *ngIf="h.funcionarioId">(por {{ h.funcionarioId }})</span>
       <div *ngIf="h.observacao">
         <em>{{ h.observacao }}</em>
-      </div
+      </div>
     </li>
   </ul>
 

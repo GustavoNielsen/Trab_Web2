@@ -1,0 +1,114 @@
+<div class="modal-header">
+<h4 class="modal-title" id="modal-basic-title">Cadastro de cliente</h4>
+<button type="button" class="btn-close" aria-label="Close" (click)="fechar()"></button>
+</div>
+<div class="modal-body">
+<form (ngSubmit)="atualizarCliente()" #formCadastro="ngForm" class="p-3">
+
+  <!-- CPF e Nome -->
+  <div class="row mb-3">
+    <div class="col-md-6">
+      <label class="form-label">CPF</label>
+      <input type="text" class="form-control" placeholder="000.000.000-00"
+        [(ngModel)]="cliente.cpf" name="cpf" required mask="000.000.000-00" #cpfModel="ngModel">
+      <div *ngIf="cpfModel.invalid && (cpfModel.dirty || cpfModel.touched)" class="text-danger small">
+        CPF inválido.
+      </div>
+    </div>
+    <div class="col-md-6">
+      <label class="form-label">Nome</label>
+      <input type="text" class="form-control" placeholder="Nome completo"
+        [(ngModel)]="cliente.nome" name="nome" required #nomeModel="ngModel">
+      <div *ngIf="nomeModel.invalid && (nomeModel.dirty || nomeModel.touched)" class="text-danger small">
+        Nome obrigatório.
+      </div>
+    </div>
+  </div>
+
+  <!-- Email e Senha -->
+  <div class="row mb-3">
+    <div class="col-md-6">
+      <label class="form-label">E-mail</label>
+      <input type="email" class="form-control" placeholder="email@exemplo.com"
+        [(ngModel)]="cliente.email" name="email" required #emailModel="ngModel">
+      <div *ngIf="emailModel.invalid && (emailModel.dirty || emailModel.touched)" class="text-danger small">
+        E-mail inválido.
+      </div>
+    </div>
+    <div class="col-md-6">
+      <label class="form-label">Senha</label>
+      <input type="password" class="form-control" placeholder="••••••••"
+        [(ngModel)]="cliente.senha" name="senha" required #senhaModel="ngModel">
+      <div *ngIf="senhaModel.invalid && (senhaModel.dirty || senhaModel.touched)" class="text-danger small">
+        Senha obrigatória.
+      </div>
+    </div>
+  </div>
+
+  <!-- CEP e Endereço -->
+  <div class="row mb-3">
+    <div class="col-md-4">
+      <label class="form-label">CEP</label>
+      <input type="text" class="form-control" placeholder="00000-000"
+        [(ngModel)]="cliente.cep" name="cep" required mask="00000-000"
+        (blur)="pegaEndereco(cliente.cep)" #cepModel="ngModel">
+      <div *ngIf="cepModel.invalid && (cepModel.dirty || cepModel.touched)" class="text-danger small">
+        CEP inválido.
+      </div>
+    </div>
+    <div class="col-md-8">
+      <label class="form-label">Rua</label>
+      <input type="text" class="form-control" [(ngModel)]="cliente.rua" name="rua" readonly>
+    </div>
+  </div>
+
+  <!-- Número e Complemento -->
+  <div class="row mb-3">
+    <div class="col-md-4">
+      <label class="form-label">Número</label>
+      <input type="text" class="form-control" placeholder="Número"
+        [(ngModel)]="cliente.numero" name="numero" required #numeroModel="ngModel">
+    </div>
+    <div class="col-md-8">
+      <label class="form-label">Complemento</label>
+      <input type="text" class="form-control" placeholder="Complemento"
+        [(ngModel)]="cliente.complemento" name="complemento">
+    </div>
+  </div>
+
+  <!-- Bairro, Cidade e Estado -->
+  <div class="row mb-3">
+    <div class="col-md-4">
+      <label class="form-label">Bairro</label>
+      <input type="text" class="form-control" [(ngModel)]="cliente.bairro" name="bairro" readonly>
+    </div>
+    <div class="col-md-4">
+      <label class="form-label">Cidade</label>
+      <input type="text" class="form-control" [(ngModel)]="cliente.cidade" name="cidade" readonly>
+    </div>
+    <div class="col-md-4">
+      <label class="form-label">Estado</label>
+      <input type="text" class="form-control" [(ngModel)]="cliente.estado" name="estado" readonly>
+    </div>
+  </div>
+
+  <!-- Telefone -->
+  <div class="mb-3">
+    <label class="form-label">Telefone</label>
+    <input type="text" class="form-control" placeholder="(00) 00000-0000"
+      [(ngModel)]="cliente.telefone" name="telefone" required mask="(00) 00000-0000" #telefoneModel="ngModel">
+    <div *ngIf="telefoneModel.invalid && (telefoneModel.dirty || telefoneModel.touched)" class="text-danger small">
+      Telefone inválido.
+    </div>
+  </div>
+
+  <!-- Botões -->
+  <div class="d-flex justify-content-end gap-2 mt-4">
+    <button type="submit" class="btn btn-success" [disabled]="formCadastro.invalid">Salvar</button>
+    <button type="button" class="btn btn-outline-dark" (click)="fechar()">Fechar</button>
+  </div>
+
+</form>
+
+</div>
+
