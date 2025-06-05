@@ -12,11 +12,12 @@ import { NavbarComponent } from './pages/navbar/navbar.component';
 import { Funcionario } from './shared/models/funcionario';
 import { EfetuarOrcamentoComponent } from './pages/efetuar-orcamento/efetuar-orcamento.component';
 import { EfetuarManutencaoComponent } from './pages/efetuar-manutencao/efetuar-manutencao.component';
-//import { PagarservicoComponent } from './pages/pagarservico/pagarservico.component';
-//import { CadastrofuncionarioComponent } from './pages/cadastrofuncionario/cadastrofuncionario.component';
-//import { VisualizarservicoComponent } from './pages/visualizarservico/visualizarservico.component';
+import { PagarservicoComponent } from './pages/pagarservico/pagarservico.component';
+import { CadastrofuncionarioComponent } from './pages/cadastrofuncionario/cadastrofuncionario.component';
+import { VisualizarservicoComponent } from './pages/visualizarservico/visualizarservico.component';
 import { CadastroequipamentoComponent } from './pages/cadastroequipamento/cadastroequipamento.component';
 import { RelatorioreceitasComponent } from './pages/relatorioreceitas/relatorioreceitas.component';
+import { ListarClientesComponent } from './pages/listar-clientes/listar-clientes.component';
 
 @Component({
   selector: 'app-root',
@@ -37,7 +38,8 @@ import { RelatorioreceitasComponent } from './pages/relatorioreceitas/relatorior
     CadastrofuncionarioComponent, 
     VisualizarservicoComponent, 
     CadastroequipamentoComponent, 
-    RelatorioreceitasComponent
+    RelatorioreceitasComponent,
+    ListarClientesComponent
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
