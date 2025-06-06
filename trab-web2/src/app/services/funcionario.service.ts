@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Funcionario } from '../shared/models/funcionario';
+import { Observable } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
 import { Solicitacao } from '../shared/models/solicitacao';
 
 const LS_CHAVE = "funcionarios";
@@ -7,49 +9,41 @@ const LS_CHAVE = "funcionarios";
   providedIn: 'root'
 })
 export class FuncionarioService {
+  private baseUrl = 'http://localhost:8080/api/funcionarios';
   private funcionarios: Funcionario[] = []; 
   private dataNascimento: string =''
   public idLogado: string = '';
 
-  constructor() { }
+  constructor(private http: HttpClient) { }
 
   set dataNascimentoLogado(dataNascimento: string) {
     this.idLogado = dataNascimento;
   }
 
 
-  listarTodos(): Funcionario[] {
-      const funcionarios = localStorage.getItem(LS_CHAVE);
-      return funcionarios ? JSON.parse(funcionarios) : [];
-    }
+  listarTodos(): Observable<Funcionario[]> {
+    return this.http.get<Funcionario[]>(this.baseUrl);
+  }
   
-    getFuncionario(email: string, senha: string): Funcionario | undefined {
-      this.funcionarios = this.listarTodos();
-      const funcionario = this.funcionarios.find(c => c.email === email && c.senha === senha);
-  
-      return funcionario;
-    }
+  buscarPorCpf(cpf: string): Observable<Funcionario> {
+    const url = `${this.baseUrl}/${cpf}`;
+    return this.http.get<Funcionario>(url);
+  }
 
-     inserir(funcionario: Funcionario): void {
-        const clientes = this.listarTodos();
-        clientes.push(funcionario);
-        localStorage.setItem(LS_CHAVE, JSON.stringify(clientes));
-      }
+  inserir(funcionario: Funcionario): Observable<Funcionario> {
+    return this.http.post<Funcionario>(this.baseUrl, funcionario);
+  }
 
-      remover(email: string): void {
-        let lista = this.listarTodos();
-        lista = lista.filter(f => f.email !== email);
-        localStorage.setItem(LS_CHAVE, JSON.stringify(lista));
-      }
+  remover(cpf: string): Observable<void> {
+    const url = `${this.baseUrl}/${cpf}`;
+    return this.http.delete<void>(url);
+  }
 
-      atualizar(emailAntigo: string, funcAtualizado: Funcionario): void {
-        const lista = this.listarTodos();
-        const idx = lista.findIndex(f => f.email === emailAntigo);
-        if (idx !== -1) {
-          lista[idx] = funcAtualizado;
-          localStorage.setItem(LS_CHAVE, JSON.stringify(lista));
-        }
-      }
+  atualizar(cpf: string, funcionario: Funcionario): Observable<Funcionario> {
+    const url = `${this.baseUrl}/${cpf}`;
+    return this.http.put<Funcionario>(url, funcionario);
+  }
+
 
         buscarPorId(id: string): Funcionario | undefined {
           return this.listarTodos().find(f => f.dataNascimento === id);
