@@ -1,213 +1,62 @@
+// src/app/shared/services/solicitacao.service.ts
 import { Injectable } from '@angular/core';
-import { Solicitacao } from '../shared/models/solicitacao';
-import { Historicosolicitacao } from '../shared/models/historicosolicitacao';
-import { FuncionarioService } from './funcionario.service';
+import { HttpClient, HttpParams } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { Solicitacao } from '../models/solicitacao';
+import { Historicosolicitacao } from '../models/historicosolicitacao';
 
 @Injectable({
   providedIn: 'root'
 })
 export class SolicitacaoService {
-  private readonly STORAGE_KEY = 'solicitacoes';
+  private baseUrl = 'http://localhost:8080/api/solicitacoes';
 
-  constructor() {
-    if (!localStorage.getItem(this.STORAGE_KEY)) {
-      localStorage.setItem(this.STORAGE_KEY, JSON.stringify([]));
-    }
+  constructor(private http: HttpClient) { }
+
+
+  inserir(solicitacao: Solicitacao): Observable<Solicitacao> {
+    return this.http.post<Solicitacao>(this.baseUrl, solicitacao);
   }
 
-  recuperarSolicitacoes(): Solicitacao[] {
-    const data = localStorage.getItem(this.STORAGE_KEY);
-    return data ? JSON.parse(data) as Solicitacao[] : [];
+  listarTodas(): Observable<Solicitacao[]> {
+    return this.http.get<Solicitacao[]>(this.baseUrl);
   }
 
-  private salvarSolicitacoes(solicitacoes: Solicitacao[]): void {
-    localStorage.setItem(this.STORAGE_KEY, JSON.stringify(solicitacoes));
+  listarPorCliente(cpf: string): Observable<Solicitacao[]> {
+    const url = `${this.baseUrl}/cliente/${cpf}`;
+    return this.http.get<Solicitacao[]>(url);
   }
 
-  listarSolicitacoesPorCpf(cpf: string): Solicitacao[] {
-    return this.recuperarSolicitacoes()
-      .filter(s => s.cpfCliente === cpf);
+  listarPorFuncionario(idFuncionario: number): Observable<Solicitacao[]> {
+    const url = `${this.baseUrl}/funcionario/${idFuncionario}`;
+    return this.http.get<Solicitacao[]>(url);
   }
 
-  listarSolicitacoesPorId(id: string): Solicitacao[] {
-    return this.recuperarSolicitacoes()
-      .filter(s => s.idFuncionario === id);
+  registrarOrcamento(id: number, valor: number, observacoes: string): Observable<void> {
+    const url = `${this.baseUrl}/${id}/orcamento`;
+    return this.http.patch<void>(url, { valor, observacoes });
   }
 
-  listarSolicitacoesPorEstado(estado: string): Solicitacao[] {
-    return this.recuperarSolicitacoes()
-      .filter(s => s.estado === estado);
+
+  registrarPagamento(id: number, valor: number, observacoes: string): Observable<void> {
+    const url = `${this.baseUrl}/${id}/pagamento`;
+    return this.http.patch<void>(url, { valor, observacoes });
   }
 
-  adicionarSolicitacao(solicitacao: Solicitacao): void {
-    const lista = this.recuperarSolicitacoes();
-    lista.push(solicitacao);
-    this.salvarSolicitacoes(lista);
+ 
+  resgatarServico(id: number): Observable<void> {
+    const url = `${this.baseUrl}/${id}/resgatar`;
+    return this.http.patch<void>(url, null);
   }
 
-  buscarSolicitacaoPorDataHora(dataHoraParam: string): Solicitacao | undefined {
-    return this.recuperarSolicitacoes()
-      .find(s => new Date(s.dataHora).toISOString() === dataHoraParam);
+  redirecionarManutencao(id: number, novoFuncionario: number): Observable<void> {
+    const url = `${this.baseUrl}/${id}/redirecionar`;
+    const params = new HttpParams().set('novoFuncionario', novoFuncionario.toString());
+    return this.http.patch<void>(url, null, { params });
   }
 
-  registrarOrcamento(
-    dataHoraParam: string,
-    valor: number,
-    observacoes: string,
-    funcionarioId: string
-  ): void {
-    const agora = new Date().toISOString();
-    const lista = this.recuperarSolicitacoes();
-    const idx = lista.findIndex(s => new Date(s.dataHora).toISOString() === dataHoraParam);
-    if (idx === -1) return;
-
-    const s = lista[idx];
-    s.valorOrcamento = valor;
-    s.observacoesOrcamento = observacoes;
-    s.dataHoraOrcamento = agora;
-    s.idFuncionario = funcionarioId;
-    s.estado = 'Orçada';
-
-    s.historicoSolicitacao.push(
-      new Historicosolicitacao(agora, 'Orçada', s.idFuncionario, 'Solicitação orçada')
-    );
-
-    this.salvarSolicitacoes(lista);
+  finalizarSolicitacao(id: number): Observable<void> {
+    const url = `${this.baseUrl}/${id}/finalizar`;
+    return this.http.patch<void>(url, null);
   }
-
-  registrarPagamento(
-    dataHoraParam: string,
-    valor: number,
-    observacoes: string,
-    funcionarioId: string
-  ): void {
-    const lista = this.recuperarSolicitacoes();
-    const idx = lista.findIndex(s => new Date(s.dataHora).toISOString() === dataHoraParam);
-    if (idx === -1) return;
-
-    const s = lista[idx];
-    const agora = new Date().toISOString();
-    s.estado = 'Paga';
-    s.dataHoraPagamento = agora;
-    s.historicoSolicitacao.push(
-      new Historicosolicitacao(agora, 'Paga', funcionarioId, observacoes)
-    );
-
-    this.salvarSolicitacoes(lista);
-  }
-
-  resgatarSolicitacao(
-    dataHoraParam: string,
-    valor: number,
-    observacoes: string,
-    funcionarioId: string
-  ): void {
-    const lista = this.recuperarSolicitacoes();
-    const idx = lista.findIndex(s => new Date(s.dataHora).toISOString() === dataHoraParam);
-    if (idx === -1) return;
-
-    const s = lista[idx];
-    s.estado = 'Aprovada';
-    s.horarioAprovacao = new Date().toISOString();
-    s.historicoSolicitacao.push(
-      new Historicosolicitacao(s.horarioAprovacao!, 'Aprovada', funcionarioId, observacoes)
-    );
-
-    this.salvarSolicitacoes(lista);
-  }
-
-  redirecionarManutencao(
-    dataHoraParam: string,
-    novoIdFuncionario: string
-  ): void {
-    const lista = this.recuperarSolicitacoes();
-    const idx = lista.findIndex(s => new Date(s.dataHora).toISOString() === dataHoraParam);
-    if (idx === -1) {
-      throw new Error('Solicitação não encontrada.');
-    }
-
-    const s = lista[idx];
-    const agora = new Date().toISOString();
-    s.idFuncionario = novoIdFuncionario;
-    s.estado = 'Redirecionada';
-    s.dataHoraRedirecionada = agora;
-    s.historicoSolicitacao.push(
-      new Historicosolicitacao(agora, 'Redirecionada', novoIdFuncionario, s.observacoesOrcamento || '')
-    );
-
-    this.salvarSolicitacoes(lista);
-  }
-
-  finalizarSolicitacao(
-    dataHoraParam: string,
-    valor: number,
-    observacoes: string,
-    funcionarioId: string
-  ): void {
-    const lista = this.recuperarSolicitacoes();
-    const idx = lista.findIndex(s => new Date(s.dataHora).toISOString() === dataHoraParam);
-    if (idx === -1) return;
-
-    const s = lista[idx];
-    const agora = new Date().toISOString();
-    s.estado = 'Finalizada';
-    s.dataHoraFinalizada = agora;
-    s.historicoSolicitacao.push(
-      new Historicosolicitacao(agora, 'Finalizada', funcionarioId, observacoes)
-    );
-
-    this.salvarSolicitacoes(lista);
-  }
-
-  /**
-   * RF013 – Visualização de solicitações:
-   * ∘ filtra por hoje / período / todas
-   * ∘ ordena por data/hora crescente
-   * ∘ só inclui REDIRECIONADA se for para este funcionário
-   */
-listarParaVisualizacao(
-  funcionarioId: string,
-  filtroTipo: 'hoje' | 'periodo' | 'todas',
-  dataInicio?: string,
-  dataFim?: string
-): Solicitacao[] {
-  let list = this.recuperarSolicitacoes();
-  const hoje = new Date();
-
-  if (filtroTipo === 'hoje') {
-    list = list.filter(s => {
-      const d = new Date(s.dataHora);
-      return d.getFullYear() === hoje.getFullYear()
-          && d.getMonth()    === hoje.getMonth()
-          && d.getDate()     === hoje.getDate();
-    });
-  } else if (filtroTipo === 'periodo' && dataInicio && dataFim) {
-    // Cria objetos Date no fuso local, definindo dia inteiro
-    const inicio = new Date(`${dataInicio}T00:00:00`);
-    const fim    = new Date(`${dataFim}T23:59:59.999`);
-
-    console.log('Filtro período de', inicio, 'até', fim);
-
-    list = list.filter(s => {
-      const d = new Date(s.dataHora);
-      return d >= inicio && d <= fim;
-    });
-  }
-  // filtroTipo === 'todas' → sem filtragem por data
-
-  // inclui só redirecionadas destinadas a este funcionário
-  list = list.filter(s =>
-    s.estado !== 'Redirecionada'
-    || s.idFuncionario === funcionarioId
-  );
-
-  // ordena cronologicamente
-  list.sort((a, b) =>
-    new Date(a.dataHora).getTime() - new Date(b.dataHora).getTime()
-  );
-
-  return list;
-}
-
-
 }

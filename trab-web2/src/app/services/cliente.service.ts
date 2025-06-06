@@ -25,9 +25,13 @@ export class ClienteService {
     return this._cpfLogado;
   }
 
-  listarTodos(): Cliente[] {
-    const clientes = localStorage.getItem(LS_CHAVE);
-    return clientes ? JSON.parse(clientes) : [];
+  listarTodos(): Observable<Cliente[]> {
+    return this.http.get<Cliente[]>(this.baseUrl);
+  }
+
+  buscarPorCpf(cpf: string): Observable<Cliente> {
+    const url = `${this.baseUrl}/${cpf}`;
+    return this.http.get<Cliente>(url);
   }
 
   getCliente(email: string, senha: string): Cliente | undefined {
@@ -37,35 +41,18 @@ export class ClienteService {
     return cliente;
   }
 
-  inserir(cliente: Cliente): void {
-    cliente.id = new Date().getTime();
-    const clientes = this.listarTodos();
-    clientes.push(cliente);
-    localStorage.setItem(LS_CHAVE, JSON.stringify(clientes));
+  inserir(cliente: Cliente): Observable<Cliente> {
+    return this.http.post<Cliente>(this.baseUrl, cliente);
   }
 
-  buscarPorcpf(cpf: string): Cliente | undefined {
-    const clientes = this.listarTodos();
-    return clientes.find(cliente => cliente.cpf === cpf);
+    remover(cpf: string): Observable<void> {
+    const url = `${this.baseUrl}/${cpf}`;
+    return this.http.delete<void>(url);
   }
 
-  atualizar(cliente: Cliente): void {
-    const clientes = this.listarTodos();
-    clientes.forEach((obj, index, objs) => {
-      if (cliente.cpf === obj.cpf) {
-        objs[index] = cliente;
-      }
-    });
-    localStorage.setItem(LS_CHAVE, JSON.stringify(clientes));
+    atualizar(cpf: string, cliente: Cliente): Observable<Cliente> {
+    const url = `${this.baseUrl}/${cpf}`;
+    return this.http.put<Cliente>(url, cliente);
   }
 
-  remover(cpf: string): void {
-    let clientes = this.listarTodos();
-    clientes = clientes.filter(pessoa => pessoa.cpf !== cpf);
-    localStorage.setItem(LS_CHAVE, JSON.stringify(clientes));
-  }
-
-  viaCep(cep: string): Observable<ViaCep> {
-    return this.http.get<ViaCep>(`${this.url_API}${cep}/json`);
-  }
 }

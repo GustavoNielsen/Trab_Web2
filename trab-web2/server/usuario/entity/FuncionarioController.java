@@ -27,4 +27,24 @@ public class FuncionarioController {
             ? ResponseEntity.ok(f)
             : ResponseEntity.notFound().build();
     }
+
+    @PutMapping("/{cpf}")
+    public ResponseEntity<Funcionario> atualizar(
+            @PathVariable String cpf,
+            @RequestBody Funcionario fAtualizado) {
+
+        Funcionario atualizado = svc.atualizar(cpf, fAtualizado);
+        return atualizado != null
+            ? ResponseEntity.ok(atualizado)
+            : ResponseEntity.notFound().build();
+    }
+
+    // 5) REMOVER funcionário por CPF
+    @DeleteMapping("/{cpf}")
+    public ResponseEntity<Void> remover(@PathVariable String cpf) {
+        boolean excluiu = svc.removerPorCpf(cpf);
+        return excluiu
+            ? ResponseEntity.noContent().build()
+            : ResponseEntity.notFound().build();
+    }
 }
