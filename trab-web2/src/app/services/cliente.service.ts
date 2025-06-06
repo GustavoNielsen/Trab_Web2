@@ -19,14 +19,13 @@ export class ClienteService {
     return this._cpfLogado;
   }
 
-  listarTodos(): Cliente[] {
-    const clientes = localStorage.getItem(LS_CHAVE);
-    return clientes ? JSON.parse(clientes) : [];
+  listarTodos(): Observable<Cliente[]> {
+    return this.http.get<Cliente[]>(this.baseUrl);
   }
 
-  buscarPorcpf(cpf: string): Cliente | undefined {
-    const clientes = this.listarTodos();
-    return clientes.find(cliente => cliente.cpf === cpf);
+  buscarPorCpf(cpf: string): Observable<Cliente> {
+    const url = `${this.baseUrl}/${cpf}`;
+    return this.http.get<Cliente>(url);
   }
 
   getCliente(email: string, senha: string): Cliente | undefined {
@@ -36,9 +35,18 @@ export class ClienteService {
     return cliente;
   }
 
-  inserir(cliente: Cliente): void {
-    const clientes = this.listarTodos();
-    clientes.push(cliente);
-    localStorage.setItem(LS_CHAVE, JSON.stringify(clientes));
+  inserir(cliente: Cliente): Observable<Cliente> {
+    return this.http.post<Cliente>(this.baseUrl, cliente);
   }
+
+    remover(cpf: string): Observable<void> {
+    const url = `${this.baseUrl}/${cpf}`;
+    return this.http.delete<void>(url);
+  }
+
+    atualizar(cpf: string, cliente: Cliente): Observable<Cliente> {
+    const url = `${this.baseUrl}/${cpf}`;
+    return this.http.put<Cliente>(url, cliente);
+  }
+
 }
