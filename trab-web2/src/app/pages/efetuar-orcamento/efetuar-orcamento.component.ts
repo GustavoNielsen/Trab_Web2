@@ -1,14 +1,14 @@
-// src/app/pages/efetuar-orcamento/efetuar-orcamento.component.ts
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute, Router, RouterLink, RouterModule } from '@angular/router';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { NavbarFuncionarioComponent } from '../navbarfuncionario/navbarfuncionario.component';
 import { SolicitacaoService } from '../../services/soliciticao.service';
 import { ClienteService } from '../../services/cliente.service';
 import { FuncionarioService } from '../../services/funcionario.service';
 import { Solicitacao } from '../../shared/models/solicitacao';
 import { Cliente } from '../../shared/models/cliente';
+import { Historicosolicitacao } from '../../shared/models/historicosolicitacao';
 
 @Component({
   selector: 'app-efetuar-orcamento',
@@ -17,7 +17,6 @@ import { Cliente } from '../../shared/models/cliente';
     CommonModule,
     ReactiveFormsModule,
     RouterModule,
-    RouterLink,
     NavbarFuncionarioComponent
   ],
   templateUrl: './efetuar-orcamento.component.html',
@@ -27,6 +26,7 @@ export class EfetuarOrcamentoComponent implements OnInit {
   solicitacao!: Solicitacao;
   cliente!: Cliente;
   form!: FormGroup;
+  isLoading = true; // Variável para controlar o estado de carregamento da página
 
   constructor(
     private route: ActivatedRoute,
@@ -38,34 +38,43 @@ export class EfetuarOrcamentoComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    // 1) Captura o parâmetro 'dataHora' da rota; se não houver, redireciona.
+    this.form = this.fb.group({
+      valor: [null, [Validators.required, Validators.min(0.01)]],
+      observacoes: ['']
+    });
+
     const dataHoraParam = this.route.snapshot.paramMap.get('dataHora');
     if (!dataHoraParam) {
       this.router.navigate(['/paginainicialfuncionario']);
       return;
     }
 
-    // 2) Busca a solicitação pela data/hora (no formato ISO) e atribui a this.solicitacao.
     const solicitacaoEncontrada = this.solicitacaoSvc.buscarSolicitacaoPorDataHora(dataHoraParam);
     if (!solicitacaoEncontrada) {
-      // Se não encontrar a solicitação, redireciona.
+      alert('Solicitação não encontrada.');
       this.router.navigate(['/paginainicialfuncionario']);
       return;
     }
     this.solicitacao = solicitacaoEncontrada;
 
-    // 3) Busca o cliente associado ao CPF da solicitação e atribui a this.cliente.
-    const clienteEncontrado = this.clienteSvc.buscarPorcpf(this.solicitacao.cpfCliente);
-    if (!clienteEncontrado) {
-      this.router.navigate(['/paginainicialfuncionario']);
-      return;
-    }
-    this.cliente = clienteEncontrado;
-
-    // 4) Inicializa o formulário (mesmo se, por enquanto, a preocupação seja carregar os dados)
-    this.form = this.fb.group({
-      valor: [null, [Validators.required, Validators.min(0.01)]],
-      observacoes: ['']
+    // CORRIGIDO: Agora usamos .subscribe() para esperar a resposta do serviço.
+    // O ClienteService retorna um Observable, então precisamos nos inscrever nele.
+    this.clienteSvc.buscarPorCpf(this.solicitacao.cpfCliente).subscribe({
+      next: (clienteEncontrado) => {
+        if (!clienteEncontrado) {
+          alert('Cliente associado à solicitação não foi encontrado.');
+          this.router.navigate(['/paginainicialfuncionario']);
+          return;
+        }
+        this.cliente = clienteEncontrado;
+        this.isLoading = false; // Finaliza o carregamento após receber os dados
+      },
+      error: (err) => {
+        console.error('Erro ao buscar cliente:', err);
+        alert('Ocorreu um erro ao carregar os dados do cliente.');
+        this.isLoading = false;
+        this.router.navigate(['/paginainicialfuncionario']);
+      }
     });
   }
 
@@ -75,34 +84,43 @@ export class EfetuarOrcamentoComponent implements OnInit {
       return;
     }
 
-    const { valor, observacoes } = this.form.value;
+    // CORRIGIDO: Usamos a propriedade 'idLogado' do FuncionarioService.
     const funcionarioId = this.funcSvc.idLogado;
-    console.log(funcionarioId)
-    const agora = new Date();
-    const dataHoraString = agora.toISOString(); 
-    // Atualiza os atributos relacionados ao orçamento na solicitação
+    if (!funcionarioId) {
+      alert('Não foi possível identificar o funcionário logado. A operação foi cancelada.');
+      return;
+    }
+
+    const { valor, observacoes } = this.form.value;
+
     this.solicitacao.valorOrcamento = valor;
     this.solicitacao.observacoesOrcamento = observacoes;
-    this.solicitacao.dataHoraOrcamento = dataHoraString;
+    this.solicitacao.dataHoraOrcamento = new Date().toISOString();
     this.solicitacao.idFuncionario = funcionarioId;
     this.solicitacao.estado = 'Orçada';
 
-    // Obtém a data/hora da solicitação em formato ISO para identificar o registro a ser atualizado.
-    const dataHoraIdentificador = new Date(this.solicitacao.dataHora).toISOString();
-
-    // Registra o orçamento (persistindo as alterações via serviço)
-    this.solicitacaoSvc.registrarOrcamento(
-      dataHoraIdentificador,
-      valor,
-      observacoes,
-      funcionarioId
+    const historico = new Historicosolicitacao(
+      this.solicitacao.dataHoraOrcamento,
+      this.solicitacao.estado,
+      this.solicitacao.idFuncionario,
+      observacoes
     );
+    this.solicitacao.historicoSolicitacao.push(historico);
 
-    // Redireciona de volta para a página inicial do funcionário
-    this.router.navigate(['/paginainicialfuncionario']);
+    // CORRIGIDO: Usamos o método 'atualizar' do serviço e navegamos apenas no sucesso.
+    // Assumindo que o seu SolicitacaoService tem um método 'atualizar' que retorna um Observable.
+    this.solicitacaoSvc.atualizar(this.solicitacao).subscribe({
+      next: () => {
+        alert('Orçamento salvo com sucesso!');
+        this.router.navigate(['/paginainicialfuncionario']);
+      },
+      error: (err) => {
+        console.error('Erro ao salvar o orçamento:', err);
+        alert('Ocorreu uma falha ao salvar o orçamento.');
+      }
+    });
   }
 
-  // O método 'salvar' e outros podem ser implementados posteriormente.
   cancelar(): void {
     this.router.navigate(['/paginainicialfuncionario']);
   }

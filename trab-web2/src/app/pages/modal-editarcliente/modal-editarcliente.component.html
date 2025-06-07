@@ -1,6 +1,6 @@
 <div class="modal-header">
 <h4 class="modal-title" id="modal-basic-title">Cadastro de cliente</h4>
-<button type="button" class="btn-close" aria-label="Close" (click)="fechar()"></button>
+<button type="button" class="btn-close" aria-label="Close" (click)="cancelar()"></button>
 </div>
 <div class="modal-body">
 <form (ngSubmit)="atualizarCliente()" #formCadastro="ngForm" class="p-3">
@@ -105,7 +105,7 @@
   <!-- Botões -->
   <div class="d-flex justify-content-end gap-2 mt-4">
     <button type="submit" class="btn btn-success" [disabled]="formCadastro.invalid">Salvar</button>
-    <button type="button" class="btn btn-outline-dark" (click)="fechar()">Fechar</button>
+    <button type="button" class="btn btn-outline-dark" (click)="cancelar()">Fechar</button>
   </div>
 
 </form>

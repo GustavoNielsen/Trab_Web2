@@ -33,9 +33,17 @@ export class CadastrofuncionarioComponent implements OnInit {
     this.refreshList();
   }
 
-  private refreshList(): void {
-    this.funcionarios = this.funcionarioService.listarTodos();
-  }
+ private refreshList(): void {
+    this.funcionarioService.listarTodos().subscribe(
+      (dadosRecebidos: Funcionario[]) => {
+      this.funcionarios = dadosRecebidos;
+    },
+      (erro) => {
+      console.error('Erro ao buscar a lista de funcionários:', erro);
+      alert('Não foi possível carregar a lista de funcionários.');
+    }
+  );
+}
 
   inserir(): void {
     this.funcionarioService.inserir(this.funcionario);
