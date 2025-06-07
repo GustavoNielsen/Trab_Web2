@@ -21,5 +21,55 @@
       "dataNascimento": "1998-09-06",
       "senha": "teste"
     }
+  ],
+  "clientes": [
+    {
+      "id": "11122233344",
+      "email": "joao.silva@email.com",
+      "senha": "senha123",
+      "nome": "João da Silva",
+      "tipo": "cliente",
+      "cpf": "11122233344",
+      "cep": "80050-350",
+      "rua": "Rua Bley Zornig",
+      "numero": "100",
+      "complemento": "Apto 301",
+      "bairro": "Cristo Rei",
+      "cidade": "Curitiba",
+      "estado": "PR",
+      "telefone": "41999887766"
+    },
+    {
+      "id": "55566677788",
+      "email": "ana.souza@email.com",
+      "senha": "senha456",
+      "nome": "Ana Souza",
+      "tipo": "cliente",
+      "cpf": "55566677788",
+      "cep": "20040-004",
+      "rua": "Avenida Rio Branco",
+      "numero": "500",
+      "complemento": "",
+      "bairro": "Centro",
+      "cidade": "Rio de Janeiro",
+      "estado": "RJ",
+      "telefone": "21988776655"
+    },
+    {
+      "id": "99988877766",
+      "email": "pedro.gomes@email.com",
+      "senha": "senha789",
+      "nome": "Pedro Gomes",
+      "tipo": "cliente",
+      "cpf": "99988877766",
+      "cep": "01311-000",
+      "rua": "Avenida Paulista",
+      "numero": "1578",
+      "complemento": "Conjunto 10",
+      "bairro": "Bela Vista",
+      "cidade": "São Paulo",
+      "estado": "SP",
+      "telefone": "11977665544"
+    }
   ]
 }

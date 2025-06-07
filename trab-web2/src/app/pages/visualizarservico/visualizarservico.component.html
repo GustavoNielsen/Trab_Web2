@@ -1,97 +1,103 @@
 <app-navbar></app-navbar>
-<div class="container mt-5" *ngIf="solicitacao">
-  <h2 class="mb-4">Visualizar Solicitação</h2>
-  <div class="card mb-4">
-    <div class="card-body">
-      <p>
-        <strong>Data/Hora:</strong>
-        {{ solicitacao.dataHora | date : "dd/MM/yyyy HH:mm" }}
-      </p>
-      <p>
-        <strong>Equipamento:</strong> {{ solicitacao.descricaoEquipamento }}
-      </p>
-      <p><strong>Categoria:</strong> {{ solicitacao.categoriaEquipamento }}</p>
-      <p><strong>Defeito:</strong> {{ solicitacao.descricaoDefeito }}</p>
-      <p *ngIf="solicitacao.valorOrcamento > 0">
-        <strong>Orçamento:</strong> R$ {{ solicitacao.valorOrcamento }}
-      </p>
-    </div>
-  </div>
 
-  <h4 class="mb-3">Histórico de Atualizações</h4>
-  <ul class="list-group mb-4">
-    <li class="list-group-item" *ngFor="let h of solicitacao.historicoSolicitacao">
-      {{ h.dataHora | date : "dd/MM/yyyy HH:mm" }} –
-      <span
-        class="badge"
-        [ngStyle]="{
-          'background-color':
-            h.estado === 'Aberta'
-              ? 'gray'
-              : h.estado === 'Orçada'
-              ? 'brown'
-              : h.estado === 'Rejeitada'
-              ? 'red'
-              : h.estado === 'Aprovada'
-              ? 'yellow'
-              : h.estado === 'Redirecionada'
-              ? 'purple'
-              : h.estado === 'Arrumada'
-              ? 'blue'
-              : h.estado === 'Paga'
-              ? 'orange'
-              : h.estado === 'Finalizada'
-              ? 'green'
-              : '#000',
-          color:
-            h.estado === 'Orçada' ||
-            h.estado === 'Rejeitada' ||
-            h.estado === 'Redirecionada' ||
-            h.estado === 'Arrumada' ||
-            h.estado === 'Finalizada'
-              ? '#fff'
-              : '#000'
-        }">
-        {{ h.estado }}
-      </span>
-      <span *ngIf="h.funcionarioId">(por {{ h.funcionarioId }})</span>
-      <div *ngIf="h.observacao">
-        <em>{{ h.observacao }}</em>
+<div class="container mt-4">
+  
+  <!--
+    A diretiva *ngIf garante que este bloco só será renderizado quando 'solicitacao'
+    tiver um valor, prevenindo o erro "Object is possibly 'undefined'".
+    'else loadingTemplate' mostra um feedback de carregamento.
+  -->
+  <div *ngIf="solicitacao; else loadingTemplate">
+    <h2 class="mb-4">Detalhes da Solicitação</h2>
+
+    <!-- Detalhes Principais e do Equipamento -->
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card mb-4">
+          <div class="card-header d-flex justify-content-between align-items-center">
+            <strong>Solicitação #{{ solicitacao.id }}</strong>
+            <span class="badge rounded-pill" [ngClass]="{
+              'bg-secondary': solicitacao.estado === 'Pendente',
+              'bg-info text-dark': solicitacao.estado === 'Orçada',
+              'bg-danger': solicitacao.estado === 'Rejeitada',
+              'bg-warning text-dark': solicitacao.estado === 'Aprovada',
+              'bg-primary': solicitacao.estado === 'Arrumada',
+              'bg-success': solicitacao.estado === 'Paga' || solicitacao.estado === 'Finalizada'
+            }">
+              {{ solicitacao.estado }}
+            </span>
+          </div>
+          <div class="card-body">
+            <p><strong>Data de Abertura:</strong> {{ solicitacao.dataHora | date:'dd/MM/yyyy HH:mm' }}</p>
+            <p><strong>Equipamento:</strong> {{ solicitacao.descricaoEquipamento }} ({{ solicitacao.categoriaEquipamento }})</p>
+            <p><strong>Defeito Reportado:</strong> {{ solicitacao.descricaoDefeito }}</p>
+            <p><strong>Funcionário Responsável:</strong> {{ nomeFuncionarioResponsavel }}</p>
+          </div>
+        </div>
       </div>
-    </li>
-  </ul>
+    </div>
+    
+    <!-- Seção do Orçamento (só aparece se houver um) -->
+    <ng-container *ngIf="solicitacao.valorOrcamento">
+      <div class="card mb-4">
+        <div class="card-header">
+          <strong>Detalhes do Orçamento</strong>
+        </div>
+        <div class="card-body">
+          <p><strong>Valor:</strong> {{ solicitacao.valorOrcamento | currency:'BRL' }}</p>
+          <p><strong>Orçado por:</strong> {{ nomeFuncionarioOrcamento }}</p>
+          <p *ngIf="solicitacao.observacoesOrcamento"><strong>Observações:</strong> {{ solicitacao.observacoesOrcamento }}</p>
+        </div>
+      </div>
+    </ng-container>
 
-  <div class="d-flex gap-2">
-    <!-- Orçada: leva ao componente de mostrar orçamento -->
-    <button
-      *ngIf="solicitacao.estado === 'Orçada'"
-      class="btn btn-primary"
-      [routerLink]="['/mostrar-orcamento', solicitacao.dataHora]"
-    >
-      Ver Orçamento
-    </button>
+    <!-- Histórico de Atualizações -->
+    <h4 class="mb-3">Histórico</h4>
+    <ul class="list-group mb-4">
+      <li class="list-group-item" *ngFor="let h of solicitacao.historicoSolicitacao">
+        <div>
+          <strong>{{ h.dataHora | date:'dd/MM/yyyy HH:mm' }}</strong> – Novo estado: 
+          <span class="badge" [ngClass]="{
+            'bg-secondary': h.estado === 'Pendente',
+            'bg-info text-dark': h.estado === 'Orçada',
+            'bg-danger': h.estado === 'Rejeitada',
+            'bg-warning text-dark': h.estado === 'Aprovada',
+            'bg-primary': h.estado === 'Arrumada',
+            'bg-success': h.estado === 'Paga' || h.estado === 'Finalizada'
+          }">{{ h.estado }}</span>
+          <!-- Nota: Para exibir o nome do funcionário no histórico, seria necessário carregar um mapa de todos os funcionários -->
+          <span *ngIf="h.funcionarioId"> (por ID: {{ h.funcionarioId }})</span>
+        </div>
+        <em *ngIf="h.observacao" class="d-block mt-1 text-muted">{{ h.observacao }}</em>
+      </li>
+    </ul>
 
-    <!-- Rejeitada: resgata aprovação -->
-    <button
-      *ngIf="solicitacao.estado === 'Rejeitada'"
-      class="btn btn-warning"
-      (click)="resgatar()"
-    >
-      Resgatar Serviço
-    </button>
+    <!-- Botões de Ação para o Cliente -->
+    <div class="d-flex gap-2">
+      <!-- Orçada: leva para a tela de aprovação (se houver) -->
+      <button *ngIf="solicitacao.estado === 'Orçada'" class="btn btn-primary" (click)="resgatar()">
+        Aprovar Orçamento
+      </button>
 
-    <!-- Arrumada: leva ao pagamento -->
-    <button
-      *ngIf="solicitacao.estado === 'Arrumada'"
-      class="btn btn-success"
-      [routerLink]="['/pagarservico', solicitacao.dataHora]"
-    >
-      Pagar Serviço
-    </button>
+      <!-- Arrumada: leva ao pagamento -->
+      <button *ngIf="solicitacao.estado === 'Arrumada'" class="btn btn-success" [routerLink]="['/pagarservico', solicitacao.dataHora]">
+        Ir para Pagamento
+      </button>
 
-    <!-- Sem ação: só voltar -->
-    <button class="btn btn-secondary" [routerLink]="['/paginainicialcliente']">
-      Voltar
-    </button>
+      <!-- Botão para voltar -->
+      <a class="btn btn-secondary" [routerLink]="['/paginainicialcliente']">Voltar</a>
+    </div>
+
   </div>
+
+  <!-- Template que é exibido enquanto os dados estão sendo carregados -->
+  <ng-template #loadingTemplate>
+    <div *ngIf="isLoading" class="text-center mt-5">
+      <div class="spinner-border" role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+      <p class="mt-2">Carregando detalhes...</p>
+    </div>
+  </ng-template>
+
 </div>

@@ -1,9 +1,9 @@
 // src/app/shared/services/solicitacao.service.ts
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { Solicitacao } from '../models/solicitacao';
-import { Historicosolicitacao } from '../models/historicosolicitacao';
+import { Observable, of } from 'rxjs';
+import { Solicitacao } from '../shared/models';
+import { Historicosolicitacao } from '../shared/models';
 
 @Injectable({
   providedIn: 'root'
@@ -49,14 +49,41 @@ export class SolicitacaoService {
     return this.http.patch<void>(url, null);
   }
 
-  redirecionarManutencao(id: number, novoFuncionario: number): Observable<void> {
-    const url = `${this.baseUrl}/${id}/redirecionar`;
-    const params = new HttpParams().set('novoFuncionario', novoFuncionario.toString());
-    return this.http.patch<void>(url, null, { params });
+ redirecionarManutencao(dataHoraISO: string, novoFuncionarioId: string): Observable<void> {
+    const solicitacao = this.buscarSolicitacaoPorDataHora(dataHoraISO);
+    if (solicitacao) {
+      solicitacao.idFuncionario = novoFuncionarioId;
+      solicitacao.estado = 'Redirecionada'; 
+      this.atualizar(solicitacao);
+    }
+    return of(undefined); // Sinaliza que a operação terminou
   }
 
   finalizarSolicitacao(id: number): Observable<void> {
     const url = `${this.baseUrl}/${id}/finalizar`;
     return this.http.patch<void>(url, null);
   }
+
+  recuperarSolicitacoes(): Solicitacao[] {
+    const data = localStorage.getItem('solicitacoes');
+    return data ? JSON.parse(data) : [];
+  }
+  
+  buscarSolicitacaoPorDataHora(dataHoraISO: string): Solicitacao | undefined {
+    const solicitacoes = this.recuperarSolicitacoes();
+    return solicitacoes.find(s => s.dataHora === dataHoraISO);
+  }
+
+  atualizar(solicitacaoAtualizada: Solicitacao): Observable<Solicitacao> {
+    const solicitacoes = this.recuperarSolicitacoes();
+    const index = solicitacoes.findIndex(s => s.dataHora === solicitacaoAtualizada.dataHora);
+    
+    if (index !== -1) {
+      solicitacoes[index] = solicitacaoAtualizada;
+      localStorage.setItem('solicitacoes', JSON.stringify(solicitacoes));
+    }
+    return of(solicitacaoAtualizada);
+  }
+
+  
 }

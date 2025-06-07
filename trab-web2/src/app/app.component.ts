@@ -22,25 +22,9 @@ import { ListarClientesComponent } from './pages/listar-clientes/listar-clientes
 @Component({
   selector: 'app-root',
   imports: [
-    RouterModule, 
-    RouterOutlet, 
-    AutocadastroComponent, 
-    PaginaInicialClienteComponent, 
-    LoginComponent, 
-    MostrarOrcamentoComponent, 
-    SolicitaManutencaoComponent, 
-    VisualizarSolicitacaoComponent, 
-    PaginaInicialFuncionarioComponent, 
-    NavbarComponent, 
-    EfetuarOrcamentoComponent, 
-    EfetuarManutencaoComponent, 
-    PagarservicoComponent, 
-    CadastrofuncionarioComponent, 
-    VisualizarservicoComponent, 
-    CadastroequipamentoComponent, 
-    RelatorioreceitasComponent,
-    ListarClientesComponent
-  ],
+    RouterModule,
+    RouterOutlet
+],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })

@@ -1,36 +1,37 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router, RouterModule } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { forkJoin, of } from 'rxjs';
+import { catchError } from 'rxjs/operators';
+
 import { Solicitacao } from '../../shared/models/solicitacao';
 import { Cliente } from '../../shared/models/cliente';
+import { Funcionario } from '../../shared/models/funcionario';
+import { Historicosolicitacao } from '../../shared/models/historicosolicitacao';
+
 import { SolicitacaoService } from '../../services/soliciticao.service';
 import { FuncionarioService } from '../../services/funcionario.service';
 import { ClienteService } from '../../services/cliente.service';
 import { NavbarFuncionarioComponent } from '../navbarfuncionario/navbarfuncionario.component';
-import { Funcionario } from '../../shared/models/funcionario';
-import { Historicosolicitacao } from '../../shared/models/historicosolicitacao';
 
 @Component({
   selector: 'app-efetuar-manutencao',
   standalone: true,
-  imports: [
-    CommonModule,
-    FormsModule,
-    RouterModule,
-    NavbarFuncionarioComponent
-  ],
+  imports: [CommonModule, FormsModule, NavbarFuncionarioComponent],
   templateUrl: './efetuar-manutencao.component.html',
   styleUrls: ['./efetuar-manutencao.component.css']
 })
 export class EfetuarManutencaoComponent implements OnInit {
-  solicitacao!: Solicitacao;
-  cliente!: Cliente;
-  exibirFormularioManutencao: boolean = false;
-  descricaoManutencao: string = '';
-  orientacoesCliente: string = '';
-  destinoFuncionarioId = '';
-  funcionarios: Funcionario[] = [];
+  public solicitacao!: Solicitacao;
+  public cliente!: Cliente;
+  public funcionarios: Funcionario[] = [];
+  public exibirFormularioManutencao = false;
+  
+  // Dados do formulário
+  public descricaoManutencao = '';
+  public orientacoesCliente = '';
+  public destinoFuncionarioId = '';
 
   constructor(
     private route: ActivatedRoute,
@@ -41,93 +42,101 @@ export class EfetuarManutencaoComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    // Atualizado: captura o parâmetro 'dataHota' da rota
+    this.carregarDados();
+  }
+
+  private carregarDados(): void {
     const dataHoraParam = this.route.snapshot.paramMap.get('dataHora');
     if (!dataHoraParam) {
       this.router.navigate(['/paginainicialfuncionario']);
       return;
     }
 
-    // Busca a solicitação pela data/hora (formato ISO) usando o parâmetro "dataHota"
     const solicitacaoEncontrada = this.solicitacaoSvc.buscarSolicitacaoPorDataHora(dataHoraParam);
     if (!solicitacaoEncontrada) {
+      alert('Solicitação não encontrada!');
       this.router.navigate(['/paginainicialfuncionario']);
       return;
     }
     this.solicitacao = solicitacaoEncontrada;
 
-    this.funcionarios = this.funcSvc.listarTodos().filter(f => f.dataNascimento !== this.solicitacao.idFuncionario);
-
-    // Busca o cliente associado (por CPF) da solicitação e atribui a this.cliente.
-    const clienteEncontrado = this.clienteSvc.buscarPorcpf(this.solicitacao.cpfCliente);
-    if (!clienteEncontrado) {
-      this.router.navigate(['/paginainicialfuncionario']);
-      return;
-    }
-    this.cliente = clienteEncontrado;
+    // forkJoin executa as chamadas em paralelo e retorna quando TODAS estiverem completas.
+    forkJoin({
+      cliente: this.clienteSvc.buscarPorCpf(this.solicitacao.cpfCliente),
+      funcionarios: this.funcSvc.listarTodos()
+    }).pipe(
+      catchError(error => {
+        console.error('Erro ao carregar dados em paralelo', error);
+        alert('Não foi possível carregar os detalhes da solicitação. Tente novamente.');
+        this.router.navigate(['/paginainicialfuncionario']);
+        return of(null); // Retorna um observable nulo para não quebrar a cadeia
+      })
+    ).subscribe(resultado => {
+      if (resultado) {
+        this.cliente = resultado.cliente;
+        // Filtra a lista de funcionários para não incluir o funcionário atual
+        this.funcionarios = resultado.funcionarios.filter(f => f.id !== this.solicitacao.idFuncionario);
+      }
+    });
   }
 
-  
-
-  /**
-   * Exibe o formulário para efetuar manutenção.
-   */
-  toggleManutencao(): void {
-    this.exibirFormularioManutencao = true;
+  public toggleManutencao(): void {
+    this.exibirFormularioManutencao = !this.exibirFormularioManutencao;
   }
 
-  /**
-   * Registra as informações de manutenção, atualiza o estado da solicitação
-   * para 'ARRUMADA', persiste as alterações e redireciona para a página inicial.
-   */
-  confirmarManutencao(): void {
+  public confirmarManutencao(): void {
     if (!this.descricaoManutencao.trim() || !this.orientacoesCliente.trim()) {
       alert('Por favor, preencha todos os campos de manutenção.');
       return;
     }
 
-    // Atualiza os atributos da solicitação relacionados à manutenção
     this.solicitacao.descricaoManutencao = this.descricaoManutencao;
-    this.solicitacao.orientacaoCliente = this.orientacoesCliente; // Propriedade definida no modelo
+    this.solicitacao.orientacaoCliente = this.orientacoesCliente;
     this.solicitacao.estado = 'Arrumada';
-    this.solicitacao.dataHoraManutencao = new Date().toISOString()
-    const historico = new Historicosolicitacao(this.solicitacao.dataHoraManutencao, this.solicitacao.estado, this.solicitacao.idFuncionario, this.solicitacao.observacoesOrcamento)
-    this.solicitacao.historicoSolicitacao.push(historico)
-    // Atualiza a solicitação via serviço (persistindo no localStorage)
-    this.atualizarSolicitacao();
+    this.solicitacao.dataHoraManutencao = new Date().toISOString();
+    
+    const historico = new Historicosolicitacao(
+      this.solicitacao.dataHoraManutencao,
+      this.solicitacao.estado,
+      this.solicitacao.idFuncionario,
+      'Manutenção concluída.'
+    );
+    this.solicitacao.historicoSolicitacao.push(historico);
 
-    // Redireciona para a página inicial do funcionário
-    this.router.navigate(['/paginainicialfuncionario']);
+    // A lógica de salvar foi movida para o serviço. O componente só chama o método.
+    this.solicitacaoSvc.atualizar(this.solicitacao).subscribe({
+      next: () => {
+        alert('Manutenção registrada com sucesso!');
+        this.router.navigate(['/paginainicialfuncionario']);
+      },
+      error: (err) => {
+        alert('Erro ao salvar a manutenção.');
+        console.error(err);
+      }
+    });
   }
 
-  redirecionarManutencao(): void {
+  public redirecionarManutencao(): void {
     if (!this.destinoFuncionarioId) {
       alert('Selecione um funcionário para redirecionar.');
       return;
     }
-    // chama o serviço que já persiste a mudança de idFuncionario e estado
-    this.solicitacaoSvc.redirecionarManutencao(
-      new Date(this.solicitacao.dataHora).toISOString(),
-      this.destinoFuncionarioId
-    );
-    this.router.navigate(['/paginainicialfuncionario']);
+
+    // O serviço agora cuida da lógica de atualizar o estado e o funcionário.
+    this.solicitacaoSvc.redirecionarManutencao(this.solicitacao.dataHora, this.destinoFuncionarioId)
+      .subscribe({
+        next: () => {
+          alert('Solicitação redirecionada com sucesso!');
+          this.router.navigate(['/paginainicialfuncionario']);
+        },
+        error: (err) => {
+          alert('Erro ao redirecionar a solicitação.');
+          console.error(err);
+        }
+      });
   }
 
-
-  atualizarSolicitacao(): void {
-    const solicitacoes = this.solicitacaoSvc.recuperarSolicitacoes();
-    const index = solicitacoes.findIndex(
-      s => new Date(s.dataHora).toISOString() === new Date(this.solicitacao.dataHora).toISOString()
-    );
-    if (index !== -1) {
-      solicitacoes[index] = this.solicitacao;
-      localStorage.setItem('solicitacoes', JSON.stringify(solicitacoes));
-    }
-  }
-
-
-
-  cancelar(): void {
+  public cancelar(): void {
     this.router.navigate(['/paginainicialfuncionario']);
   }
 }
