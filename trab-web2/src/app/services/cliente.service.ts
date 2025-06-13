@@ -1,52 +1,110 @@
 import { Injectable } from '@angular/core';
 import { Cliente } from '../shared/models/cliente';
 
-const LS_CHAVE = "clientes";
-
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable({ providedIn: 'root' })
 export class ClienteService {
-  private clientes: Cliente[] = []; 
-  private _cpfLogado: string = '';
-  constructor() { }
+  private key = 'clientes';
+  private sessionKey = 'logged_cliente';
+  private _clienteLogado: Cliente | null = null;
 
-  set cpfLogado(cpf: string) {
-    this._cpfLogado = cpf;
+  constructor() {
+    const json = localStorage.getItem(this.sessionKey);
+    if (json) this._clienteLogado = JSON.parse(json);
   }
 
-  get cpfLogado(): string {
-    return this._cpfLogado;
+  get clienteLogado(): Cliente | null {
+    return this._clienteLogado;
   }
 
-  listarTodos(): Observable<Cliente[]> {
-    return this.http.get<Cliente[]>(this.baseUrl);
+  login(email: string, senha: string): boolean {
+    const found = this.listarTodos().find(c => c.email === email && c.senha === senha);
+    if (found) {
+      this._clienteLogado = found;
+      localStorage.setItem(this.sessionKey, JSON.stringify(found));
+      return true;
+    }
+    return false;
   }
 
-  buscarPorCpf(cpf: string): Observable<Cliente> {
-    const url = `${this.baseUrl}/${cpf}`;
-    return this.http.get<Cliente>(url);
+  logout(): void {
+    this._clienteLogado = null;
+    localStorage.removeItem(this.sessionKey);
   }
 
-  getCliente(email: string, senha: string): Cliente | undefined {
-    this.clientes = this.listarTodos();
-    const cliente = this.clientes.find(c => c.email === email && c.senha === senha);
-
-    return cliente;
+  listarTodos(): Cliente[] {
+    const json = localStorage.getItem(this.key);
+    return json ? JSON.parse(json) : [];
   }
 
-  inserir(cliente: Cliente): Observable<Cliente> {
-    return this.http.post<Cliente>(this.baseUrl, cliente);
+  buscarPorCpf(cpf: string): Cliente | undefined {
+    return this.listarTodos().find(c => c.cpf === cpf);
   }
 
-    remover(cpf: string): Observable<void> {
-    const url = `${this.baseUrl}/${cpf}`;
-    return this.http.delete<void>(url);
+  buscarPorEmail(email: string): Cliente | undefined {
+    return this.listarTodos().find(c => c.email === email);
   }
 
-    atualizar(cpf: string, cliente: Cliente): Observable<Cliente> {
-    const url = `${this.baseUrl}/${cpf}`;
-    return this.http.put<Cliente>(url, cliente);
+  inserir(c: Cliente): void {
+    if (!this.buscarPorCpf(c.cpf)) {
+      const list = this.listarTodos();
+      list.push(c);
+      this.save(list);
+    }
   }
 
+  atualizar(cpf: string, atualizado: Cliente): void {
+    const list = this.listarTodos();
+    const idx = list.findIndex(c => c.cpf === cpf);
+    if (idx > -1) {
+      list[idx] = atualizado;
+      this.save(list);
+    }
+  }
+
+  remover(cpf: string): void {
+    const list = this.listarTodos().filter(c => c.cpf !== cpf);
+    this.save(list);
+  }
+
+  resetSenha(cpf: string, novaSenha: string): boolean {
+    const cliente = this.buscarPorCpf(cpf);
+    if (cliente) {
+      cliente.senha = novaSenha;
+      this.atualizar(cpf, cliente);
+      return true;
+    }
+    return false;
+  }
+
+
+  getPreferences(): any {
+    return this._clienteLogado?.preferencias || {};
+  }
+
+  updatePreferences(pref: any): void {
+    if (this._clienteLogado) {
+      this._clienteLogado.preferencias = pref;
+      this.save(this.listarTodos());
+    }
+  }
+
+  count(): number {
+    return this.listarTodos().length;
+  }
+
+  findByNamePattern(pattern: string): Cliente[] {
+    const regex = new RegExp(pattern, 'i');
+    return this.listarTodos().filter(c => regex.test(c.nome));
+  }
+
+  archiveCliente(cpf: string): void {
+    const list = this.listarTodos().map(c =>
+      c.cpf === cpf ? { ...c, archived: true } : c
+    );
+    this.save(list);
+  }
+
+  private save(list: Cliente[]): void {
+    localStorage.setItem(this.key, JSON.stringify(list));
+  }
 }
