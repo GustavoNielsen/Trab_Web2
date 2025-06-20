@@ -1,110 +1,97 @@
 import { Injectable } from '@angular/core';
+import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
+import { Observable, of, throwError } from 'rxjs';
+import { catchError, map } from 'rxjs/operators';
 import { Cliente } from '../shared/models/cliente';
 
-@Injectable({ providedIn: 'root' })
+@Injectable({
+  providedIn: 'root'
+})
 export class ClienteService {
-  private key = 'clientes';
-  private sessionKey = 'logged_cliente';
-  private _clienteLogado: Cliente | null = null;
+  private readonly BASE_URL = 'http://localhost:8080';
+  
+  private httpOptions = {
+    observe: 'response' as const,
+    headers: new HttpHeaders({
+      'Content-Type': 'application/json'
+    })
+  };
 
-  constructor() {
-    const json = localStorage.getItem(this.sessionKey);
-    if (json) this._clienteLogado = JSON.parse(json);
-  }
+  private _cpfLogado = '';
+  set cpfLogado(cpf: string) { this._cpfLogado = cpf; }
+  get cpfLogado(): string { return this._cpfLogado; }
 
-  get clienteLogado(): Cliente | null {
-    return this._clienteLogado;
-  }
+  constructor(private http: HttpClient) {}
 
-  login(email: string, senha: string): boolean {
-    const found = this.listarTodos().find(c => c.email === email && c.senha === senha);
-    if (found) {
-      this._clienteLogado = found;
-      localStorage.setItem(this.sessionKey, JSON.stringify(found));
-      return true;
-    }
-    return false;
-  }
-
-  logout(): void {
-    this._clienteLogado = null;
-    localStorage.removeItem(this.sessionKey);
-  }
-
-  listarTodos(): Cliente[] {
-    const json = localStorage.getItem(this.key);
-    return json ? JSON.parse(json) : [];
-  }
-
-  buscarPorCpf(cpf: string): Cliente | undefined {
-    return this.listarTodos().find(c => c.cpf === cpf);
-  }
-
-  buscarPorEmail(email: string): Cliente | undefined {
-    return this.listarTodos().find(c => c.email === email);
-  }
-
-  inserir(c: Cliente): void {
-    if (!this.buscarPorCpf(c.cpf)) {
-      const list = this.listarTodos();
-      list.push(c);
-      this.save(list);
-    }
-  }
-
-  atualizar(cpf: string, atualizado: Cliente): void {
-    const list = this.listarTodos();
-    const idx = list.findIndex(c => c.cpf === cpf);
-    if (idx > -1) {
-      list[idx] = atualizado;
-      this.save(list);
-    }
-  }
-
-  remover(cpf: string): void {
-    const list = this.listarTodos().filter(c => c.cpf !== cpf);
-    this.save(list);
-  }
-
-  resetSenha(cpf: string, novaSenha: string): boolean {
-    const cliente = this.buscarPorCpf(cpf);
-    if (cliente) {
-      cliente.senha = novaSenha;
-      this.atualizar(cpf, cliente);
-      return true;
-    }
-    return false;
-  }
-
-
-  getPreferences(): any {
-    return this._clienteLogado?.preferencias || {};
-  }
-
-  updatePreferences(pref: any): void {
-    if (this._clienteLogado) {
-      this._clienteLogado.preferencias = pref;
-      this.save(this.listarTodos());
-    }
-  }
-
-  count(): number {
-    return this.listarTodos().length;
-  }
-
-  findByNamePattern(pattern: string): Cliente[] {
-    const regex = new RegExp(pattern, 'i');
-    return this.listarTodos().filter(c => regex.test(c.nome));
-  }
-
-  archiveCliente(cpf: string): void {
-    const list = this.listarTodos().map(c =>
-      c.cpf === cpf ? { ...c, archived: true } : c
+  /** GET /clientes **/
+  listarTodos(): Observable<Cliente[]> {
+    return this.http.get<Cliente[]>(
+      `${this.BASE_URL}/clientes`,
+      this.httpOptions
+    ).pipe(
+      map((resp: HttpResponse<Cliente[]>) => resp.status === 200 ? resp.body || [] : []),
+      catchError(err => {
+        if (err.status === 404) return of([]);
+        return throwError(() => err);
+      })
     );
-    this.save(list);
   }
 
-  private save(list: Cliente[]): void {
-    localStorage.setItem(this.key, JSON.stringify(list));
+  /** POST /login **/
+  getCliente(email: string, senha: string): Observable<Cliente | null> {
+    const body = { login: email, senha };
+    return this.http.post<Cliente>(
+      `${this.BASE_URL}/login`,
+      JSON.stringify(body),
+      this.httpOptions
+    ).pipe(
+      map((resp: HttpResponse<Cliente>) => resp.status === 200 ? resp.body : null),
+      catchError(err => {
+        if (err.status === 401) return of(null);
+        return throwError(() => err);
+      })
+    );
+  }
+
+  /** POST /clientes **/
+  inserir(cliente: Cliente): Observable<Cliente | null> {
+    return this.http.post<Cliente>(
+      `${this.BASE_URL}/clientes`,
+      JSON.stringify(cliente),
+      this.httpOptions
+    ).pipe(
+      map((resp: HttpResponse<Cliente>) => resp.status === 200 ? resp.body : null),
+      catchError(err => throwError(() => err))
+    );
+  }
+
+  /** PUT /clientes/{id} **/
+  atualizar(cliente: Cliente): Observable<Cliente | null> {
+    return this.http.put<Cliente>(
+      `${this.BASE_URL}/clientes/${cliente.cpf}`,
+      JSON.stringify(cliente),
+      this.httpOptions
+    ).pipe(
+      map((resp: HttpResponse<Cliente>) => resp.status === 200 ? resp.body : null),
+      catchError(err => throwError(() => err))
+    );
+  }
+
+  /** DELETE /clientes/{id} **/
+  remover(id: number): Observable<Cliente | null> {
+    return this.http.delete<Cliente>(
+      `${this.BASE_URL}/clientes/${id}`,
+      this.httpOptions
+    ).pipe(
+      map((resp: HttpResponse<Cliente>) => resp.status === 200 ? resp.body : null),
+      catchError(err => throwError(() => err))
+    );
+  }
+
+  /** Busca cliente por CPF (filtra o resultado de listarTodos) **/
+  buscarPorcpf(cpf: string): Observable<Cliente | null> {
+    return this.listarTodos().pipe(
+      map(clientes => clientes.find(c => c.cpf === cpf) || null)
+    );
   }
 }
