@@ -1,17 +1,144 @@
+<!-- <app-navbar-cliente></app-navbar-cliente> -->
 
-    <div class="container">
-        <h1>Resgatar Serviço</h1>
-        <div class="solicitacao-info">
-            <p><strong>ID da Solicitação:</strong> <span id="id-solicitacao">12345</span></p>
-            <p><strong>Status Atual:</strong> <span class="status-rejeitada">REJEITADA</span></p>
-            <p><strong>Data/Hora da Rejeição:</strong> <span id="data-rejeicao">01/01/2023 10:00</span></p>
-        </div>
-        <div class="historico">
-            <h2>Histórico da Solicitação</h2>
-            <ul>
-                <li>Solicitação criada em 01/01/2023 09:00</li>
-                <li>Solicitação rejeitada em 01/01/2023 10:00</li>
-            </ul>
-        </div>
-        <button id="aprovar-resgate" class="btn-aprovar">Aprovar Resgate</button>
+<div class="container mt-4">
+  <div class="card">
+    <div class="card-header">
+      <h2>Resgatar Serviço</h2>
+      <p>Aqui você pode ver seus serviços finalizados e solicitar o resgate.</p>
     </div>
+    <div class="card-body">
+      <div *ngIf="mensagem" class="alert alert-info" role="alert">
+        {{ mensagem }}
+      </div>
+
+      <!-- Resumo dos serviços -->
+      <div *ngIf="solicitacoes && solicitacoes.length > 0" class="row mb-4">
+        <div class="col-md-3">
+          <div class="card text-center border-success summary-card">
+            <div class="card-body">
+              <i class="bi bi-check-circle text-success fs-1"></i>
+              <h5 class="card-title">Serviços Finalizados</h5>
+              <h3 class="text-success">{{ solicitacoes.length }}</h3>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="card text-center border-info summary-card">
+            <div class="card-body">
+              <i class="bi bi-cash-coin text-info fs-1"></i>
+              <h5 class="card-title">Total Orçado</h5>
+              <h3 class="text-info">{{ getTotalOrcamento() | currency:'BRL' }}</h3>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="card text-center border-primary summary-card">
+            <div class="card-body">
+              <i class="bi bi-credit-card text-primary fs-1"></i>
+              <h5 class="card-title">Total Pago</h5>
+              <h3 class="text-primary">{{ getTotalPago() | currency:'BRL' }}</h3>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="card text-center border-warning summary-card">
+            <div class="card-body">
+              <i class="bi bi-box-arrow-up text-warning fs-1"></i>
+              <h5 class="card-title">Prontos para Resgate</h5>
+              <h3 class="text-warning">{{ solicitacoes.length }}</h3>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div *ngIf="solicitacoes && solicitacoes.length > 0; else semServicos">
+        <div class="mb-3">
+          <div class="alert alert-success" role="alert">
+            <i class="bi bi-check-circle"></i>
+            <strong>{{ solicitacoes.length }}</strong> serviço(s) finalizado(s) disponível(is) para resgate.
+          </div>
+        </div>
+        
+        <div class="table-responsive">
+          <table class="table table-hover table-striped">
+            <thead class="table-dark">
+              <tr>
+                <th>ID</th>
+                <th>Equipamento</th>
+                <th>Descrição do Problema</th>
+                <th>Data Orçamento</th>
+                <th>Data Finalização</th>
+                <th>Valor Orçamento</th>
+                <th>Valor Pago</th>
+                <th>Status</th>
+                <th>Observações</th>
+                <th>Ação</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let s of solicitacoes">
+                <td><strong>#{{ s.id }}</strong></td>
+                <td>
+                  <i class="bi bi-laptop text-primary"></i>
+                  {{ s.equipamento }}
+                </td>
+                <td>{{ s.descricao }}</td>
+                <td>
+                  <small *ngIf="s.dataHoraOrcamento">
+                    {{ s.dataHoraOrcamento | date:'dd/MM/yyyy HH:mm' }}
+                  </small>
+                  <span *ngIf="!s.dataHoraOrcamento" class="text-muted">-</span>
+                </td>
+                <td>
+                  <small *ngIf="s.dataHoraFinalizacao">
+                    {{ s.dataHoraFinalizacao | date:'dd/MM/yyyy HH:mm' }}
+                  </small>
+                  <span *ngIf="!s.dataHoraFinalizacao" class="text-muted">-</span>
+                </td>
+                <td>
+                  <span *ngIf="s.valorOrcamento" class="fw-bold text-success">
+                    {{ s.valorOrcamento | currency:'BRL' }}
+                  </span>
+                  <span *ngIf="!s.valorOrcamento" class="text-muted">-</span>
+                </td>
+                <td>
+                  <span *ngIf="s.valorOrcamento" class="fw-bold text-info">
+                    {{ s.valorOrcamento | currency:'BRL' }}
+                  </span>
+                  <span *ngIf="!s.valorOrcamento" class="text-muted">-</span>
+                </td>
+                <td>
+                  <span class="badge bg-success fs-6">
+                    <i class="bi bi-check-circle"></i>
+                    {{ s.estado }}
+                  </span>
+                </td>
+                <td>
+                  <small *ngIf="s.observacoes" class="text-muted">
+                    {{ s.observacoes }}
+                  </small>
+                  <span *ngIf="!s.observacoes" class="text-muted">-</span>
+                </td>
+                <td>
+                  <button (click)="resgatar(s)" class="btn btn-primary btn-sm">
+                    <i class="bi bi-box-arrow-up"></i>
+                    Resgatar
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <ng-template #semServicos>
+        <div *ngIf="!mensagem" class="text-center">
+          <p>Não há serviços finalizados para resgate no momento.</p>
+        </div>
+      </ng-template>
+    </div>
+    <div class="card-footer text-end">
+      <button (click)="voltar()" class="btn btn-secondary">Voltar</button>
+    </div>
+  </div>
+</div>

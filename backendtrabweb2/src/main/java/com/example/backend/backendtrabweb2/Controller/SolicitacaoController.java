@@ -1,5 +1,7 @@
 package com.example.backend.backendtrabweb2.Controller;
 
+import com.example.backend.backendtrabweb2.Model.Solicitacao;
+import com.example.backend.backendtrabweb2.Service.SolicitacaoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -9,6 +11,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api/solicitacoes")
+@CrossOrigin(origins = "http://localhost:4200")
 public class SolicitacaoController {
     @Autowired private SolicitacaoService svc;
 
