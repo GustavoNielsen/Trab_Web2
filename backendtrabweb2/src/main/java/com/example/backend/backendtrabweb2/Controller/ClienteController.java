@@ -1,7 +1,8 @@
-package com.example.demo.controller;
+package com.example.backend.backendtrabweb2.Controller;
 
-import com.example.demo.model.Cliente;
-import com.example.demo.service.ClienteService;
+import com.example.backend.backendtrabweb2.model.*;
+import com.example.backend.backendtrabweb2.rest.*;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -27,23 +28,5 @@ public class ClienteController {
             ? ResponseEntity.ok(c)
             : ResponseEntity.notFound().build();
     }
-
-    PutMapping("/{cpf}")
-    public ResponseEntity<Cliente> atualizar(
-            @PathVariable String cpf,
-            @RequestBody Cliente cAtualizado) {
-
-        Cliente atualizado = svc.atualizar(cpf, cAtualizado);
-        return atualizado != null
-            ? ResponseEntity.ok(atualizado)
-            : ResponseEntity.notFound().build();
-    }
-
-    @DeleteMapping("/{cpf}")
-    public ResponseEntity<Void> remover(@PathVariable String cpf) {
-        boolean excluiu = svc.removerPorCpf(cpf);
-        return excluiu
-            ? ResponseEntity.noContent().build()
-            : ResponseEntity.notFound().build();
-    }
 }
+

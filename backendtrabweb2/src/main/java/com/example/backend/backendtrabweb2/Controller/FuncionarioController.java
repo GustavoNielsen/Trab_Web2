@@ -1,7 +1,8 @@
-package com.example.demo.controller;
+package com.example.backend.backendtrabweb2.Controller;
 
-import com.example.demo.model.Funcionario;
-import com.example.demo.service.FuncionarioService;
+import com.example.backend.backendtrabweb2.model.*;
+import com.example.backend.backendtrabweb2.rest.*;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -25,26 +26,6 @@ public class FuncionarioController {
         Funcionario f = svc.porCpf(cpf);
         return f != null
             ? ResponseEntity.ok(f)
-            : ResponseEntity.notFound().build();
-    }
-
-    @PutMapping("/{cpf}")
-    public ResponseEntity<Funcionario> atualizar(
-            @PathVariable String cpf,
-            @RequestBody Funcionario fAtualizado) {
-
-        Funcionario atualizado = svc.atualizar(cpf, fAtualizado);
-        return atualizado != null
-            ? ResponseEntity.ok(atualizado)
-            : ResponseEntity.notFound().build();
-    }
-
-    // 5) REMOVER funcionário por CPF
-    @DeleteMapping("/{cpf}")
-    public ResponseEntity<Void> remover(@PathVariable String cpf) {
-        boolean excluiu = svc.removerPorCpf(cpf);
-        return excluiu
-            ? ResponseEntity.noContent().build()
             : ResponseEntity.notFound().build();
     }
 }
