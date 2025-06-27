@@ -1,0 +1,61 @@
+<h1 *ngIf="novoUsuario">Novo Usuário</h1>
+<h1 *ngIf="!novoUsuario">Editar Usuário</h1>
+<div *ngIf="mensagem.length>0" class="alert alert-danger alert-dismissible fade show" role="alert">
+    <h4 class="alert-heading">{{mensagem}}</h4>
+    <p>{{mensagem_detalhes}}</p>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+    </button>
+</div>
+<div class="well">
+    <form #formUsuario="ngForm">
+        <div class="form-group">
+            <label for="nome">Nome:</label>
+            <input type="text" class="form-control" id="nome" name="nome" [(ngModel)]="usuario.nome" #nome="ngModel"
+                minlength="2" required>
+            <div *ngIf="nome.errors && (nome.dirty || nome.touched)" class="alert alert-danger">
+                <div [hidden]="!nome.errors['required']"> Digite o nome do
+                    usuario. </div>
+                <div [hidden]="!nome.errors['minlength']"> O nome deve conter
+                    ao menos 2 caracteres. </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="login">Login:</label>
+            <input type="text" class="form-control" id="login" name="login" [(ngModel)]="usuario.login" #login="ngModel"
+                minlength="2" required>
+            <div *ngIf="login.errors && (login.dirty || login.touched)" class="alert alert-danger">
+                <div [hidden]="!login.errors['required']"> Digite o login
+                    da pessoa. </div>
+                <div [hidden]="!login.errors['minlength']"> O login deve
+                    conter ao menos 2 caracteres. </div>
+            </div>
+        </div>
+
+        <div *ngIf="!novoUsuario">
+            <p>Deixe a senha em branco para não alterá-
+                la.</p>
+        </div>
+        <div class="form-group">
+            <label for="senha">Senha:</label>
+            <input type="text" class="form-control" id="senha" name="senha" [(ngModel)]="usuario.senha"
+                #senha="ngModel">
+        </div>
+        <div class="form-group">
+            <label for="perfil">Perfil:</label><br />
+            <input type="radio" class="form-check-input" id="perfil" name="perfil" [(ngModel)]="usuario.perfil"
+                #perfil="ngModel" value="ADMIN"> Administrador <br />
+            <input type="radio" class="form-check-input" id="perfil" name="perfil" [(ngModel)]="usuario.perfil"
+                #perfil="ngModel" value="GERENTE"> Gerente <br />
+            <input type="radio" class="form-check-input" id="perfil" name="perfil" [(ngModel)]="usuario.perfil"
+                #perfil="ngModel" value="FUNC"> Funcionário <br />
+        </div>
+        <button type="button" class="btn btn-primary" (click)="salvar()"
+            [disabled]="!formUsuario.form.valid || botaoDesabilitado">
+            <i *ngIf="!loading" class="fa fa-save" aria-hidden="true"></i>
+            <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span> Salvar
+        </button>
+        <a class="btn btn-secondary" [routerLink]="['/usuarios']">
+            <i class="fa fa-arrow-left" aria-hidden="true"></i> Voltar
+        </a>
+    </form>
+</div>
